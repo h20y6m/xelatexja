@@ -110,6 +110,13 @@
 \tl_set:Nn \l_xeja_xkanji_tl { 0.25\zw plus 0.25\zw minus 0.125\zw }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+\tl_new:N \l_xeja_ybaselineshift_tl
+\tl_new:N \l_xeja_tbaselineshift_tl
+\tl_set:Nn \l_xeja_ybaselineshift_tl { 0\zw }
+\tl_set:Nn \l_xeja_tbaselineshift_tl { 0.25\zw }
+%    \end{macrocode}
+%
 % \begin{macro}{\zw}
 % 全角寸法。
 %    \begin{macrocode}
@@ -130,6 +137,7 @@
 % 一時変数。
 %    \begin{macrocode}
 \tl_new:N \l_@@_tmpa_tl
+\dim_new:N \l_@@_tmpa_dim
 %    \end{macrocode}
 % \end{macro}
 %
@@ -713,6 +721,17 @@
   }
 %    \end{macrocode}
 %
+% ベースライン補正終了
+%    \begin{macrocode}
+\seq_map_inline:Nn \g_@@_kanji_class_seq
+  {
+    \@@_put_left_interchar_tokens:nnn { 0 } {#1}
+      {
+        \@@_alpha_baselineshift_end:
+      }
+  }
+%    \end{macrocode}
+%
 % \subsubsection{和文－欧文間}
 %
 % 禁則ペナルティー。
@@ -787,6 +806,17 @@
   }
 %    \end{macrocode}
 %
+% ベースライン補正開始
+%    \begin{macrocode}
+\seq_map_inline:Nn \g_@@_kanji_class_seq
+  {
+    \@@_put_right_interchar_tokens:nnn {#1} { 0 }
+      {
+        \@@_alpha_baselineshift_begin:
+      }
+  }
+%    \end{macrocode}
+%
 % \subsubsection{境界－和文間}
 %
 % フォント切り替え。
@@ -802,9 +832,12 @@
 %
 % \subsubsection{境界－欧文間}
 %
+% ベースライン補正開始
 %    \begin{macrocode}
 \@@_set_interchar_tokens:nnn  { \c_xeja_bound_ic } { 0 }
-  {}
+  {
+    \@@_alpha_baselineshift_begin:
+  }
 %    \end{macrocode}
 %
 % \subsubsection{和文－境界間}
@@ -822,9 +855,43 @@
 %
 % \subsubsection{欧文－境界間}
 %
+% ベースライン補正終了
 %    \begin{macrocode}
 \@@_set_interchar_tokens:nnn  { 0 } { \c_xeja_bound_ic }
-  {}
+  {
+    \@@_alpha_baselineshift_end:
+  }
+%    \end{macrocode}
+%
+% \subsubsection{ベースライン補正}
+%    \begin{macrocode}
+\bool_new:N \g_@@_inside_alpha_baselineshift_bool
+\cs_new:Npn \@@_alpha_baselineshift_begin:
+  {
+    \dim_set:Nn \l_@@_tmpa_dim
+      {
+        \bool_if:NTF \l_xeja_tate_text_bool
+          { \l_xeja_tbaselineshift_tl }
+          { \l_xeja_ybaselineshift_tl }
+      }
+    \bool_lazy_or:nnF
+      { \g_@@_inside_alpha_baselineshift_bool }
+      { \dim_compare_p:nNn { \l_@@_tmpa_dim } = { 0pt } }
+      {
+        \bool_gset_true:N \g_@@_inside_alpha_baselineshift_bool
+        \tex_lower:D \l_@@_tmpa_dim
+        \tex_hbox:D
+        \c_group_begin_token
+      }
+  }
+\cs_new:Npn \@@_alpha_baselineshift_end:
+  {
+    \bool_if:NT \g_@@_inside_alpha_baselineshift_bool
+      {
+        \c_group_end_token
+        \bool_gset_false:N \g_@@_inside_alpha_baselineshift_bool
+      }
+  }
 %    \end{macrocode}
 %
 % \subsubsection{文字クラス設定}
