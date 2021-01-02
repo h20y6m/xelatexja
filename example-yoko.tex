@@ -1,0 +1,53 @@
+%#!xelatex
+\documentclass[twocolumn]{article}
+\usepackage{xelatexja}
+
+\usepackage{bxjalipsum}
+\usepackage{bxtexlogo}
+\bxtexlogoimport{*}
+\usepackage{indentfirst}
+
+\renewcommand{\normalsize}{\fontsize{10pt}{15pt}}
+\setlength{\parindent}{10pt}
+\setlength{\topskip}{10pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{20pt}
+
+\ExplSyntaxOn
+\int_set:Nn \l_tmpa_int
+  { \int_div_truncate:nn { \textwidth - \columnsep } { 2 * 10 * 65536 } * 2 }
+\int_set:Nn \l_tmpb_int
+  { \int_div_truncate:nn { \textheight - \topskip } { 15 * 65536 } }
+\iow_term:x { \int_use:N \l_tmpa_int x \int_use:N \l_tmpb_int }
+\dim_set:Nn \textwidth
+  { 10pt * \l_tmpa_int + \columnsep }
+\dim_set:Nn \textheight
+  { 15pt * \l_tmpb_int + \topskip }
+\ExplSyntaxOff
+
+\title{\XeLaTeX-ja横組みサンプル}
+\author{森見幸正 (h20y6m)}
+\date{2021年1月2日}
+
+\begin{document}
+\maketitle
+
+\section{いろは歌}
+\jalipsum{iroha}
+
+\section{寿限無}
+\jalipsum{jugemu}
+
+\section{吾輩は猫である}
+\jalipsum{wagahai}
+
+\section{日本国憲法前文}
+\jalipsum{preamble}
+
+\section{初恋}
+\jalipsum{hatsukoi}
+
+\section{草枕}
+\jalipsum{kusamakura}
+
+\end{document}

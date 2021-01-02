@@ -1,0 +1,31 @@
+\iffalse meta-comment
+
+File: xelatexja.ins
+
+Copyright (c) 2021 Yukimasa Morimi (h20y6m)
+  GitHub:   https://github.com/h20y6m
+
+This package is distributed under the MIT License.
+
+\fi
+
+\input l3docstrip.tex
+\askforoverwritefalse
+
+\preamble
+
+Copyright (c) 2021 Yukimasa Morimi (h20y6m)
+  GitHub:   https://github.com/h20y6m
+
+This package is distributed under the MIT License.
+
+\endpreamble
+% stop docstrip adding \endinput
+\postamble
+\endpostamble
+
+\keepsilent
+
+\generate{\file{xelatexja.sty}  {\from{xelatexja.dtx}  {package}}}
+
+\endbatchfile
