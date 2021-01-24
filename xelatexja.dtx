@@ -20,7 +20,7 @@
 \setlength{\textwidth}{\dimexpr10pt*(\numexpr\textwidth/(10*65536)\relax)\relax}
 \renewcommand{\labelitemi}{•}
 \ExplSyntaxOn
-\xeja_set_prebreakpenalty:nn { \c_xeja_kanji_smallkana_ic } { 100 }
+\xeja_set_prebreakpenalty:nn { \c_xeja_kanji_smallkana_class_int } { 100 }
 \ExplSyntaxOff
 \begin{document}
   \DocInput{\jobname.dtx}
@@ -30,7 +30,7 @@
 %<*package>
 \NeedsTeXFormat{LaTeX2e}[2020-10-01]
 \RequirePackage{expl3}[2020-12-07]
-\ProvidesExplPackage{xelatexja}{2021/01/02}{0.0.1}
+\ProvidesExplPackage{xelatexja}{2021/01/24}{0.0.1}
   {Japanese typesetting with XeLaTeX}
 %</package>
 %
@@ -38,7 +38,7 @@
 %
 % \title{\textsf{\XeLaTeX-ja}パッケージ}
 % \author{森見幸正 (h20y6m)}
-% \date{2021年1月2日}
+% \date{2021年1月24日}
 %
 % \maketitle
 %
@@ -50,9 +50,112 @@
 %
 % \begin{documentation}
 %
-% \section{動作要件}
+% \section{使い方}
+%
+% \subsection{動作要件}
 %
 % 本パッケージは\XeLaTeX 上で動作する。
+%
+% 本パッケージは\XeTeX の「文字間トークン自動挿入機能」を独占的に利用する。
+% これらを利用する他のパッケージとは共存できない。
+%
+% \subsection{パッケージ読込}
+%
+% \begin{quote}
+%   \cs{usepackage}|[|\meta{オプション}|]{xelatexja}|
+% \end{quote}
+% オプションは以下の通り。
+% \begin{itemize}
+%   \item |tate|\quad 文書全体を縦組みにする。 
+% \end{itemize}
+%
+% \section{expl3インターフェイス}
+%
+% \subsection{組方向}
+%
+% \begin{function}[pTF]{\xeja_if_tate_document:}
+%   \begin{syntax}
+%     \cs{xeja_if_tate_document:TF} \Arg{true code} \Arg{false code}
+%   \end{syntax}
+%   文書全体が縦組かどうかの条件式。
+% \end{function}
+%
+% \begin{function}[pTF]{\xeja_if_tate_text:}
+%   \begin{syntax}
+%     \cs{xeja_if_tate_text:TF} \Arg{true code} \Arg{false code}
+%   \end{syntax}
+%   現在の組方向が縦組かどうかの条件式。
+% \end{function}
+%
+% \subsection{文字クラス}
+% 
+% \begin{variable}
+%   {
+%     \c_xeja_kanji_class_int ,
+%     \c_xeja_kanji_openingbrackets_class_int ,
+%     \c_xeja_kanji_closingbrackets_class_int ,
+%     \c_xeja_kanji_hyphens_class_int ,
+%     \c_xeja_kanji_dividingpunctuationmarks_class_int ,
+%     \c_xeja_kanji_middledots_class_int ,
+%     \c_xeja_kanji_fullstops_class_int ,
+%     \c_xeja_kanji_commas_class_int ,
+%     \c_xeja_kanji_inseparablecharacters_class_int ,
+%     \c_xeja_kanji_iterationmarks_class_int ,
+%     \c_xeja_kanji_prolongedsoundmark_class_int ,
+%     \c_xeja_kanji_smallkana_class_int ,
+%     \c_xeja_kanji_prefixedabbreviations_class_int ,
+%     \c_xeja_kanji_hiragana_class_int ,
+%     \c_xeja_kanji_katakana_class_int
+%   }
+%   和文文字クラスを表す定数。
+% \end{variable}
+% 
+% \begin{variable}
+%   {
+%     \c_xeja_alpha_class_int ,
+%     \c_xeja_alpha_left_class_int ,
+%     \c_xeja_alpha_right_class_int ,
+%     \c_xeja_alpha_middle_class_int
+%   }
+%   欧文文字クラスを表す定数。
+% \end{variable}
+% 
+% \begin{variable}{\c_xeja_bound_class_int}
+%   文字境界（グルー・カーン・数式・ボックス等の文字以外のもの）を表す定数。
+% \end{variable}
+%
+% \subsection{組版パラメーター}
+%
+% \begin{function}{\xeja_set_prebreakpenalty:nn}
+%   \begin{syntax}
+%     \cs{xeja_set_prebreakpenalty:nn} \Arg{intexpr_1} \Arg{intexpr_2}
+%   \end{syntax}
+%   和文文字クラス\meta{intexpr_1}の行頭禁則ペナルティーを\meta{intexpr_2}に設定する。
+% \end{function}
+%
+% \begin{function}{\xeja_set_postbreakpenalty:nn}
+%   \begin{syntax}
+%     \cs{xeja_set_postbreakpenalty:nn} \Arg{intexpr_1} \Arg{intexpr_2}
+%   \end{syntax}
+%   和文文字クラス\meta{intexpr_1}の行末禁則ペナルティーを\meta{intexpr_2}に設定する。
+% \end{function}
+% 
+% \begin{variable}
+%   {
+%     \c_xeja_xspmode_inhibit_int ,
+%     \c_xeja_xspmode_preonly_int ,
+%     \c_xeja_xspmode_postonly_int ,
+%     \c_xeja_xspmode_allow_int
+%   }
+%   和欧文間空白の挿入するかどうかの設定を表す定数。
+% \end{variable}
+%
+% \begin{function}{\xeja_set_xspmode:nn}
+%   \begin{syntax}
+%     \cs{xeja_set_xspmode:nn} \Arg{intexpr_1} \Arg{intexpr_2}
+%   \end{syntax}
+%   文字クラス\meta{intexpr_1}の前後に和欧文間空白の挿入を許可するかどうかを設定する。
+% \end{function}
 %
 % \end{documentation}
 %
@@ -87,22 +190,45 @@
 %
 % \subsection{変数}
 %
-% \begin{macro}{\g_xeja_tate_document_bool}
+% \begin{macro}{\g_@@_tate_document_bool}
 % 文書全体が縦組かどうかを表す変数。
 %    \begin{macrocode}
-\bool_new:N \g_xeja_tate_document_bool
+\bool_new:N \g_@@_tate_document_bool
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\l_xeja_tate_text_bool}
+%
+% \begin{macro}[pTF]{\xeja_if_tate_document:}
+% 文書全体が縦組かどうかの条件式。
+%    \begin{macrocode}
+\prg_new_conditional:Npnn \xeja_if_tate_document: { p, T, F, TF}
+  {
+    \bool_if:NTF \g_@@_tate_document_bool
+      { \prg_return_true: } { \prg_return_false: }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\l_@@_tate_text_bool}
 % 現在の組方向が縦組かどうかを表す変数。
 %    \begin{macrocode}
-\bool_new:N \l_xeja_tate_text_bool
+\bool_new:N \l_@@_tate_text_bool
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[pTF]{\xeja_if_tate_text:}
+% 現在の組方向が縦組かどうかの条件式。
+%    \begin{macrocode}
+\prg_new_conditional:Npnn \xeja_if_tate_text: { p, T, F, TF}
+  {
+    \bool_if:NTF \l_@@_tate_text_bool
+      { \prg_return_true: } { \prg_return_false: }
+  }
 %    \end{macrocode}
 % \end{macro}
 %
 %    \begin{macrocode}
 \tl_new:N \l_xeja_kanji_tl
-\tl_set:Nn \l_xeja_kanji_tl { 0\zw plus 0.25\zw minus 0\zw }
+\tl_set:Nn \l_xeja_kanji_tl { 0\zw plus 0.25\zw }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -133,10 +259,11 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\l_@@_tmpa_tl}
+% \begin{macro}{\l_@@_tmpa_tl,\l_@@_tmpb_tl,\l_@@_tmpa_dim}
 % 一時変数。
 %    \begin{macrocode}
 \tl_new:N \l_@@_tmpa_tl
+\tl_new:N \l_@@_tmpb_tl
 \dim_new:N \l_@@_tmpa_dim
 %    \end{macrocode}
 % \end{macro}
@@ -146,14 +273,14 @@
 %    \begin{macrocode}
 \keys_define:nn { xelatexja }
   {
-    tate .bool_gset:N = \g_xeja_tate_document_bool,
+    tate .bool_gset:N = \g_@@_tate_document_bool,
   }
 \ProcessKeysOptions { xelatexja }
 %    \end{macrocode}
 %
 % \subsection{フォント}
 %
-% 和文フォントエンコーディング。^^A
+% 和文フォントエンコーディング。
 % 横組みはJY4、縦組みはJT4。
 %    \begin{macrocode}
 \str_const:Nn \c_xeja_yoko_encoding_str { JY4 }
@@ -313,7 +440,7 @@
 
 \cs_new:Npn \xeja_enter_kanji_font:
   {
-    \bool_if:NTF \l_xeja_tate_text_bool
+    \bool_if:NTF \l_@@_tate_text_bool
       { \xeja_select_tate_kanji_font: }
       { \xeja_select_yoko_kanji_font: }
   }
@@ -324,7 +451,7 @@
   }
 %    \end{macrocode}
 %
-% \subsection{文字間トークン挿入機能}
+% \subsection{文字クラス}
 %
 % 文字間トークン挿入機能の有効化
 %    \begin{macrocode}
@@ -333,98 +460,162 @@
 % 
 % \subsubsection{文字クラス定義}
 %
-% \begin{itemize}
-% \item 欧文文字
+% \begin{macro}{\c_xeja_kanji_class_int}
+%   和文文字。
 %    \begin{macrocode}
-\int_const:Nn \c_xeja_alpha_ic { 0 }
+\newXeTeXintercharclass \c_xeja_kanji_class_int
 %    \end{macrocode}
-% \item 和文文字
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_openingbrackets_class_int}
+%   始め括弧類（cl-01）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_ic
+\newXeTeXintercharclass \c_xeja_kanji_openingbrackets_class_int
 %    \end{macrocode}
-% \item 始め括弧類（cl-01）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_closingbrackets_class_int}
+%   終わり括弧類（cl-02）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_openingbrackets_ic
+\newXeTeXintercharclass \c_xeja_kanji_closingbrackets_class_int
 %    \end{macrocode}
-% \item 終わり括弧類（cl-02）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_hyphens_class_int}
+%   ハイフン類（cl-03）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_closingbrackets_ic
+\newXeTeXintercharclass \c_xeja_kanji_hyphens_class_int
 %    \end{macrocode}
-% \item ハイフン類（cl-03）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_dividingpunctuationmarks_class_int}
+%   区切り約物（cl-04）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_hyphens_ic
+\newXeTeXintercharclass \c_xeja_kanji_dividingpunctuationmarks_class_int
 %    \end{macrocode}
-% \item 区切り約物（cl-04）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_middledots_class_int}
+%   中点類（cl-05）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_dividingpunctuationmarks_ic
+\newXeTeXintercharclass \c_xeja_kanji_middledots_class_int
 %    \end{macrocode}
-% \item 中点類（cl-05）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_fullstops_class_int}
+%   句点類（cl-06）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_middledots_ic
+\newXeTeXintercharclass \c_xeja_kanji_fullstops_class_int
 %    \end{macrocode}
-% \item 句点類（cl-06）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_commas_class_int}
+%   読点類（cl-07）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_fullstops_ic
+\newXeTeXintercharclass \c_xeja_kanji_commas_class_int
 %    \end{macrocode}
-% \item 読点類（cl-07）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_inseparablecharacters_class_int}
+%   分離禁止文字（cl-08）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_commas_ic
+\newXeTeXintercharclass \c_xeja_kanji_inseparablecharacters_class_int
 %    \end{macrocode}
-% \item 分離禁止文字（cl-08）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_iterationmarks_class_int}
+%   繰返し記号（cl-09）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_inseparablecharacters_ic
+\newXeTeXintercharclass \c_xeja_kanji_iterationmarks_class_int
 %    \end{macrocode}
-% \item 繰返し記号（cl-09）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_prolongedsoundmark_class_int}
+%   長音記号（cl-10）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_iterationmarks_ic
+\newXeTeXintercharclass \c_xeja_kanji_prolongedsoundmark_class_int
 %    \end{macrocode}
-% \item 長音記号（cl-10）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_smallkana_class_int}
+%   小書き仮名（cl-11）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_prolongedsoundmark_ic
+\newXeTeXintercharclass \c_xeja_kanji_smallkana_class_int
 %    \end{macrocode}
-% \item 小書き仮名（cl-11）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_prefixedabbreviations_class_int}
+%   前置省略記号（cl-12）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_smallkana_ic
+\newXeTeXintercharclass \c_xeja_kanji_prefixedabbreviations_class_int
 %    \end{macrocode}
-% \item 前置省略記号（cl-12）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_hiragana_class_int}
+%   平仮名（cl-15）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_prefixedabbreviations_ic
+\newXeTeXintercharclass \c_xeja_kanji_hiragana_class_int
 %    \end{macrocode}
-% \item 平仮名（cl-15）
+% \end{macro}
+% \begin{macro}{\c_xeja_kanji_katakana_class_int}
+%   片仮名（cl-16）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_hiragana_ic
+\newXeTeXintercharclass \c_xeja_kanji_katakana_class_int
 %    \end{macrocode}
-% \item 片仮名（cl-16）
+% \end{macro}
+% \begin{macro}{\c_xeja_alpha_class_int}
+%   欧文文字（デフォルト）。
 %    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_katakana_ic
+\int_const:Nn \c_xeja_alpha_class_int { 0 }
 %    \end{macrocode}
-% \item 境界
+% \end{macro}
+% \begin{macro}{\c_xeja_alpha_left_class_int}
+%   欧文約物（後に和欧文間空白をいれないもの）。
 %    \begin{macrocode}
-\int_const:Nn \c_xeja_bound_ic { 4095 }
+\newXeTeXintercharclass \c_xeja_alpha_left_class_int
 %    \end{macrocode}
-% \end{itemize}
+% \end{macro}
+% \begin{macro}{\c_xeja_alpha_right_class_int}
+%   欧文約物（前に和欧文間空白をいれないもの）。
+%    \begin{macrocode}
+\newXeTeXintercharclass \c_xeja_alpha_right_class_int
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\c_xeja_alpha_middle_class_int}
+%   欧文約物（前後に和欧文間空白をいれないもの）。
+%    \begin{macrocode}
+\newXeTeXintercharclass \c_xeja_alpha_middle_class_int
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\c_xeja_bound_class_int}
+%   文字境界。
+%    \begin{macrocode}
+\int_const:Nn \c_xeja_bound_class_int { 4095 }
+%    \end{macrocode}
+% \end{macro}
 %
 % \begin{macro}{\g_@@_kanji_class_seq}
-% 和文文字クラス。
+% 和文文字クラスのリスト。
 %    \begin{macrocode}
 \seq_new:N \g_@@_kanji_class_seq
 \seq_gset_from_clist:Nn \g_@@_kanji_class_seq
   {
-    \c_xeja_kanji_ic ,
-    \c_xeja_kanji_openingbrackets_ic ,
-    \c_xeja_kanji_closingbrackets_ic ,
-    \c_xeja_kanji_hyphens_ic ,
-    \c_xeja_kanji_dividingpunctuationmarks_ic ,
-    \c_xeja_kanji_middledots_ic ,
-    \c_xeja_kanji_fullstops_ic ,
-    \c_xeja_kanji_commas_ic ,
-    \c_xeja_kanji_inseparablecharacters_ic ,
-    \c_xeja_kanji_iterationmarks_ic ,
-    \c_xeja_kanji_prolongedsoundmark_ic ,
-    \c_xeja_kanji_smallkana_ic ,
-    \c_xeja_kanji_prefixedabbreviations_ic ,
-    \c_xeja_kanji_hiragana_ic ,
-    \c_xeja_kanji_katakana_ic
+    \c_xeja_kanji_class_int ,
+    \c_xeja_kanji_openingbrackets_class_int ,
+    \c_xeja_kanji_closingbrackets_class_int ,
+    \c_xeja_kanji_hyphens_class_int ,
+    \c_xeja_kanji_dividingpunctuationmarks_class_int ,
+    \c_xeja_kanji_middledots_class_int ,
+    \c_xeja_kanji_fullstops_class_int ,
+    \c_xeja_kanji_commas_class_int ,
+    \c_xeja_kanji_inseparablecharacters_class_int ,
+    \c_xeja_kanji_iterationmarks_class_int ,
+    \c_xeja_kanji_prolongedsoundmark_class_int ,
+    \c_xeja_kanji_smallkana_class_int ,
+    \c_xeja_kanji_prefixedabbreviations_class_int ,
+    \c_xeja_kanji_hiragana_class_int ,
+    \c_xeja_kanji_katakana_class_int
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\g_@@_kanji_class_seq}
+% 欧文文字クラスのリスト。
+%    \begin{macrocode}
+\seq_new:N \g_@@_alpha_class_seq
+\seq_gset_from_clist:Nn \g_@@_alpha_class_seq
+  {
+    \c_xeja_alpha_class_int ,
+    \c_xeja_alpha_left_class_int ,
+    \c_xeja_alpha_right_class_int ,
+    \c_xeja_alpha_middle_class_int ,
   }
 %    \end{macrocode}
 % \end{macro}
@@ -432,9 +623,9 @@
 % \subsubsection{文字間トークン}
 %
 %    \begin{macrocode}
-\cs_new:Npn \@@_clear_interchar_tokens:nn #1#2
+\cs_new:Npn \@@_the_interchar_tokens:nn #1#2
   {
-    \@@_set_interchar_tokens:nnn {#1} {#2} {}
+    \tex_the:D \tex_XeTeXinterchartoks:D \int_eval:n {#1} ~ \int_eval:n {#2} ~
   }
 %    \end{macrocode}
 %
@@ -448,19 +639,14 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \@@_put_left_interchar_tokens:nnn #1#2#3
+\cs_new:Npn \@@_clear_interchar_tokens:nn #1#2
   {
-    \@@_set_interchar_tokens:nnx {#1} {#2}
-      {
-        \exp_not:n {#3}
-        \@@_the_interchar_tokens:nn {#1} {#2}
-      }
+    \@@_set_interchar_tokens:nnn {#1} {#2} {}
   }
-\cs_generate_variant:Nn \@@_put_left_interchar_tokens:nnn { nnV, nno, nnx }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \@@_put_right_interchar_tokens:nnn #1#2#3
+\cs_new:Npn \@@_append_interchar_tokens:nnn #1#2#3
   {
     \@@_set_interchar_tokens:nnx {#1} {#2}
       {
@@ -468,59 +654,75 @@
         \exp_not:n {#3}
       }
   }
-\cs_generate_variant:Nn \@@_put_right_interchar_tokens:nnn
-  { nnV, nno, nnx }
+\cs_generate_variant:Nn \@@_append_interchar_tokens:nnn { nnV, nno, nnx }
 %    \end{macrocode}
+%%
+% \subsubsection{組版パラメーター}
 %
-%    \begin{macrocode}
-\cs_new:Npn \@@_the_interchar_tokens:nn #1#2
-  {
-    \tex_the:D \tex_XeTeXinterchartoks:D \int_eval:n {#1} ~ \int_eval:n {#2} ~
-  }
-%    \end{macrocode}
-%
-% 行末禁則
-%    \begin{macrocode}
-\prop_new:N \l_@@_postbreakpenalty_prop
-\cs_new:Npn \xeja_set_postbreakpenalty:nn #1#2
-  {
-    \prop_put:Nxx \l_@@_postbreakpenalty_prop
-      { \int_eval:n {#1} }
-      { \int_eval:n {#2} }
-  }
-\clist_map_inline:nn
-  { 
-    \c_xeja_kanji_openingbrackets_ic ,
-    \c_xeja_kanji_prefixedabbreviations_ic ,
-  }
-  {
-    \xeja_set_postbreakpenalty:nn {#1} { 10000 }
-  }
-%    \end{macrocode}
-%
-% 行頭禁則
+% \begin{macro}{\l_@@_prebreakpenalty_prop}
+%   行頭禁則ペナルティーを保持するprop変数。
 %    \begin{macrocode}
 \prop_new:N \l_@@_prebreakpenalty_prop
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\xeja_set_prebreakpenalty:nn}
+%   行頭禁則ペナルティーを設定する関数。
+%    \begin{macrocode}
 \cs_new:Npn \xeja_set_prebreakpenalty:nn #1#2
   {
     \prop_put:Nxx \l_@@_prebreakpenalty_prop
       { \int_eval:n {#1} }
       { \int_eval:n {#2} }
   }
+%    \end{macrocode}
+% \end{macro}
+% 終わり括弧類・ハイフン類・区切り約物・中点類・句点類・読点類・繰返し記号・
+% 長音記号・小書き仮名を行頭禁則に設定する。
+%    \begin{macrocode}
 \clist_map_inline:nn
   { 
-    \c_xeja_kanji_closingbrackets_ic ,
-    \c_xeja_kanji_hyphens_ic ,
-    \c_xeja_kanji_dividingpunctuationmarks_ic ,
-    \c_xeja_kanji_middledots_ic ,
-    \c_xeja_kanji_fullstops_ic ,
-    \c_xeja_kanji_commas_ic ,
-    \c_xeja_kanji_iterationmarks_ic ,
-    \c_xeja_kanji_prolongedsoundmark_ic ,
-    \c_xeja_kanji_smallkana_ic
+    \c_xeja_kanji_closingbrackets_class_int ,
+    \c_xeja_kanji_hyphens_class_int ,
+    \c_xeja_kanji_dividingpunctuationmarks_class_int ,
+    \c_xeja_kanji_middledots_class_int ,
+    \c_xeja_kanji_fullstops_class_int ,
+    \c_xeja_kanji_commas_class_int ,
+    \c_xeja_kanji_inseparablecharacters_class_int ,
+    \c_xeja_kanji_iterationmarks_class_int ,
+    \c_xeja_kanji_prolongedsoundmark_class_int ,
+    \c_xeja_kanji_smallkana_class_int
   }
   {
     \xeja_set_prebreakpenalty:nn {#1} { 10000 }
+  }
+%    \end{macrocode}
+%
+% \begin{macro}{\l_@@_postbreakpenalty_prop}
+%   行末禁則ペナルティーを保持するprop変数。
+%    \begin{macrocode}
+\prop_new:N \l_@@_postbreakpenalty_prop
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\xeja_set_postbreakpenalty:nn}
+%   行末禁則ペナルティーを設定する関数。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_set_postbreakpenalty:nn #1#2
+  {
+    \prop_put:Nxx \l_@@_postbreakpenalty_prop
+      { \int_eval:n {#1} }
+      { \int_eval:n {#2} }
+  }
+%    \end{macrocode}
+% \end{macro}
+% 始め括弧類と前置省略記号を行末禁則に設定する。
+%    \begin{macrocode}
+\clist_map_inline:nn
+  { 
+    \c_xeja_kanji_openingbrackets_class_int ,
+    \c_xeja_kanji_prefixedabbreviations_class_int ,
+  }
+  {
+    \xeja_set_postbreakpenalty:nn {#1} { 10000 }
   }
 %    \end{macrocode}
 %
@@ -535,331 +737,516 @@
   }
 \seq_map_inline:Nn \g_@@_kanji_class_seq
   {
-    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_openingbrackets_ic }
-      { 0.5\zw plus 0.25\zw minus 0.25\zw }
-    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_closingbrackets_ic } {#1}
-      { 0.5\zw plus 0.25\zw minus 0.25\zw }
-    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_fullstops_ic } {#1}
-      { 0.5\zw plus 0.25\zw minus 0.25\zw }
-    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_commas_ic } {#1}
-      { 0.5\zw plus 0.25\zw minus 0.25\zw }
+    \xeja_set_interchar_skip:nnn
+      {#1} { \c_xeja_kanji_openingbrackets_class_int }
+      { 0.5\zw plus 0.25\zw minus 0.5\zw }
+    \xeja_set_interchar_skip:nnn
+      { \c_xeja_kanji_closingbrackets_class_int } {#1}
+      { 0.5\zw plus 0.25\zw minus 0.5\zw }
+    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_fullstops_class_int } {#1}
+      { 0.5\zw plus 0.25\zw }
+    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_commas_class_int } {#1}
+      { 0.5\zw plus 0.25\zw minus 0.5\zw }
   }
 \seq_map_inline:Nn \g_@@_kanji_class_seq
   {
-    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_openingbrackets_ic } {#1}
+    \xeja_set_interchar_skip:nnn
+      { \c_xeja_kanji_openingbrackets_class_int } {#1}
       { 0\zw }
-    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_closingbrackets_ic }
+    \xeja_set_interchar_skip:nnn
+      {#1} { \c_xeja_kanji_closingbrackets_class_int }
       { 0\zw }
-    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_fullstops_ic }
+    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_fullstops_class_int }
       { 0\zw }
-    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_commas_ic }
+    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_commas_class_int }
       { 0\zw }
   }
 \seq_map_inline:Nn \g_@@_kanji_class_seq
   {
-    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_middledots_ic }
+    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_middledots_class_int }
       { 0.25\zw plus 0.25\zw minus 0.25\zw }
-    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_middledots_ic } {#1}
+    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_middledots_class_int } {#1}
       { 0.25\zw plus 0.25\zw minus 0.25\zw }
   }
 \xeja_set_interchar_skip:nnn
-  { \c_xeja_kanji_middledots_ic } { \c_xeja_kanji_middledots_ic }
-  { 0.5\zw plus 0.25\zw minus 0.25\zw }
+  { \c_xeja_kanji_middledots_class_int } { \c_xeja_kanji_middledots_class_int }
+  { 0.5\zw plus 0.25\zw minus 0.5\zw }
 \xeja_set_interchar_skip:nnn
-  { \c_xeja_kanji_inseparablecharacters_ic }
-  { \c_xeja_kanji_inseparablecharacters_ic }
+  { \c_xeja_kanji_inseparablecharacters_class_int }
+  { \c_xeja_kanji_inseparablecharacters_class_int }
   { 0\zw }
 %    \end{macrocode}
 %
+% \begin{macro}{\@@_append_interchar_precharwdadjust:nn}
+%   次の文字対する字幅調整用コードを追加する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_append_interchar_precharwdadjust:nn #1#2
+  {
+    \int_case:nn {#2}
+      {
+        { \c_xeja_kanji_openingbrackets_class_int }
+        {
+          \@@_append_interchar_tokens:nnn {#1} {#2}
+            { \tex_vrule:D width 0pt \tex_kern:D -0.5\zw }
+        }
+        { \c_xeja_kanji_middledots_class_int }
+        {
+          \@@_append_interchar_tokens:nnn {#1} {#2}
+            { \tex_vrule:D width 0pt \tex_kern:D -0.25\zw }
+        }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_append_interchar_postcharwdadjust:nn}
+%   前の文字に対する字幅調整用コードを追加する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_append_interchar_postcharwdadjust:nn #1#2
+  {
+    \int_case:nn {#1}
+      {
+        { \c_xeja_kanji_closingbrackets_class_int }
+        {
+          \@@_append_interchar_tokens:nnn {#1} {#2}
+            { \tex_kern:D -0.5\zw \tex_vrule:D width 0pt \tex_relax:D }
+        }
+        { \c_xeja_kanji_middledots_class_int }
+        {
+          \@@_append_interchar_tokens:nnn {#1} {#2}
+            { \tex_kern:D -0.25\zw \tex_vrule:D width 0pt \tex_relax:D }
+        }
+        { \c_xeja_kanji_fullstops_class_int }
+        {
+          \@@_append_interchar_tokens:nnn {#1} {#2}
+            { \tex_kern:D -0.5\zw \tex_vrule:D width 0pt \tex_relax:D }
+        }
+        { \c_xeja_kanji_commas_class_int }
+        {
+          \@@_append_interchar_tokens:nnn {#1} {#2}
+            { \tex_kern:D -0.5\zw \tex_vrule:D width 0pt \tex_relax:D }
+        }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_append_interchar_prebreakpenalty:nn}
+%   行頭禁則ペナルティー挿入用コードを追加する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_append_interchar_prebreakpenalty:nn #1#2
+  {
+    \cs_set:Npn \@@_tmp:w ##1##2
+      {
+        \@@_append_interchar_tokens:nnn {##1} {##2}
+          {
+            \prop_get:NnNT \l_@@_prebreakpenalty_prop {##2}
+              \l_@@_tmpa_tl
+              {
+                \tex_penalty:D \l_@@_tmpa_tl
+              }
+          }
+      }
+    \exp_args:Nff \@@_tmp:w { \int_eval:n {#1} } { \int_eval:n {#2} }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_append_interchar_postbreakpenalty:nn}
+%   行末禁則ペナルティー挿入用コードを追加する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_append_interchar_postbreakpenalty:nn #1#2
+  {
+    \cs_set:Npn \@@_tmp:w ##1##2
+      {
+        \@@_append_interchar_tokens:nnn {##1} {##2}
+          {
+            \prop_get:NnNT \l_@@_postbreakpenalty_prop {##1}
+              \l_@@_tmpa_tl
+              {
+                \tex_penalty:D \l_@@_tmpa_tl
+              }
+          }
+      }
+    \exp_args:Nff \@@_tmp:w { \int_eval:n {#1} } { \int_eval:n {#2} }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_append_interchar_kanjikanjiskip:nn}
+%   和文間空白挿入用コードを追加する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_append_interchar_kanjikanjiskip:nn #1#2
+  {
+    \cs_set:Npn \@@_tmp:w ##1##2
+      {
+        \@@_append_interchar_tokens:nnn {##1} {##2}
+          {
+            \prop_get:NnNTF \l_@@_interchar_skip_prop { ##1 / ##2 }
+              \l_@@_tmpa_tl
+              {
+                \skip_horizontal:n { \l_@@_tmpa_tl }
+              }
+              {
+                \skip_horizontal:n { \l_xeja_kanji_tl }
+              }
+          }
+      }
+    \exp_args:Nff \@@_tmp:w { \int_eval:n {#1} } { \int_eval:n {#2} }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\l_@@_xspmode_prop}
+%   和欧文間空白の挿入するかどうかの設定を保持するprop変数。
+%    \begin{macrocode}
+\prop_new:N \l_@@_xspmode_prop
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}
+%   {
+%     \c_xeja_xspmode_inhibit_int ,
+%     \c_xeja_xspmode_preonly_int,
+%     \c_xeja_xspmode_postonly_int,
+%     \c_xeja_xspmode_allow_int
+%   }
+%   和欧文間空白の挿入するかどうかの設定を表す定数。
+%    \begin{macrocode}
+\int_const:Nn \c_xeja_xspmode_inhibit_int { 0 }
+\int_const:Nn \c_xeja_xspmode_preonly_int { 1 }
+\int_const:Nn \c_xeja_xspmode_postonly_int { 2 }
+\int_const:Nn \c_xeja_xspmode_allow_int { 3 }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\xeja_set_xspmode:nn}
+%   和欧文間空白の挿入するかどうかを設定する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_set_xspmode:nn #1#2
+  {
+    \exp_args:NNx \prop_put:Nnx \l_@@_xspmode_prop
+      { \int_eval:n {#1} }
+      {
+        \int_eval:n
+          {
+            \cs_if_exist_use:cF 
+              { c_xeja_xspmode_\tl_to_str:n{#2}_int }
+              {#2}
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}[TF]{\@@_if_xspmode:nn}
+%    \begin{macrocode}
+\prg_new_conditional:Npnn \@@_if_xspmode:nn #1#2 { T, F, TF }
+  {
+    \exp_args:NNx \prop_get:NnNF \l_@@_xspmode_prop
+      { \int_eval:n {#1} }
+      \l_@@_tmpa_tl
+      { \tl_set:Nn \l_@@_tmpa_tl { 3 } }
+    \exp_args:NNx \prop_get:NnNF \l_@@_xspmode_prop
+      { \int_eval:n {#2} }
+      \l_@@_tmpb_tl
+      { \tl_set:Nn \l_@@_tmpb_tl { 3 } }
+    \bool_lazy_any:nTF
+      {
+        {
+          \int_compare_p:nNn { \l_@@_tmpa_tl } =
+            { \c_xeja_xspmode_inhibit_int }
+        }
+        {
+          \int_compare_p:nNn { \l_@@_tmpa_tl } =
+            { \c_xeja_xspmode_preonly_int }
+        }
+        {
+          \int_compare_p:nNn { \l_@@_tmpb_tl } =
+            { \c_xeja_xspmode_inhibit_int }
+        }
+        {
+          \int_compare_p:nNn { \l_@@_tmpb_tl } =
+            { \c_xeja_xspmode_postonly_int }
+        }
+      }
+      { \prg_return_false: }
+      { \prg_return_true: }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% xspmodeのデフォルトを設定する。
+%    \begin{macrocode}
+\xeja_set_xspmode:nn { \c_xeja_kanji_openingbrackets_class_int }
+  { \c_xeja_xspmode_preonly_int }
+\xeja_set_xspmode:nn { \c_xeja_kanji_closingbrackets_class_int }
+  { \c_xeja_xspmode_postonly_int }
+\xeja_set_xspmode:nn { \c_xeja_kanji_hyphens_class_int }
+  { \c_xeja_xspmode_inhibit_int }
+\xeja_set_xspmode:nn { \c_xeja_kanji_dividingpunctuationmarks_class_int }
+  { \c_xeja_xspmode_postonly_int }
+\xeja_set_xspmode:nn { \c_xeja_kanji_fullstops_class_int }
+  { \c_xeja_xspmode_postonly_int }
+\xeja_set_xspmode:nn { \c_xeja_kanji_commas_class_int }
+  { \c_xeja_xspmode_postonly_int }
+\xeja_set_xspmode:nn { \c_xeja_kanji_inseparablecharacters_class_int }
+  { \c_xeja_xspmode_inhibit_int }
+\xeja_set_xspmode:nn { \c_xeja_kanji_inseparablecharacters_class_int }
+  { \c_xeja_xspmode_preonly_int }
+\xeja_set_xspmode:nn { \c_xeja_alpha_left_class_int }
+  { \c_xeja_xspmode_preonly_int }
+\xeja_set_xspmode:nn { \c_xeja_alpha_right_class_int }
+  { \c_xeja_xspmode_postonly_int }
+\xeja_set_xspmode:nn { \c_xeja_alpha_middle_class_int }
+  { \c_xeja_xspmode_inhibit_int }
+%
+%    \end{macrocode}
+% \begin{macro}{\@@_append_interchar_xkanjiskip:nn}
+%    \begin{macrocode}
+\cs_new:Npn \@@_append_interchar_xkanjiskip:nn #1#2
+  {
+    \@@_append_interchar_tokens:nnn {#1} {#2}
+      {
+        \@@_if_xspmode:nnT {#1} {#2}
+          {
+            \skip_horizontal:n { \l_xeja_xkanji_tl }
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsubsection{和文－和文間}
 %
-% 禁則ペナルティー。
 %    \begin{macrocode}
-\cs_set:Npn \@@_tmp:nn #1#2
-  {
-    \@@_put_left_interchar_tokens:nnn {#1} {#2}
-      {
-        \prop_get:NnNT \l_@@_postbreakpenalty_prop {#1} \l_@@_tmpa_tl
-          {
-            \tex_penalty:D \l_@@_tmpa_tl
-          }
-        \prop_get:NnNT \l_@@_prebreakpenalty_prop {#2} \l_@@_tmpa_tl
-          {
-            \tex_penalty:D \l_@@_tmpa_tl
-          }
-      }
-  }
 \seq_map_inline:Nn \g_@@_kanji_class_seq
   {
     \seq_map_inline:Nn \g_@@_kanji_class_seq
       {
-        \exp_args:Nff \@@_tmp:nn { \int_eval:n {#1} } { \int_eval:n {##1} }
-      }
-  }
+        \@@_clear_interchar_tokens:nn {#1} {##1}
 %    \end{macrocode}
-%
-% アキ調整。
-%    \begin{macrocode}
-\cs_set:Npn \@@_tmp:nn #1#2
-  {
-    \@@_put_right_interchar_tokens:nnn {#1} {#2}
-      {
-        \prop_get:NnNTF \l_@@_interchar_skip_prop { #1 / #2 }
-          \l_@@_tmpa_tl
-          {
-            \skip_horizontal:n { \l_@@_tmpa_tl }
-          }
-          {
-            \skip_horizontal:n { \l_xeja_kanji_tl }
-          }
-      }
-  }
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \seq_map_inline:Nn \g_@@_kanji_class_seq
-      {
-        \exp_args:Nff \@@_tmp:nn { \int_eval:n {#1} } { \int_eval:n {##1} }
-      }
-  }
-%    \end{macrocode}
-%
-% 次の文字の字幅調整。
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \@@_put_right_interchar_tokens:nnn
-      {#1} { \c_xeja_kanji_openingbrackets_ic }
-      { \tex_kern:D -0.5\zw }
-    \@@_put_right_interchar_tokens:nnn
-      {#1} { \c_xeja_kanji_middledots_ic }
-      { \tex_kern:D -0.25\zw }
-  }
-%    \end{macrocode}
-%
 % 前の文字の字幅調整。
 %    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \@@_put_left_interchar_tokens:nnn
-      { \c_xeja_kanji_closingbrackets_ic } {#1}
-      { \tex_kern:D -0.5\zw }
-    \@@_put_left_interchar_tokens:nnn
-      { \c_xeja_kanji_middledots_ic } {#1}
-      { \tex_kern:D -0.25\zw }
-    \@@_put_left_interchar_tokens:nnn
-      { \c_xeja_kanji_fullstops_ic } {#1}
-      { \tex_kern:D -0.5\zw }
-    \@@_put_left_interchar_tokens:nnn
-      { \c_xeja_kanji_commas_ic } {#1}
-      { \tex_kern:D -0.5\zw }
+        \@@_append_interchar_postcharwdadjust:nn {#1} {##1}
+%    \end{macrocode}
+% 行末禁則ペナルティー。
+%    \begin{macrocode}
+        \@@_append_interchar_postbreakpenalty:nn {#1} {##1}
+%    \end{macrocode}
+% 行頭禁則ペナルティー。
+%    \begin{macrocode}
+        \@@_append_interchar_prebreakpenalty:nn {#1} {##1}
+%    \end{macrocode}
+% 和文間空白。
+%    \begin{macrocode}
+        \@@_append_interchar_kanjikanjiskip:nn {#1} {##1}
+%    \end{macrocode}
+% 次の文字の字幅調整。
+%    \begin{macrocode}
+        \@@_append_interchar_precharwdadjust:nn {#1} {##1}
+      }
   }
 %    \end{macrocode}
 %
 % \subsubsection{欧文－和文間}
 %
-% 禁則ペナルティー。
 %    \begin{macrocode}
-\cs_set:Npn \@@_tmp:n #1
+\seq_map_inline:Nn \g_@@_alpha_class_seq
   {
-    \@@_put_left_interchar_tokens:nnn { 0 } {#1}
+    \seq_map_inline:Nn \g_@@_kanji_class_seq
       {
-        \prop_get:NnNT \l_@@_prebreakpenalty_prop {#1} \l_@@_tmpa_tl
-          {
-            \tex_penalty:D \l_@@_tmpa_tl
-          }
-      }
-  }
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \exp_args:Nff \@@_tmp:nn { 0 } {#1}
-  }
+        \@@_clear_interchar_tokens:nn {#1} {##1}
 %    \end{macrocode}
-%
+% 欧文ベースライン補正終了。
+%    \begin{macrocode}
+        \@@_append_interchar_tokens:nnn {#1} {##1}
+          { \@@_alpha_baselineshift_end: }
+%    \end{macrocode}
+% 和文フォント切り替え。
+%    \begin{macrocode}
+        \@@_append_interchar_tokens:nnn {#1} {##1}
+          { \xeja_enter_kanji_font: }
+%    \end{macrocode}
+% 行頭禁則ペナルティー。
+%    \begin{macrocode}
+        \@@_append_interchar_prebreakpenalty:nn {#1} {##1}
+%    \end{macrocode}
 % 和欧文間空白。
 %    \begin{macrocode}
-\clist_map_inline:nn
-  {
-    \c_xeja_kanji_ic ,
-    \c_xeja_kanji_openingbrackets_ic ,
-    \c_xeja_kanji_hyphens_ic ,
-    \c_xeja_kanji_dividingpunctuationmarks_ic ,
-    \c_xeja_kanji_middledots_ic ,
-    \c_xeja_kanji_inseparablecharacters_ic ,
-    \c_xeja_kanji_iterationmarks_ic ,
-    \c_xeja_kanji_prolongedsoundmark_ic ,
-    \c_xeja_kanji_smallkana_ic ,
-    \c_xeja_kanji_prefixedabbreviations_ic ,
-    \c_xeja_kanji_hiragana_ic ,
-    \c_xeja_kanji_katakana_ic ,
-  }
-  {
-    \@@_put_right_interchar_tokens:nnn { 0 } {#1}
-      {
-        \skip_horizontal:n { \l_xeja_xkanji_tl }
-      }
-  }
+        \@@_append_interchar_xkanjiskip:nn {#1} {##1}
 %    \end{macrocode}
-%
 % 次の文字の字幅調整。
 %    \begin{macrocode}
-\@@_put_right_interchar_tokens:nnn
-  { 0 } { \c_xeja_kanji_openingbrackets_ic }
-  { \tex_kern:D -0.5\zw }
-\@@_put_right_interchar_tokens:nnn
-  { 0 } { \c_xeja_kanji_middledots_ic }
-  { \tex_kern:D -0.25\zw }
-%    \end{macrocode}
-%
-% フォント切り替え。
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \@@_put_left_interchar_tokens:nnn { 0 } {#1}
-      {
-        \xeja_enter_kanji_font:
-      }
-  }
-%    \end{macrocode}
-%
-% ベースライン補正終了
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \@@_put_left_interchar_tokens:nnn { 0 } {#1}
-      {
-        \@@_alpha_baselineshift_end:
+        \@@_append_interchar_precharwdadjust:nn {#1} {##1}
       }
   }
 %    \end{macrocode}
 %
 % \subsubsection{和文－欧文間}
 %
-% 禁則ペナルティー。
 %    \begin{macrocode}
-\cs_set:Npn \@@_tmp:n #1
-  {
-    \@@_put_left_interchar_tokens:nnn {#1} { 0 }
-      {
-        \prop_get:NnNT \l_@@_postbreakpenalty_prop {#1} \l_@@_tmpa_tl
-          {
-            \tex_penalty:D \l_@@_tmpa_tl
-          }
-      }
-  }
 \seq_map_inline:Nn \g_@@_kanji_class_seq
   {
-    \exp_args:Nf \@@_tmp:n { \int_eval:n {#1} }
-  }
-%    \end{macrocode}
-%
-% 和欧文間空白。
-%    \begin{macrocode}
-\clist_map_inline:nn
-  {
-    \c_xeja_kanji_ic ,
-    \c_xeja_kanji_closingbrackets_ic ,
-    \c_xeja_kanji_hyphens_ic ,
-    \c_xeja_kanji_dividingpunctuationmarks_ic ,
-    \c_xeja_kanji_middledots_ic ,
-    \c_xeja_kanji_fullstops_ic ,
-    \c_xeja_kanji_commas_ic ,
-    \c_xeja_kanji_inseparablecharacters_ic ,
-    \c_xeja_kanji_iterationmarks_ic ,
-    \c_xeja_kanji_prolongedsoundmark_ic ,
-    \c_xeja_kanji_smallkana_ic ,
-    \c_xeja_kanji_prefixedabbreviations_ic ,
-    \c_xeja_kanji_hiragana_ic ,
-    \c_xeja_kanji_katakana_ic    
-  }
-  {
-    \@@_put_right_interchar_tokens:nnn {#1} { 0 }
+    \seq_map_inline:Nn \g_@@_alpha_class_seq
       {
-        \skip_horizontal:n { \l_xeja_xkanji_tl }
-      }
-  }
+        \@@_clear_interchar_tokens:nn {#1} {##1}
 %    \end{macrocode}
-%
 % 前の文字の字幅調整。
 %    \begin{macrocode}
-\@@_put_left_interchar_tokens:nnn
-  { \c_xeja_kanji_closingbrackets_ic } { 0 }
-  { \tex_kern:D -0.5\zw }
-\@@_put_left_interchar_tokens:nnn
-  { \c_xeja_kanji_middledots_ic } { 0 }
-  { \tex_kern:D -0.25\zw }
-\@@_put_left_interchar_tokens:nnn
-  { \c_xeja_kanji_fullstops_ic } { 0 }
-  { \tex_kern:D -0.5\zw }
-\@@_put_left_interchar_tokens:nnn
-  { \c_xeja_kanji_commas_ic } { 0 }
-  { \tex_kern:D -0.5\zw }
+        \@@_append_interchar_postcharwdadjust:nn {#1} {##1}
 %    \end{macrocode}
-%
-% フォント切り替え。
+% 行末禁則ペナルティー。
 %    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \@@_put_right_interchar_tokens:nnn {#1} { 0 }
-      {
-        \xeja_leave_kanji_font:
-      }
-  }
+        \@@_append_interchar_postbreakpenalty:nn {#1} {##1}
 %    \end{macrocode}
-%
-% ベースライン補正開始
+% 和欧文間空白。
 %    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \@@_put_right_interchar_tokens:nnn {#1} { 0 }
-      {
-        \@@_alpha_baselineshift_begin:
+        \@@_append_interchar_xkanjiskip:nn {#1} {##1}
+%    \end{macrocode}
+% 欧文フォント切り替え。
+%    \begin{macrocode}
+        \@@_append_interchar_tokens:nnn {#1} {##1}
+          { \xeja_leave_kanji_font: }
+%    \end{macrocode}
+% 欧文ベースライン補正開始。
+%    \begin{macrocode}
+        \@@_append_interchar_tokens:nnn {#1} {##1}
+          { \@@_alpha_baselineshift_begin: }
       }
   }
 %    \end{macrocode}
 %
 % \subsubsection{境界－和文間}
 %
-% フォント切り替え。
+%    \begin{macrocode}
+\bool_new:N \l_@@_remove_spaces_bool
+\int_new:N \l_@@_previous_kanji_class_int
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 \seq_map_inline:Nn \g_@@_kanji_class_seq
   {
-    \@@_put_left_interchar_tokens:nnn { \c_xeja_bound_ic } { #1 }
+    \@@_clear_interchar_tokens:nn { \c_xeja_bound_class_int } {#1}
+%    \end{macrocode}
+% 和文フォント切り替え。
+%    \begin{macrocode}
+    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
+      { \xeja_enter_kanji_font: }
+%    \end{macrocode}
+% 空白を除去した直後のみ。
+%    \begin{macrocode}
+    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
       {
-        \xeja_enter_kanji_font:
+        \bool_if:NT \l_@@_remove_spaces_bool
+          {
+            \bool_set_false:N \l_@@_remove_spaces_bool
+%    \end{macrocode}
+% 行頭禁則ペナルティー。
+%    \begin{macrocode}
+            \exp_args:NNx \prop_get:NnNT \l_@@_prebreakpenalty_prop
+              { \int_eval:n {#1} } \l_@@_tmpa_tl
+              { \tex_penalty:D \l_@@_tmpa_tl }
+%    \end{macrocode}
+% 和文間空白。
+%    \begin{macrocode}
+            \exp_args:NNx \prop_get:NnNTF \l_@@_interchar_skip_prop
+              {
+                \int_eval:n { \l_@@_previous_kanji_class_int }
+                / \int_eval:n {#1}
+              }
+              \l_@@_tmpa_tl
+              { \skip_horizontal:n { \l_@@_tmpa_tl } }
+              { \skip_horizontal:n { \l_xeja_kanji_tl } }
+          }
       }
+%    \end{macrocode}
+% 次の文字の字幅調整。
+%    \begin{macrocode}
+    \@@_append_interchar_precharwdadjust:nn
+      { \c_xeja_bound_class_int } {#1}
   }
 %    \end{macrocode}
 %
 % \subsubsection{境界－欧文間}
 %
-% ベースライン補正開始
 %    \begin{macrocode}
-\@@_set_interchar_tokens:nnn  { \c_xeja_bound_ic } { 0 }
+\seq_map_inline:Nn \g_@@_alpha_class_seq
   {
-    \@@_alpha_baselineshift_begin:
+    \@@_clear_interchar_tokens:nn { \c_xeja_bound_class_int } {#1}
+%    \end{macrocode}
+% ベースライン補正開始。
+%    \begin{macrocode}
+    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
+      { \@@_alpha_baselineshift_begin: }
+%    \end{macrocode}
+% 空白を除去した直後のみ。
+%    \begin{macrocode}
+    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
+      {
+        \bool_if:NT \l_@@_remove_spaces_bool
+          {
+            \bool_set_false:N \l_@@_remove_spaces_bool
+%    \end{macrocode}
+% 和欧文間空白。
+%    \begin{macrocode}
+            \@@_if_xspmode:nnT { \l_@@_previous_kanji_class_int } {#1}
+              {
+                \skip_horizontal:n { \l_xeja_xkanji_tl }
+              }
+          }
+      }
   }
 %    \end{macrocode}
 %
 % \subsubsection{和文－境界間}
 %
-% フォント切り替え。
 %    \begin{macrocode}
 \seq_map_inline:Nn \g_@@_kanji_class_seq
   {
-    \@@_put_left_interchar_tokens:nnn {#1} { \c_xeja_bound_ic }
+    \@@_clear_interchar_tokens:nn {#1} { \c_xeja_bound_class_int }
+%    \end{macrocode}
+% 前の文字の字幅調整。
+%    \begin{macrocode}
+    \@@_append_interchar_postcharwdadjust:nn
+      {#1} { \c_xeja_bound_class_int }
+%    \end{macrocode}
+% 行末禁則ペナルティー。
+%    \begin{macrocode}
+    \@@_append_interchar_postbreakpenalty:nn
+      {#1} { \c_xeja_bound_class_int }
+%    \end{macrocode}
+% 欧文フォント切り替え。
+%    \begin{macrocode}
+    \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
+      { \xeja_leave_kanji_font: }
+%    \end{macrocode}
+% 後続の空白トークンを取り除く。
+%    \begin{macrocode}
+    \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
       {
-        \xeja_leave_kanji_font:
+        \peek_remove_spaces:n
+          {
+            \bool_lazy_or:nnT
+              { \token_if_letter_p:N \l_peek_token }
+              { \token_if_other_p:N \l_peek_token }
+              {
+                \bool_set_true:N \l_@@_remove_spaces_bool
+                \int_set:Nn \l_@@_previous_kanji_class_int {#1}
+              }
+          }
       }
   }
 %    \end{macrocode}
 %
 % \subsubsection{欧文－境界間}
 %
+%    \begin{macrocode}
+\seq_map_inline:Nn \g_@@_alpha_class_seq
+  {
+    \@@_clear_interchar_tokens:nn {#1} { \c_xeja_bound_class_int }
+%    \end{macrocode}
 % ベースライン補正終了
 %    \begin{macrocode}
-\@@_set_interchar_tokens:nnn  { 0 } { \c_xeja_bound_ic }
-  {
-    \@@_alpha_baselineshift_end:
+    \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
+      { \@@_alpha_baselineshift_end: }
   }
 %    \end{macrocode}
 %
@@ -870,7 +1257,7 @@
   {
     \dim_set:Nn \l_@@_tmpa_dim
       {
-        \bool_if:NTF \l_xeja_tate_text_bool
+        \bool_if:NTF \l_@@_tate_text_bool
           { \l_xeja_tbaselineshift_tl }
           { \l_xeja_ybaselineshift_tl }
       }
@@ -884,6 +1271,9 @@
         \c_group_begin_token
       }
   }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_new:Npn \@@_alpha_baselineshift_end:
   {
     \bool_if:NT \g_@@_inside_alpha_baselineshift_bool
@@ -905,16 +1295,16 @@
 %
 %    \begin{macrocode}
 \cs_new:Npn \xeja_char_set_kanji:n #1
-  { \xeja_set_char_class:nn {#1} { \c_xeja_kanji_ic } }
+  { \xeja_set_char_class:nn {#1} { \c_xeja_kanji_class_int } }
 \cs_new:Npn \xeja_char_set_kanji:nn #1#2
-  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_kanji_ic } }
+  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_kanji_class_int } }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \cs_new:Npn \xeja_char_set_alpha:n #1
-  { \xeja_set_char_class:nn {#1} { \c_xeja_alpha_ic } }
+  { \xeja_set_char_class:nn {#1} { \c_xeja_alpha_class_int } }
 \cs_new:Npn \xeja_char_set_alpha:nn #1#2
-  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_alpha_ic } }
+  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_alpha_class_int } }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -944,63 +1334,77 @@
 %
 % とりあえずjlreqと同じ
 %    \begin{macrocode}
-\tl_map_inline:nn { （〔［｛〈《「『【‘“｟〘〖〝 }% «
+\tl_map_inline:nn { （〔［｛〈《「『【‘“｟〘〖〝 }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_openingbrackets_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_openingbrackets_class_int }
   }
-\tl_map_inline:nn { ）〕］｝〉》」』】’”｠〙〗〟 }% »
+\tl_map_inline:nn { ）〕］｝〉》」』】’”｠〙〗〟 }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_closingbrackets_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_closingbrackets_class_int }
   }
-\tl_map_inline:nn { ‐〜゠– }
+\tl_map_inline:nn { ‐〜～゠– }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hyphens_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hyphens_class_int }
   }
 \tl_map_inline:nn { ！？‼⁇⁈⁉ }
   {
     \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_dividingpunctuationmarks_ic }
+      { \c_xeja_kanji_dividingpunctuationmarks_class_int }
   }
 \tl_map_inline:nn { ・：； }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_middledots_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_middledots_class_int }
   }
 \tl_map_inline:nn { 。． }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_fullstops_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_fullstops_class_int }
   }
 \tl_map_inline:nn { 、， }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_commas_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_commas_class_int }
   }
-\tl_map_inline:nn { —…‥〳〴〵 }
+\tl_map_inline:nn { —―…‥〳〴〵 }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_inseparablecharacters_ic }
+    \xeja_set_char_class:nn { `#1 }
+      { \c_xeja_kanji_inseparablecharacters_class_int }
   }
 \tl_map_inline:nn { ヽヾゝゞ々〻 }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_iterationmarks_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_iterationmarks_class_int }
   }
 \tl_map_inline:nn { ー }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_prolongedsoundmark_ic }
+    \xeja_set_char_class:nn { `#1 }
+      { \c_xeja_kanji_prolongedsoundmark_class_int }
   }
 \tl_map_inline:nn { ぁぃぅぇぉァィゥェォっゃゅょゎッャュョヮヵヶゕゖㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_smallkana_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_smallkana_class_int }
   }
 \tl_map_inline:nn { ￥＄￡＃€№ }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_prefixedabbreviations_ic }
+    \xeja_set_char_class:nn { `#1 }
+      { \c_xeja_kanji_prefixedabbreviations_class_int }
   }
 \tl_map_inline:nn { あいうえおかがきぎくぐけげこごさざしじすずせぜそぞただちぢつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもやゆよらりるれろわゐゑをんゔ }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hiragana_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hiragana_class_int }
   }
 \tl_map_inline:nn { アイウエオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤユヨラリルレロワヰヱヲンヴヷヸヹヺ }
   {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_katakana_ic }
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_katakana_class_int }
   }
+%    \end{macrocode}
+%    \begin{macrocode}
+\xeja_set_char_class:nn { `( } { \c_xeja_alpha_left_class_int }
+\xeja_set_char_class:nn { `) } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `[ } { \c_xeja_alpha_left_class_int }
+\xeja_set_char_class:nn { `] } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `` } { \c_xeja_alpha_left_class_int }
+\xeja_set_char_class:nn { `' } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `; } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `, } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `. } { \c_xeja_alpha_right_class_int }
 %    \end{macrocode}
 %
 % \subsection{ボックス}
@@ -1139,7 +1543,7 @@
 \cs_new:Npn \@@_yoko_in_tate_hbox:n #1
   {
     \hbox_set:Nn \l__xeja_tate_yoko_box
-      { \bool_set_false:N \l_xeja_tate_text_bool #1 }
+      { \bool_set_false:N \l_@@_tate_text_bool #1 }
     \@@_rotate_box_yoko_in_tate:N \l__xeja_tate_yoko_box
     \box_use_drop:N \l__xeja_tate_yoko_box
   }
@@ -1149,7 +1553,7 @@
 \cs_new:Npn \@@_tate_in_yoko_hbox:n #1
   {
     \hbox_set:Nn \l__xeja_tate_yoko_box
-      { \bool_set_true:N \l_xeja_tate_text_bool #1 }
+      { \bool_set_true:N \l_@@_tate_text_bool #1 }
     \@@_rotate_box_tate_in_yoko:N \l__xeja_tate_yoko_box
     \box_use_drop:N \l__xeja_tate_yoko_box
   }
@@ -1158,7 +1562,7 @@
 %    \begin{macrocode}
 \cs_new:Npn \xeja_yoko_hbox:n #1
   {
-    \bool_if:NTF \l_xeja_tate_text_bool
+    \bool_if:NTF \l_@@_tate_text_bool
       { \@@_yoko_in_tate_hbox:n {#1} }
       { \hbox:n {#1} }
   }
@@ -1167,7 +1571,7 @@
 %    \begin{macrocode}
 \cs_new:Npn \xeja_tate_hbox:n #1
   {
-    \bool_if:NTF \l_xeja_tate_text_bool
+    \bool_if:NTF \l_@@_tate_text_bool
       { \hbox:n {#1} }
       { \@@_tate_in_yoko_hbox:n {#1} }
   }
@@ -1179,19 +1583,19 @@
 \cs_set_eq:NN \@@_original_output_page: \@outputpage
 \cs_set:Npn \@outputpage
   {
-    \bool_if:NT \g_xeja_tate_document_bool
+    \bool_if:NT \g_@@_tate_document_bool
       { \@@_rotate_box_tate_in_yoko:N \@outputbox }
-    \bool_set_false:N \l_xeja_tate_text_bool
+    \bool_set_false:N \l_@@_tate_text_bool
     \@@_original_output_page:
-    \bool_set_eq:NN \l_xeja_tate_text_bool \g_xeja_tate_document_bool
+    \bool_set_eq:NN \l_@@_tate_text_bool \g_@@_tate_document_bool
   }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \hook_gput_code:nnn { begindocument } { xelatexja / tate }
   {
-    \bool_if:NT \g_xeja_tate_document_bool
-      { \bool_set_true:N \l_xeja_tate_text_bool }
+    \bool_if:NT \g_@@_tate_document_bool
+      { \bool_set_true:N \l_@@_tate_text_bool }
   }
 %    \end{macrocode}
 %

@@ -24,7 +24,7 @@
   { 15pt * \l_tmpb_int + \topskip }
 \NewDocumentCommand \tatechuyoko { m }
   {
-    \bool_if:NTF \l_xeja_tate_text_bool
+    \xeja_if_tate_text:TF
       {
         \hbox_to_wd:nn { 1\zw }
           { \hss \xeja_yoko_hbox:n {#1} \hss }
@@ -36,7 +36,7 @@
 
 \title{\XeLaTeX-ja縦組みサンプル}
 \author{森見幸正 (h20y6m)}
-\date{令和三年一月二日}
+\date{令和三年一月二十四日}
 
 \begin{document}
 \maketitle
