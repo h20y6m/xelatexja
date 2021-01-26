@@ -1583,11 +1583,18 @@
 \cs_set_eq:NN \@@_original_output_page: \@outputpage
 \cs_set:Npn \@outputpage
   {
-    \bool_if:NT \g_@@_tate_document_bool
-      { \@@_rotate_box_tate_in_yoko:N \@outputbox }
-    \bool_set_false:N \l_@@_tate_text_bool
-    \@@_original_output_page:
-    \bool_set_eq:NN \l_@@_tate_text_bool \g_@@_tate_document_bool
+    \group_begin:
+      \bool_if:NT \g_@@_tate_document_bool
+        {
+          \dim_set_eq:NN \l_@@_tmpa_dim \textwidth
+          \dim_set_eq:NN \textwidth \textheight
+          \dim_set_eq:NN \textheight \l_@@_tmpa_dim
+          \@@_rotate_box_tate_in_yoko:N \@outputbox
+        }
+      \bool_set_false:N \l_@@_tate_text_bool
+      \@@_original_output_page:
+    \group_end:
+    \dim_gset_eq:NN \@colht \textheight
   }
 %    \end{macrocode}
 %

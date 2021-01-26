@@ -850,11 +850,18 @@
 \cs_set_eq:NN \__xeja_original_output_page: \@outputpage
 \cs_set:Npn \@outputpage
   {
-    \bool_if:NT \g__xeja_tate_document_bool
-      { \__xeja_rotate_box_tate_in_yoko:N \@outputbox }
-    \bool_set_false:N \l__xeja_tate_text_bool
-    \__xeja_original_output_page:
-    \bool_set_eq:NN \l__xeja_tate_text_bool \g__xeja_tate_document_bool
+    \group_begin:
+      \bool_if:NT \g__xeja_tate_document_bool
+        {
+          \dim_set_eq:NN \l__xeja_tmpa_dim \textwidth
+          \dim_set_eq:NN \textwidth \textheight
+          \dim_set_eq:NN \textheight \l__xeja_tmpa_dim
+          \__xeja_rotate_box_tate_in_yoko:N \@outputbox
+        }
+      \bool_set_false:N \l__xeja_tate_text_bool
+      \__xeja_original_output_page:
+    \group_end:
+    \dim_gset_eq:NN \@colht \textheight
   }
 \hook_gput_code:nnn { begindocument } { xelatexja / tate }
   {
