@@ -14,7 +14,7 @@
 %% File: xelatexja.dtx
 \NeedsTeXFormat{LaTeX2e}[2020-10-01]
 \RequirePackage{expl3}[2020-12-07]
-\ProvidesExplPackage{xelatexja}{2021/01/24}{0.0.1}
+\ProvidesExplPackage{xelatexja}{2021/01/31}{0.0.1}
   {Japanese typesetting with XeLaTeX}
 \msg_new:nnn { xelatexja } { needs-xetex }
   { XeLaTeX-ja~needs~XeTeX. }
@@ -23,41 +23,47 @@
     \msg_critical:nn { xelatexja } { needs-xetex }
   }
 \RequirePackage{l3keys2e,xparse}
+\RequirePackage{everysel}
 \bool_new:N \g__xeja_tate_document_bool
-\prg_new_conditional:Npnn \xeja_if_tate_document: { p, T, F, TF}
-  {
-    \bool_if:NTF \g__xeja_tate_document_bool
-      { \prg_return_true: } { \prg_return_false: }
-  }
 \bool_new:N \l__xeja_tate_text_bool
-\prg_new_conditional:Npnn \xeja_if_tate_text: { p, T, F, TF}
-  {
-    \bool_if:NTF \l__xeja_tate_text_bool
-      { \prg_return_true: } { \prg_return_false: }
-  }
-\tl_new:N \l_xeja_kanji_tl
-\tl_set:Nn \l_xeja_kanji_tl { 0\zw plus 0.25\zw }
-\tl_new:N \l_xeja_xkanji_tl
-\tl_set:Nn \l_xeja_xkanji_tl { 0.25\zw plus 0.25\zw minus 0.125\zw }
-\tl_new:N \l_xeja_ybaselineshift_tl
-\tl_new:N \l_xeja_tbaselineshift_tl
-\tl_set:Nn \l_xeja_ybaselineshift_tl { 0\zw }
-\tl_set:Nn \l_xeja_tbaselineshift_tl { 0.25\zw }
-\dim_new:N \zw
-\cs_new_eq:NN \__xeja_original_set_fontsize:nnn \set@fontsize
-\cs_set:Npn \set@fontsize #1#2#3
-  {
-    \__xeja_original_set_fontsize:nnn {#1} {#2} {#3}
-    \dim_set:Nn \zw { \f@size pt }
-  }
+\fp_new:N \g__xeja_jscale_fp
+\fp_gset:Nn \g__xeja_jscale_fp { 1 }
+\dim_new:N \l_xeja_zw_dim
+\cs_new_eq:NN \zw \l_xeja_zw_dim
+\tl_new:N \l__xeja_kanjiskip_tl
+\tl_set:Nn \l__xeja_kanjiskip_tl { 0\zw plus 0.25\zw }
+\tl_new:N \l__xeja_xkanjiskip_tl
+\tl_set:Nn \l__xeja_xkanjiskip_tl { 0.25\zw plus 0.25\zw minus 0.125\zw }
+\tl_new:N \l__xeja_ybaselineshift_tl
+\tl_new:N \l__xeja_tbaselineshift_tl
+\tl_set:Nn \l__xeja_ybaselineshift_tl { 0\zw }
+\tl_set:Nn \l__xeja_tbaselineshift_tl { 0.38\zw }
 \tl_new:N \l__xeja_tmpa_tl
 \tl_new:N \l__xeja_tmpb_tl
 \dim_new:N \l__xeja_tmpa_dim
 \keys_define:nn { xelatexja }
   {
     tate .bool_gset:N = \g__xeja_tate_document_bool,
+    jascale .fp_gset:N = \g__xeja_jscale_fp,
   }
 \ProcessKeysOptions { xelatexja }
+\prg_new_conditional:Npnn \xeja_if_tate_document: { p, T, F, TF }
+  {
+    \bool_if:NTF \g__xeja_tate_document_bool
+      { \prg_return_true: } { \prg_return_false: }
+  }
+\prg_new_conditional:Npnn \xeja_if_tate_text: { p, T, F, TF }
+  {
+    \bool_if:NTF \l__xeja_tate_text_bool
+      { \prg_return_true: } { \prg_return_false: }
+  }
+\cs_new:Npn \__xeja_update_zw:
+  {
+    \dim_set:Nn \l_xeja_zw_dim
+      { \fp_to_dim:n { \g__xeja_jscale_fp * \f@size } }
+  }
+\__xeja_update_zw:
+\EverySelectfont { \__xeja_update_zw: }
 \str_const:Nn \c_xeja_yoko_encoding_str { JY4 }
 \str_const:Nn \c_xeja_tate_encoding_str { JT4 }
 \prop_new:N \g__xeja_kanji_family_prop
@@ -77,63 +83,72 @@
   {
     \tl_set:Nx \l__xeja_kanji_family_tl {#1}
   }
-\cs_new:Npn \__xeja_new_font:Nnn #1#2#3
+\cs_new:Npn \__xeja_new_kanji_font:Nnn #1#2#3
   {
-    \tex_global:D \tex_font:D #1 = "#2" ~ at ~ #3 pt ~
+    \tex_global:D
+    \tex_font:D #1 = "#2" ~ at ~ \fp_to_dim:n { \g__xeja_jscale_fp * #3 } ~
   }
-\cs_generate_variant:Nn \__xeja_new_font:Nnn { Nxn, cxn }
+\cs_generate_variant:Nn \__xeja_new_kanji_font:Nnn { Nxn, cxn }
 \tl_new:N \l__xeja_kanji_default_shape_tl
 \tl_new:N \l__xeja_kanji_font_shape_tl
 \tl_new:N \l__xeja_kanji_font_name_tl
-\cs_new:Npn \__xeja_select_kanji_font_aux:nn #1#2
+\cs_new:Npn \__xeja_select_kanji_font_aux:nnnnnn #1#2#3#4#5#6
   {
-    \tl_set:Nx \l__xeja_kanji_default_shape_tl
-      { \l__xeja_kanji_family_tl / m / n }
-    \tl_set:Nx \l__xeja_kanji_font_shape_tl
-      { \l__xeja_kanji_family_tl / \f@series / \f@shape }
-    \tl_set:Nx \l__xeja_kanji_font_name_tl
-      { #1 / \l__xeja_kanji_font_shape_tl / \f@size }
     \cs_if_exist:cF
-      { \l__xeja_kanji_font_name_tl }
+      { #1 / #2 / #3 / #4 / #5 }
       {
-        \exp_args:Ncx \__xeja_select_kanji_font_aux_ii:NnnF
-          { \l__xeja_kanji_font_name_tl }
-          { \l__xeja_kanji_font_shape_tl }
-          {#2}
+        \exp_args:Ncx \__xeja_select_kanji_font_aux_ii:NnnnF
+          { #1 / #2 / #3 / #4 / #5 }
+          { #2 / #3 / #4 }
+          {#5}
+          {#6}
           {
-            \exp_args:Ncx \__xeja_select_kanji_font_aux_ii:NnnTF
-              { \l__xeja_kanji_font_name_tl }
-              { \l__xeja_kanji_default_shape_tl }
-              {#2}
+            \exp_args:Ncx \__xeja_select_kanji_font_aux_ii:NnnnTF
+              { #1 / #2 / #3 / #4 / #5 }
+              { #2 / #3 / n }
+              {#5}
+              {#6}
               {
                 \msg_warning:nnxx { xelatexja } { font / instead }
-                  { \l__xeja_kanji_font_shape_tl }
-                  { \l__xeja_kanji_default_shape_tl }
+                  { #2 / #3 / #4 }
+                  { #2 / #3 / n }
               }
               {
-                \msg_warning:nnx { xelatexja } { font / undefined }
-                  { \l__xeja_kanji_font_shape_tl }
-                \cs_gset_eq:cN { \l__xeja_kanji_font_name_tl } \prg_do_nothing:
+                \exp_args:Ncx \__xeja_select_kanji_font_aux_ii:NnnnTF
+                  { #1 / #2 / #3 / #4 / #5 }
+                  { #2 / m / n }
+                  {#5}
+                  {#6}
+                  {
+                    \msg_warning:nnxx { xelatexja } { font / instead }
+                      { #2 / #3 / #4 }
+                      { #2 / m / n }
+                  }
+                  {
+                    \msg_warning:nnx { xelatexja } { font / undefined }
+                      { #2 / #3 / #4 }
+                    \cs_gset_eq:cN { #1 / #2 / #3 / #4 / #5 } \prg_do_nothing:
+                  }
               }
           }
       }
-    \use:c { \l__xeja_kanji_font_name_tl }
+    \use:c { #1 / #2 / #3 / #4 / #5 }
   }
-\prg_new_conditional:Npnn \__xeja_select_kanji_font_aux_ii:Nnn #1#2#3
+\prg_new_conditional:Npnn \__xeja_select_kanji_font_aux_ii:Nnnn #1#2#3#4
   { T, F, TF }
   {
     \prop_get:NnNTF \g__xeja_kanji_shape_prop {#2}
       \l__xeja_tmpa_tl
       {
-        \tl_if_empty:nF {#3}
+        \tl_if_empty:nF {#4}
           {
             \tl_if_in:NnTF \l__xeja_tmpa_tl { : }
-              { \tl_put_right:Nn \l__xeja_tmpa_tl { , #3 } }
-              { \tl_put_right:Nn \l__xeja_tmpa_tl { : #3 } }
+              { \tl_put_right:Nn \l__xeja_tmpa_tl { , #4 } }
+              { \tl_put_right:Nn \l__xeja_tmpa_tl { : #4 } }
           }
-        \__xeja_new_font:Nxn #1
+        \__xeja_new_kanji_font:Nxn #1
           { \l__xeja_tmpa_tl }
-          { \f@size }
+          {#3}
         \prg_return_true:
       }
       {
@@ -146,14 +161,22 @@
   { Kanji~shape~`#1'~undefined. }
 \cs_new:Npn \xeja_select_yoko_kanji_font:
   {
-    \__xeja_select_kanji_font_aux:nn
+    \__xeja_select_kanji_font_aux:nnnnnn
       { \c_xeja_yoko_encoding_str }
+      { \l__xeja_kanji_family_tl }
+      { \f@series }
+      { \f@shape }
+      { \f@size }
       {}
   }
 \cs_new:Npn \xeja_select_tate_kanji_font:
   {
-    \__xeja_select_kanji_font_aux:nn
+    \__xeja_select_kanji_font_aux:nnnnnn
       { \c_xeja_tate_encoding_str }
+      { \l__xeja_kanji_family_tl }
+      { \f@series }
+      { \f@shape }
+      { \f@size }
       { vertical }
   }
 \xeja_declare_kanji_family:nn { mc } {}
@@ -171,7 +194,6 @@
 \xeja_declare_kanji_shape:nnnn { gt } { bx } { n }
   { [HaranoAjiGothic-Medium.otf]:+fwid }
 \xeja_kanji_family:n { mc }
-
 \cs_new:Npn \xeja_enter_kanji_font:
   {
     \bool_if:NTF \l__xeja_tate_text_bool
@@ -180,10 +202,8 @@
   }
 \cs_new:Npn \xeja_leave_kanji_font:
   {
-    % \iow_term:x { \f@encoding / \f@family / \f@series / \f@shape / \f@size }
     \selectfont
   }
-\tex_XeTeXinterchartokenstate:D = 1 ~
 \newXeTeXintercharclass \c_xeja_kanji_class_int
 \newXeTeXintercharclass \c_xeja_kanji_openingbrackets_class_int
 \newXeTeXintercharclass \c_xeja_kanji_closingbrackets_class_int
@@ -231,6 +251,109 @@
     \c_xeja_alpha_right_class_int ,
     \c_xeja_alpha_middle_class_int ,
   }
+\cs_new:Npn \xeja_set_char_class:nn #1#2
+  {
+    \tex_global:D
+    \tex_XeTeXcharclass:D \int_eval:n {#1} = \int_eval:n {#2} ~
+  }
+\cs_new:Npn \xeja_set_char_class:nnn #1#2#3
+  { \int_step_inline:nnn {#1} {#2} { \xeja_set_char_class:nn {##1} {#3} } }
+\cs_new:Npn \xeja_char_set_kanji:n #1
+  { \xeja_set_char_class:nn {#1} { \c_xeja_kanji_class_int } }
+\cs_new:Npn \xeja_char_set_kanji:nn #1#2
+  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_kanji_class_int } }
+\cs_new:Npn \xeja_char_set_alpha:n #1
+  { \xeja_set_char_class:nn {#1} { \c_xeja_alpha_class_int } }
+\cs_new:Npn \xeja_char_set_alpha:nn #1#2
+  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_alpha_class_int } }
+\xeja_char_set_kanji:nn { "0080 } { "00FF }
+\xeja_char_set_kanji:nn { "0250 } { "1DFF }
+\xeja_char_set_kanji:nn { "1F00 } { "D7FF }
+\xeja_char_set_kanji:nn { "E000 } { "FFEF }
+\xeja_char_set_kanji:nn { "10000 } { "2FFFF }
+\xeja_char_set_kanji:nn { "F0000 } { "FFFFF }
+\xeja_char_set_kanji:nn { "100000 } { "10FFFF }
+\xeja_char_set_alpha:nn { "0000 } { "007F } % Basic Latin
+\xeja_char_set_alpha:nn { "0100 } { "017F } % Latin Extended-A
+\xeja_char_set_alpha:nn { "0180 } { "024F } % Latin Extended-B
+\xeja_char_set_alpha:nn { "1E00 } { "1EFF } % Latin Extended Additional
+\xeja_char_set_alpha:n { "00AA } % Feminine Ordinal Indicator
+\xeja_char_set_alpha:n { "00BA } % Masculine ordinal indicator
+\xeja_char_set_alpha:nn { "00C0 } { "00FF }
+\xeja_char_set_kanji:n { "00D7 } % Multiplication sign
+\xeja_char_set_kanji:n { "00F7 } % Division sign
+\tl_map_inline:nn { （〔［｛〈《「『【‘“｟〘〖〝 }
+  {
+    \xeja_set_char_class:nn { `#1 }
+      { \c_xeja_kanji_openingbrackets_class_int }
+  }
+\tl_map_inline:nn { ）〕］｝〉》」』】’”｠〙〗〟 }
+  {
+    \xeja_set_char_class:nn { `#1 }
+      { \c_xeja_kanji_closingbrackets_class_int }
+  }
+\tl_map_inline:nn { ‐〜～゠– }
+  {
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hyphens_class_int }
+  }
+\tl_map_inline:nn { ！？‼⁇⁈⁉ }
+  {
+    \xeja_set_char_class:nn { `#1 }
+      { \c_xeja_kanji_dividingpunctuationmarks_class_int }
+  }
+\tl_map_inline:nn { ・：； }
+  {
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_middledots_class_int }
+  }
+\tl_map_inline:nn { 。． }
+  {
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_fullstops_class_int }
+  }
+\tl_map_inline:nn { 、， }
+  {
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_commas_class_int }
+  }
+\tl_map_inline:nn { —―…‥〳〴〵 }
+  {
+    \xeja_set_char_class:nn { `#1 }
+      { \c_xeja_kanji_inseparablecharacters_class_int }
+  }
+\tl_map_inline:nn { ヽヾゝゞ々〻 }
+  {
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_iterationmarks_class_int }
+  }
+\tl_map_inline:nn { ー }
+  {
+    \xeja_set_char_class:nn { `#1 }
+      { \c_xeja_kanji_prolongedsoundmark_class_int }
+  }
+\tl_map_inline:nn { ぁぃぅぇぉァィゥェォっゃゅょゎッャュョヮヵヶゕゖㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ }
+  {
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_smallkana_class_int }
+  }
+\tl_map_inline:nn { ￥＄￡＃€№ }
+  {
+    \xeja_set_char_class:nn { `#1 }
+      { \c_xeja_kanji_prefixedabbreviations_class_int }
+  }
+\tl_map_inline:nn { あいうえおかがきぎくぐけげこごさざしじすずせぜそぞただちぢつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもやゆよらりるれろわゐゑをんゔ }
+  {
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hiragana_class_int }
+  }
+\tl_map_inline:nn { アイウエオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤユヨラリルレロワヰヱヲンヴヷヸヹヺ }
+  {
+    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_katakana_class_int }
+  }
+\xeja_set_char_class:nn { `( } { \c_xeja_alpha_left_class_int }
+\xeja_set_char_class:nn { `) } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `[ } { \c_xeja_alpha_left_class_int }
+\xeja_set_char_class:nn { `] } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `` } { \c_xeja_alpha_left_class_int }
+\xeja_set_char_class:nn { `' } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `; } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `, } { \c_xeja_alpha_right_class_int }
+\xeja_set_char_class:nn { `. } { \c_xeja_alpha_right_class_int }
+\tex_XeTeXinterchartokenstate:D = 1 ~
 \cs_new:Npn \__xeja_the_interchar_tokens:nn #1#2
   {
     \tex_the:D \tex_XeTeXinterchartoks:D \int_eval:n {#1} ~ \int_eval:n {#2} ~
@@ -258,9 +381,16 @@
 \prop_new:N \l__xeja_prebreakpenalty_prop
 \cs_new:Npn \xeja_set_prebreakpenalty:nn #1#2
   {
-    \prop_put:Nxx \l__xeja_prebreakpenalty_prop
-      { \int_eval:n {#1} }
-      { \int_eval:n {#2} }
+    \int_compare:nNnTF {#2} = { 0 }
+      {
+        \exp_args:NNx \prop_remove:Nn \l__xeja_prebreakpenalty_prop
+          { \int_eval:n {#1} }
+      }
+      {
+        \prop_put:Nxx \l__xeja_prebreakpenalty_prop
+          { \int_eval:n {#1} }
+          { \int_eval:n {#2} }
+      }
   }
 \clist_map_inline:nn
   {
@@ -281,9 +411,16 @@
 \prop_new:N \l__xeja_postbreakpenalty_prop
 \cs_new:Npn \xeja_set_postbreakpenalty:nn #1#2
   {
-    \prop_put:Nxx \l__xeja_postbreakpenalty_prop
-      { \int_eval:n {#1} }
-      { \int_eval:n {#2} }
+    \int_compare:nNnTF {#2} = { 0 }
+      {
+        \exp_args:NNx \prop_remove:Nn \l__xeja_postbreakpenalty_prop
+          { \int_eval:n {#1} }
+      }
+      {
+        \prop_put:Nxx \l__xeja_postbreakpenalty_prop
+          { \int_eval:n {#1} }
+          { \int_eval:n {#2} }
+      }
   }
 \clist_map_inline:nn
   {
@@ -296,9 +433,16 @@
 \prop_new:N \l__xeja_interchar_skip_prop
 \cs_new:Npn \xeja_set_interchar_skip:nnn #1#2#3
   {
-    \exp_args:NNx \prop_put:Nnn \l__xeja_interchar_skip_prop
-      { \int_eval:n {#1} / \int_eval:n {#2} }
-      {#3}
+    \tl_if_empty:nTF {#3}
+      {
+        \exp_args:NNx \prop_remove:Nn \l__xeja_interchar_skip_prop
+          { \int_eval:n {#1} / \int_eval:n {#2} }
+      }
+      {
+        \exp_args:NNx \prop_put:Nnn \l__xeja_interchar_skip_prop
+          { \int_eval:n {#1} / \int_eval:n {#2} }
+          {#3}
+      }
   }
 \seq_map_inline:Nn \g__xeja_kanji_class_seq
   {
@@ -334,7 +478,8 @@
       { 0.25\zw plus 0.25\zw minus 0.25\zw }
   }
 \xeja_set_interchar_skip:nnn
-  { \c_xeja_kanji_middledots_class_int } { \c_xeja_kanji_middledots_class_int }
+  { \c_xeja_kanji_middledots_class_int }
+  { \c_xeja_kanji_middledots_class_int }
   { 0.5\zw plus 0.25\zw minus 0.5\zw }
 \xeja_set_interchar_skip:nnn
   { \c_xeja_kanji_inseparablecharacters_class_int }
@@ -424,7 +569,7 @@
                 \skip_horizontal:n { \l__xeja_tmpa_tl }
               }
               {
-                \skip_horizontal:n { \l_xeja_kanji_tl }
+                \skip_horizontal:n { \l__xeja_kanjiskip_tl }
               }
           }
       }
@@ -508,7 +653,7 @@
       {
         \__xeja_if_xspmode:nnT {#1} {#2}
           {
-            \skip_horizontal:n { \l_xeja_xkanji_tl }
+            \skip_horizontal:n { \l__xeja_xkanjiskip_tl }
           }
       }
   }
@@ -574,7 +719,7 @@
               }
               \l__xeja_tmpa_tl
               { \skip_horizontal:n { \l__xeja_tmpa_tl } }
-              { \skip_horizontal:n { \l_xeja_kanji_tl } }
+              { \skip_horizontal:n { \l__xeja_kanjiskip_tl } }
           }
       }
     \__xeja_append_interchar_precharwdadjust:nn
@@ -592,7 +737,7 @@
             \bool_set_false:N \l__xeja_remove_spaces_bool
             \__xeja_if_xspmode:nnT { \l__xeja_previous_kanji_class_int } {#1}
               {
-                \skip_horizontal:n { \l_xeja_xkanji_tl }
+                \skip_horizontal:n { \l__xeja_xkanjiskip_tl }
               }
           }
       }
@@ -632,8 +777,8 @@
     \dim_set:Nn \l__xeja_tmpa_dim
       {
         \bool_if:NTF \l__xeja_tate_text_bool
-          { \l_xeja_tbaselineshift_tl }
-          { \l_xeja_ybaselineshift_tl }
+          { \l__xeja_tbaselineshift_tl }
+          { \l__xeja_ybaselineshift_tl }
       }
     \bool_lazy_or:nnF
       { \g__xeja_inside_alpha_baselineshift_bool }
@@ -653,109 +798,12 @@
         \bool_gset_false:N \g__xeja_inside_alpha_baselineshift_bool
       }
   }
-\cs_new:Npn \xeja_set_char_class:nn #1#2
-  { \tex_global:D \tex_XeTeXcharclass:D \int_eval:n {#1} = \int_eval:n {#2} ~ }
-\cs_new:Npn \xeja_set_char_class:nnn #1#2#3
-  { \int_step_inline:nnn {#1} {#2} { \xeja_set_char_class:nn {##1} {#3} } }
-\cs_new:Npn \xeja_char_set_kanji:n #1
-  { \xeja_set_char_class:nn {#1} { \c_xeja_kanji_class_int } }
-\cs_new:Npn \xeja_char_set_kanji:nn #1#2
-  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_kanji_class_int } }
-\cs_new:Npn \xeja_char_set_alpha:n #1
-  { \xeja_set_char_class:nn {#1} { \c_xeja_alpha_class_int } }
-\cs_new:Npn \xeja_char_set_alpha:nn #1#2
-  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_alpha_class_int } }
-\xeja_char_set_kanji:nn { "0080 } { "00FF }
-\xeja_char_set_kanji:nn { "0250 } { "1DFF }
-\xeja_char_set_kanji:nn { "1F00 } { "D7FF }
-\xeja_char_set_kanji:nn { "E000 } { "FFEF }
-\xeja_char_set_kanji:nn { "10000 } { "2FFFF }
-\xeja_char_set_kanji:nn { "F0000 } { "FFFFF }
-\xeja_char_set_kanji:nn { "100000 } { "10FFFF }
-\xeja_char_set_alpha:nn { "0000 } { "007F } % Basic Latin
-\xeja_char_set_alpha:nn { "0100 } { "017F } % Latin Extended-A
-\xeja_char_set_alpha:nn { "0180 } { "024F } % Latin Extended-B
-\xeja_char_set_alpha:nn { "1E00 } { "1EFF } % Latin Extended Additional
-\xeja_char_set_alpha:n { "00AA } % Feminine Ordinal Indicator
-\xeja_char_set_alpha:n { "00BA } % Masculine ordinal indicator
-\xeja_char_set_alpha:nn { "00C0 } { "00FF }
-\xeja_char_set_kanji:n { "00D7 } % Multiplication sign
-\xeja_char_set_kanji:n { "00F7 } % Division sign
-\tl_map_inline:nn { （〔［｛〈《「『【‘“｟〘〖〝 }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_openingbrackets_class_int }
-  }
-\tl_map_inline:nn { ）〕］｝〉》」』】’”｠〙〗〟 }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_closingbrackets_class_int }
-  }
-\tl_map_inline:nn { ‐〜～゠– }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hyphens_class_int }
-  }
-\tl_map_inline:nn { ！？‼⁇⁈⁉ }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_dividingpunctuationmarks_class_int }
-  }
-\tl_map_inline:nn { ・：； }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_middledots_class_int }
-  }
-\tl_map_inline:nn { 。． }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_fullstops_class_int }
-  }
-\tl_map_inline:nn { 、， }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_commas_class_int }
-  }
-\tl_map_inline:nn { —―…‥〳〴〵 }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_inseparablecharacters_class_int }
-  }
-\tl_map_inline:nn { ヽヾゝゞ々〻 }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_iterationmarks_class_int }
-  }
-\tl_map_inline:nn { ー }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_prolongedsoundmark_class_int }
-  }
-\tl_map_inline:nn { ぁぃぅぇぉァィゥェォっゃゅょゎッャュョヮヵヶゕゖㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_smallkana_class_int }
-  }
-\tl_map_inline:nn { ￥＄￡＃€№ }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_prefixedabbreviations_class_int }
-  }
-\tl_map_inline:nn { あいうえおかがきぎくぐけげこごさざしじすずせぜそぞただちぢつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもやゆよらりるれろわゐゑをんゔ }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hiragana_class_int }
-  }
-\tl_map_inline:nn { アイウエオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤユヨラリルレロワヰヱヲンヴヷヸヹヺ }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_katakana_class_int }
-  }
-\xeja_set_char_class:nn { `( } { \c_xeja_alpha_left_class_int }
-\xeja_set_char_class:nn { `) } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `[ } { \c_xeja_alpha_left_class_int }
-\xeja_set_char_class:nn { `] } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `` } { \c_xeja_alpha_left_class_int }
-\xeja_set_char_class:nn { `' } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `; } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `, } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `. } { \c_xeja_alpha_right_class_int }
 \cs_set_eq:NN \__xeja_special:n \tex_special:D
-\cs_new:Npn \xeja_graphics_save:
+\cs_new:Npn \__xeja_graphics_save:
   { \__xeja_special:n { x:gsave } }
-\cs_new:Npn \xeja_graphics_restore:
+\cs_new:Npn \__xeja_graphics_restore:
   { \__xeja_special:n { x:grestore } }
-\cs_new:Npn \xeja_graphics_rotate:n #1
+\cs_new:Npn \__xeja_graphics_rotate:n #1
   { \__xeja_special:n { x:rotate~ #1 } }
 \box_new:N \l__xeja_rotate_box
 \dim_new:N \l__xeja_rotate_box_ht_dim
@@ -773,10 +821,10 @@
       }
     \hbox_set:Nn \l__xeja_rotate_box
       {
-        \xeja_graphics_save:
-        \xeja_graphics_rotate:n { -90 }
+        \__xeja_graphics_save:
+        \__xeja_graphics_rotate:n { -90 }
         \box_use:N \l__xeja_rotate_box
-        \xeja_graphics_restore:
+        \__xeja_graphics_restore:
       }
     \hbox_set:Nn \l__xeja_rotate_box
       {
@@ -802,10 +850,10 @@
       }
     \hbox_set:Nn \l__xeja_rotate_box
       {
-        \xeja_graphics_save:
-        \xeja_graphics_rotate:n { 90 }
+        \__xeja_graphics_save:
+        \__xeja_graphics_rotate:n { 90 }
         \box_use:N \l__xeja_rotate_box
-        \xeja_graphics_restore:
+        \__xeja_graphics_restore:
       }
     \hbox_set:Nn \l__xeja_rotate_box
       {
@@ -850,18 +898,21 @@
 \cs_set_eq:NN \__xeja_original_output_page: \@outputpage
 \cs_set:Npn \@outputpage
   {
-    \group_begin:
-      \bool_if:NT \g__xeja_tate_document_bool
-        {
+    \bool_if:NTF \g__xeja_tate_document_bool
+      {
+        \group_begin:
+          \__xeja_rotate_box_tate_in_yoko:N \@outputbox
           \dim_set_eq:NN \l__xeja_tmpa_dim \textwidth
           \dim_set_eq:NN \textwidth \textheight
           \dim_set_eq:NN \textheight \l__xeja_tmpa_dim
-          \__xeja_rotate_box_tate_in_yoko:N \@outputbox
-        }
-      \bool_set_false:N \l__xeja_tate_text_bool
-      \__xeja_original_output_page:
-    \group_end:
-    \dim_gset_eq:NN \@colht \textheight
+          \bool_set_false:N \l__xeja_tate_text_bool
+          \__xeja_original_output_page:
+        \group_end:
+        \dim_gset_eq:NN \@colht \textheight
+      }
+      {
+        \__xeja_original_output_page:
+      }
   }
 \hook_gput_code:nnn { begindocument } { xelatexja / tate }
   {
