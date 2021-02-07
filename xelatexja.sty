@@ -703,6 +703,16 @@
   {
     \__xeja_clear_interchar_tokens:nn { \c_xeja_bound_class_int } {#1}
     \__xeja_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
+      {
+        \int_compare:nNnT { \tex_lastnodetype:D } = { 10 }
+          {
+            \__xeja_if_xspmode:nnT { 0 } {#1}
+              {
+                \skip_horizontal:n { \l__xeja_xkanjiskip_tl }
+              }
+          }
+      }
+    \__xeja_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
       { \xeja_enter_kanji_font: }
     \__xeja_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
       {
@@ -753,7 +763,13 @@
       { \xeja_leave_kanji_font: }
     \__xeja_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
       {
-        \peek_remove_spaces:n
+        \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
+          {
+            \__xeja_if_xspmode:nnT {#1} { 0 }
+              {
+                \skip_horizontal:n { \l__xeja_xkanjiskip_tl }
+              }
+          }
           {
             \bool_lazy_or:nnT
               { \token_if_letter_p:N \l_peek_token }

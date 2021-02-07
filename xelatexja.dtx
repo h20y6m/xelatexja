@@ -1349,6 +1349,19 @@
   {
     \@@_clear_interchar_tokens:nn { \c_xeja_bound_class_int } {#1}
 %    \end{macrocode}
+% 直前のノードが数式だった場合は和欧文空白を挿入する。
+%    \begin{macrocode}
+    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
+      {
+        \int_compare:nNnT { \tex_lastnodetype:D } = { 10 }
+          {
+            \@@_if_xspmode:nnT { 0 } {#1}
+              {
+                \skip_horizontal:n { \l_@@_xkanjiskip_tl }
+              }
+          }
+      }
+%    \end{macrocode}
 % 和文フォント切り替え。
 %    \begin{macrocode}
     \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
@@ -1441,12 +1454,27 @@
     \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
       { \xeja_leave_kanji_font: }
 %    \end{macrocode}
-% 後続の空白トークンを取り除く。
+% 和文直後の改行を無視するようにしたいが、
+% すでに空白トークンに変換されてしまっており区別もできないため、
+% 和文後の空白トークンを無条件に取り除くことにする。
 %    \begin{macrocode}
     \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
       {
-        \peek_remove_spaces:n
+        \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
           {
+%    \end{macrocode}
+% 和文数式間のときは和欧文間空白を挿入する。
+%    \begin{macrocode}
+            \@@_if_xspmode:nnT {#1} { 0 }
+              {
+                \skip_horizontal:n { \l_@@_xkanjiskip_tl }
+              }
+          }
+          {
+%    \end{macrocode}
+% 後続が文字トークンのときは文字クラスを保存しておき、
+% 境界－和文間または境界－欧文間で処理する。
+%    \begin{macrocode}
             \bool_lazy_or:nnT
               { \token_if_letter_p:N \l_peek_token }
               { \token_if_other_p:N \l_peek_token }
