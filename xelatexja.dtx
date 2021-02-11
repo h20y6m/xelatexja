@@ -13,6 +13,7 @@
 \documentclass[full]{l3doc}
 \usepackage[jascale=0.92]{xelatexja}
 \usepackage[japanese]{babel}
+\usepackage[verb]{bxghost}
 \usepackage{bxtexlogo}
 \bxtexlogoimport{*}
 \usepackage{indentfirst}
@@ -30,7 +31,7 @@
 %<*package>
 \NeedsTeXFormat{LaTeX2e}[2020-10-01]
 \RequirePackage{expl3}[2020-12-07]
-\ProvidesExplPackage{xelatexja}{2021/01/31}{0.0.1}
+\ProvidesExplPackage{xelatexja}{2021/02/11}{0.0.1}
   {Japanese typesetting with XeLaTeX}
 %</package>
 %
@@ -38,7 +39,7 @@
 %
 % \title{\textsf{\XeLaTeX-ja}パッケージ}
 % \author{森見幸正 (h20y6m)}
-% \date{2021年1月31日}
+% \date{2021年2月11日}
 %
 % \maketitle
 %
@@ -1340,8 +1341,10 @@
 % \subsubsection{境界－和文間}
 %
 %    \begin{macrocode}
-\bool_new:N \l_@@_remove_spaces_bool
-\int_new:N \l_@@_previous_kanji_class_int
+\int_new:N \g_@@_previous_char_class_int
+\int_new:N \g_@@_previous_lastnodetype_int
+\bool_new:N \g_@@_previous_kanji_class_bool
+\bool_new:N \g_@@_previous_alpha_class_bool
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1367,30 +1370,57 @@
     \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
       { \xeja_enter_kanji_font: }
 %    \end{macrocode}
-% 空白を除去した直後のみ。
+% 
 %    \begin{macrocode}
     \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
       {
-        \bool_if:NT \l_@@_remove_spaces_bool
+        \bool_if:NT \g_@@_previous_kanji_class_bool
           {
-            \bool_set_false:N \l_@@_remove_spaces_bool
+            \int_compare:nNnT
+              { \tex_lastnodetype:D } = { \g_@@_previous_lastnodetype_int }
+              {
 %    \end{macrocode}
 % 行頭禁則ペナルティー。
 %    \begin{macrocode}
-            \exp_args:NNx \prop_get:NnNT \l_@@_prebreakpenalty_prop
-              { \int_eval:n {#1} } \l_@@_tmpa_tl
-              { \tex_penalty:D \l_@@_tmpa_tl }
+                \exp_args:NNx \prop_get:NnNT \l_@@_prebreakpenalty_prop
+                  { \int_eval:n {#1} } \l_@@_tmpa_tl
+                  { \tex_penalty:D \l_@@_tmpa_tl }
 %    \end{macrocode}
 % 和文間空白。
 %    \begin{macrocode}
-            \exp_args:NNx \prop_get:NnNTF \l_@@_interchar_skip_prop
+                \exp_args:NNx \prop_get:NnNTF \l_@@_interchar_skip_prop
+                  {
+                    \int_eval:n { \g_@@_previous_char_class_int }
+                    / \int_eval:n {#1}
+                  }
+                  \l_@@_tmpa_tl
+                  { \skip_horizontal:n { \l_@@_tmpa_tl } }
+                  { \skip_horizontal:n { \l_@@_kanjiskip_tl } }
+                }
+%    \end{macrocode}
+%    \begin{macrocode}
+              \bool_gset_false:N \g_@@_previous_kanji_class_bool
+          }
+%    \end{macrocode}
+% 
+%    \begin{macrocode}
+        \bool_if:NT \g_@@_previous_alpha_class_bool
+          {
+            \int_compare:nNnT
+              { \tex_lastnodetype:D } = { \g_@@_previous_lastnodetype_int }
               {
-                \int_eval:n { \l_@@_previous_kanji_class_int }
-                / \int_eval:n {#1}
+%    \end{macrocode}
+% 和欧文間空白の挿入
+%    \begin{macrocode}
+                \@@_if_xspmode:nnT
+                  { \g_@@_previous_char_class_int } {#1}
+                  {
+                    \skip_horizontal:n { \l_@@_xkanjiskip_tl }
+                  }
+%    \end{macrocode}
+%    \begin{macrocode}
               }
-              \l_@@_tmpa_tl
-              { \skip_horizontal:n { \l_@@_tmpa_tl } }
-              { \skip_horizontal:n { \l_@@_kanjiskip_tl } }
+            \bool_gset_false:N \g_@@_previous_alpha_class_bool
           }
       }
 %    \end{macrocode}
@@ -1408,27 +1438,41 @@
   {
     \@@_clear_interchar_tokens:nn { \c_xeja_bound_class_int } {#1}
 %    \end{macrocode}
+% 
+%    \begin{macrocode}
+    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
+      {
+        \bool_if:NT \g_@@_previous_kanji_class_bool
+          {
+            \int_compare:nNnT
+              { \tex_lastnodetype:D } = { \g_@@_previous_lastnodetype_int }
+              {
+%    \end{macrocode}
+% 和欧文間空白。
+%    \begin{macrocode}
+                \@@_if_xspmode:nnT
+                  { \g_@@_previous_char_class_int } {#1}
+                  {
+                    \skip_horizontal:n { \l_@@_xkanjiskip_tl }
+                  }
+%    \end{macrocode}
+%    \begin{macrocode}
+              }
+            \bool_gset_false:N \g_@@_previous_kanji_class_bool
+          }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+        \bool_if:NT \g_@@_previous_alpha_class_bool
+          {
+            \bool_gset_false:N \g_@@_previous_alpha_class_bool
+          }
+      }
+%    \end{macrocode}
 % ベースライン補正開始。
 %    \begin{macrocode}
     \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
       { \@@_alpha_baselineshift_begin: }
-%    \end{macrocode}
-% 空白を除去した直後のみ。
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
-      {
-        \bool_if:NT \l_@@_remove_spaces_bool
-          {
-            \bool_set_false:N \l_@@_remove_spaces_bool
-%    \end{macrocode}
-% 和欧文間空白。
-%    \begin{macrocode}
-            \@@_if_xspmode:nnT { \l_@@_previous_kanji_class_int } {#1}
-              {
-                \skip_horizontal:n { \l_@@_xkanjiskip_tl }
-              }
-          }
-      }
   }
 %    \end{macrocode}
 %
@@ -1460,28 +1504,37 @@
 %    \begin{macrocode}
     \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
       {
-        \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
-          {
+        \int_gset:Nn \g_@@_previous_char_class_int {#1}
+        \@@_check_after_kanji_ignore_spaces:
+      }
+  }
+%    \end{macrocode}
+%    \begin{macrocode}
+\cs_new:Npn \@@_check_after_kanji_ignore_spaces:
+  {
+    \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
+      {
 %    \end{macrocode}
 % 和文数式間のときは和欧文間空白を挿入する。
 %    \begin{macrocode}
-            \@@_if_xspmode:nnT {#1} { 0 }
-              {
-                \skip_horizontal:n { \l_@@_xkanjiskip_tl }
-              }
-          }
+        \@@_if_xspmode:nnT { \g_@@_previous_char_class_int } { 0 }
           {
+            \skip_horizontal:n { \l_@@_xkanjiskip_tl }
+          }
+      }
+      {
+        \token_if_expandable:NTF \l_peek_token
+          {
+            \exp_after:wN
+            \@@_check_after_kanji_ignore_spaces:
+          }
 %    \end{macrocode}
-% 後続が文字トークンのときは文字クラスを保存しておき、
-% 境界－和文間または境界－欧文間で処理する。
+%
 %    \begin{macrocode}
-            \bool_lazy_or:nnT
-              { \token_if_letter_p:N \l_peek_token }
-              { \token_if_other_p:N \l_peek_token }
-              {
-                \bool_set_true:N \l_@@_remove_spaces_bool
-                \int_set:Nn \l_@@_previous_kanji_class_int {#1}
-              }
+          {
+            \int_gset:Nn \g_@@_previous_lastnodetype_int
+              { \tex_lastnodetype:D }
+            \bool_gset_true:N \g_@@_previous_kanji_class_bool
           }
       }
   }
@@ -1498,6 +1551,16 @@
 %    \begin{macrocode}
     \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
       { \@@_alpha_baselineshift_end: }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+    \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
+      {
+        \int_gset:Nn \g_@@_previous_lastnodetype_int
+          { \tex_lastnodetype:D }
+        \int_gset:Nn \g_@@_previous_char_class_int {#1}
+        \bool_gset_true:N \g_@@_previous_alpha_class_bool
+      }
   }
 %    \end{macrocode}
 %

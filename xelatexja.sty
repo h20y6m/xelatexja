@@ -14,7 +14,7 @@
 %% File: xelatexja.dtx
 \NeedsTeXFormat{LaTeX2e}[2020-10-01]
 \RequirePackage{expl3}[2020-12-07]
-\ProvidesExplPackage{xelatexja}{2021/01/31}{0.0.1}
+\ProvidesExplPackage{xelatexja}{2021/02/11}{0.0.1}
   {Japanese typesetting with XeLaTeX}
 \msg_new:nnn { xelatexja } { needs-xetex }
   { XeLaTeX-ja~needs~XeTeX. }
@@ -697,8 +697,10 @@
           { \__xeja_alpha_baselineshift_begin: }
       }
   }
-\bool_new:N \l__xeja_remove_spaces_bool
-\int_new:N \l__xeja_previous_kanji_class_int
+\int_new:N \g__xeja_previous_char_class_int
+\int_new:N \g__xeja_previous_lastnodetype_int
+\bool_new:N \g__xeja_previous_kanji_class_bool
+\bool_new:N \g__xeja_previous_alpha_class_bool
 \seq_map_inline:Nn \g__xeja_kanji_class_seq
   {
     \__xeja_clear_interchar_tokens:nn { \c_xeja_bound_class_int } {#1}
@@ -716,20 +718,37 @@
       { \xeja_enter_kanji_font: }
     \__xeja_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
       {
-        \bool_if:NT \l__xeja_remove_spaces_bool
+        \bool_if:NT \g__xeja_previous_kanji_class_bool
           {
-            \bool_set_false:N \l__xeja_remove_spaces_bool
-            \exp_args:NNx \prop_get:NnNT \l__xeja_prebreakpenalty_prop
-              { \int_eval:n {#1} } \l__xeja_tmpa_tl
-              { \tex_penalty:D \l__xeja_tmpa_tl }
-            \exp_args:NNx \prop_get:NnNTF \l__xeja_interchar_skip_prop
+            \int_compare:nNnT
+              { \tex_lastnodetype:D } = { \g__xeja_previous_lastnodetype_int }
               {
-                \int_eval:n { \l__xeja_previous_kanji_class_int }
-                / \int_eval:n {#1}
+                \exp_args:NNx \prop_get:NnNT \l__xeja_prebreakpenalty_prop
+                  { \int_eval:n {#1} } \l__xeja_tmpa_tl
+                  { \tex_penalty:D \l__xeja_tmpa_tl }
+                \exp_args:NNx \prop_get:NnNTF \l__xeja_interchar_skip_prop
+                  {
+                    \int_eval:n { \g__xeja_previous_char_class_int }
+                    / \int_eval:n {#1}
+                  }
+                  \l__xeja_tmpa_tl
+                  { \skip_horizontal:n { \l__xeja_tmpa_tl } }
+                  { \skip_horizontal:n { \l__xeja_kanjiskip_tl } }
+                }
+              \bool_gset_false:N \g__xeja_previous_kanji_class_bool
+          }
+        \bool_if:NT \g__xeja_previous_alpha_class_bool
+          {
+            \int_compare:nNnT
+              { \tex_lastnodetype:D } = { \g__xeja_previous_lastnodetype_int }
+              {
+                \__xeja_if_xspmode:nnT
+                  { \g__xeja_previous_char_class_int } {#1}
+                  {
+                    \skip_horizontal:n { \l__xeja_xkanjiskip_tl }
+                  }
               }
-              \l__xeja_tmpa_tl
-              { \skip_horizontal:n { \l__xeja_tmpa_tl } }
-              { \skip_horizontal:n { \l__xeja_kanjiskip_tl } }
+            \bool_gset_false:N \g__xeja_previous_alpha_class_bool
           }
       }
     \__xeja_append_interchar_precharwdadjust:nn
@@ -739,18 +758,27 @@
   {
     \__xeja_clear_interchar_tokens:nn { \c_xeja_bound_class_int } {#1}
     \__xeja_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
-      { \__xeja_alpha_baselineshift_begin: }
-    \__xeja_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
       {
-        \bool_if:NT \l__xeja_remove_spaces_bool
+        \bool_if:NT \g__xeja_previous_kanji_class_bool
           {
-            \bool_set_false:N \l__xeja_remove_spaces_bool
-            \__xeja_if_xspmode:nnT { \l__xeja_previous_kanji_class_int } {#1}
+            \int_compare:nNnT
+              { \tex_lastnodetype:D } = { \g__xeja_previous_lastnodetype_int }
               {
-                \skip_horizontal:n { \l__xeja_xkanjiskip_tl }
+                \__xeja_if_xspmode:nnT
+                  { \g__xeja_previous_char_class_int } {#1}
+                  {
+                    \skip_horizontal:n { \l__xeja_xkanjiskip_tl }
+                  }
               }
+            \bool_gset_false:N \g__xeja_previous_kanji_class_bool
+          }
+        \bool_if:NT \g__xeja_previous_alpha_class_bool
+          {
+            \bool_gset_false:N \g__xeja_previous_alpha_class_bool
           }
       }
+    \__xeja_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
+      { \__xeja_alpha_baselineshift_begin: }
   }
 \seq_map_inline:Nn \g__xeja_kanji_class_seq
   {
@@ -763,21 +791,29 @@
       { \xeja_leave_kanji_font: }
     \__xeja_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
       {
-        \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
+        \int_gset:Nn \g__xeja_previous_char_class_int {#1}
+        \__xeja_check_after_kanji_ignore_spaces:
+      }
+  }
+\cs_new:Npn \__xeja_check_after_kanji_ignore_spaces:
+  {
+    \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
+      {
+        \__xeja_if_xspmode:nnT { \g__xeja_previous_char_class_int } { 0 }
           {
-            \__xeja_if_xspmode:nnT {#1} { 0 }
-              {
-                \skip_horizontal:n { \l__xeja_xkanjiskip_tl }
-              }
+            \skip_horizontal:n { \l__xeja_xkanjiskip_tl }
+          }
+      }
+      {
+        \token_if_expandable:NTF \l_peek_token
+          {
+            \exp_after:wN
+            \__xeja_check_after_kanji_ignore_spaces:
           }
           {
-            \bool_lazy_or:nnT
-              { \token_if_letter_p:N \l_peek_token }
-              { \token_if_other_p:N \l_peek_token }
-              {
-                \bool_set_true:N \l__xeja_remove_spaces_bool
-                \int_set:Nn \l__xeja_previous_kanji_class_int {#1}
-              }
+            \int_gset:Nn \g__xeja_previous_lastnodetype_int
+              { \tex_lastnodetype:D }
+            \bool_gset_true:N \g__xeja_previous_kanji_class_bool
           }
       }
   }
@@ -786,6 +822,13 @@
     \__xeja_clear_interchar_tokens:nn {#1} { \c_xeja_bound_class_int }
     \__xeja_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
       { \__xeja_alpha_baselineshift_end: }
+    \__xeja_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
+      {
+        \int_gset:Nn \g__xeja_previous_lastnodetype_int
+          { \tex_lastnodetype:D }
+        \int_gset:Nn \g__xeja_previous_char_class_int {#1}
+        \bool_gset_true:N \g__xeja_previous_alpha_class_bool
+      }
   }
 \bool_new:N \g__xeja_inside_alpha_baselineshift_bool
 \cs_new:Npn \__xeja_alpha_baselineshift_begin:
