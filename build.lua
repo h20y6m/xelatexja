@@ -14,7 +14,13 @@ maindir = "."
 tdsroot = "xelatex"
 
 textfiles = {"README.md", "LICENSE"}
-typesetfiles = {module .. ".dtx", "example-yoko.tex", "example-tate.tex"}
+sourcefiles = {"*.dtx", "*.ins", "*-????-??-??.sty", "bxjsja-xelatexja.def"}
+typesetfiles = {
+  module .. ".dtx",
+  "example-yoko.tex",
+  "example-tate.tex",
+  "example-bxjs.tex",
+}
 
 checkengines = {"xetex"}
 stdengine    = "xetex"

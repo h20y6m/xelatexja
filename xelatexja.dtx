@@ -31,7 +31,7 @@
 %<*package>
 \NeedsTeXFormat{LaTeX2e}[2020-10-01]
 \RequirePackage{expl3}[2020-12-07]
-\ProvidesExplPackage{xelatexja}{2021/02/11}{0.0.1}
+\ProvidesExplPackage{xelatexja}{2021/02/23}{0.0.1}
   {Japanese typesetting with XeLaTeX}
 %</package>
 %
@@ -39,7 +39,7 @@
 %
 % \title{\textsf{\XeLaTeX-ja}パッケージ}
 % \author{森見幸正 (h20y6m)}
-% \date{2021年2月11日}
+% \date{2021年2月23日}
 %
 % \maketitle
 %
@@ -89,6 +89,15 @@
 %   現在の組方向が縦組かどうかの条件式。
 % \end{function}
 %
+% \subsection{フォント}
+%
+% \begin{function}{\xeja_get_jascale:}
+%   \begin{syntax}
+%     \cs{xeja_get_jascale:}
+%   \end{syntax}
+%   和文フォントスケール値を取得する。
+% \end{function}
+%
 % \begin{variable}{\l_xeja_zw_dim,\zw}
 %   和文文字サイズ。
 % \end{variable}
@@ -131,6 +140,34 @@
 % \end{variable}
 %
 % \subsection{組版パラメーター}
+%
+% \begin{function}{\xeja_set_kanjiskip:n}
+%   \begin{syntax}
+%     \cs{xeja_set_kanjiskip:n} \Arg{tl}
+%   \end{syntax}
+%   和文間空白（kanjiskip）を\meta{tl}に設定する。
+% \end{function}
+%
+% \begin{function}{\xeja_get_kanjiskip:}
+%   \begin{syntax}
+%     \cs{xeja_get_kanjiskip:}
+%   \end{syntax}
+%   kanjiskipを取得する。
+% \end{function}
+%
+% \begin{function}{\xeja_set_xkanjiskip:n}
+%   \begin{syntax}
+%     \cs{xeja_set_xkanjiskip:n} \Arg{tl}
+%   \end{syntax}
+%   和欧文間空白（xkanjiskip）を\meta{tl}に設定する。
+% \end{function}
+%
+% \begin{function}{\xeja_get_xkanjiskip:}
+%   \begin{syntax}
+%     \cs{xeja_get_xkanjiskip:}
+%   \end{syntax}
+%   xkanjiskipを取得する。
+% \end{function}
 %
 % \begin{function}{\xeja_set_prebreakpenalty:nn}
 %   \begin{syntax}
@@ -218,11 +255,11 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\g_@@_jscale_fp}
+% \begin{macro}{\g_@@_jascale_fp}
 %   和文フォントスケール値。
 %    \begin{macrocode}
-\fp_new:N \g_@@_jscale_fp
-\fp_gset:Nn \g_@@_jscale_fp { 1 }
+\fp_new:N \g_@@_jascale_fp
+\fp_gset:Nn \g_@@_jascale_fp { 1 }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -276,7 +313,7 @@
 \keys_define:nn { xelatexja }
   {
     tate .bool_gset:N = \g_@@_tate_document_bool,
-    jascale .fp_gset:N = \g_@@_jscale_fp,
+    jascale .fp_gset:N = \g_@@_jascale_fp,
   }
 %    \end{macrocode}
 %
@@ -310,6 +347,14 @@
 %
 % \subsection{フォント}
 %
+% \begin{macro}{\xeja_get_jascale:}
+%   和文フォントスケール値を取得する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_get_jascale:
+  { \fp_use:N \g_@@_jascale_fp }
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\@@_update_zw:}
 %   フォントサイズに合わせて|\zw|を更新する。
 %   要求サイズ×和文フォントスケール値
@@ -317,7 +362,7 @@
 \cs_new:Npn \@@_update_zw:
   {
     \dim_set:Nn \l_xeja_zw_dim
-      { \fp_to_dim:n { \g_@@_jscale_fp * \f@size } }
+      { \fp_to_dim:n { \g_@@_jascale_fp * \f@size } }
   }
 %    \end{macrocode}
 % 現在のフォントで|\zw|を初期化する。
@@ -373,7 +418,7 @@
 \cs_new:Npn \@@_new_kanji_font:Nnn #1#2#3
   {
     \tex_global:D
-    \tex_font:D #1 = "#2" ~ at ~ \fp_to_dim:n { \g_@@_jscale_fp * #3 } ~
+    \tex_font:D #1 = "#2" ~ at ~ \fp_to_dim:n { \g_@@_jascale_fp * #3 } ~
   }
 \cs_generate_variant:Nn \@@_new_kanji_font:Nnn { Nxn, cxn }
 %    \end{macrocode}
@@ -455,7 +500,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \xeja_select_yoko_kanji_font:
+\cs_new:Npn \@@_select_yoko_kanji_font:
   {
     \@@_select_kanji_font_aux:nnnnnn
       { \c_xeja_yoko_encoding_str }
@@ -465,7 +510,7 @@
       { \f@size }
       {}
   }
-\cs_new:Npn \xeja_select_tate_kanji_font:
+\cs_new:Npn \@@_select_tate_kanji_font:
   {
     \@@_select_kanji_font_aux:nnnnnn
       { \c_xeja_tate_encoding_str }
@@ -479,11 +524,12 @@
 %
 % \subsubsection{フォント設定}
 %
+% 明朝（mc）とゴシック（gt）ファミリーを定義する。
 %    \begin{macrocode}
 \xeja_declare_kanji_family:nn { mc } {}
 \xeja_declare_kanji_family:nn { gt } {}
 %    \end{macrocode}
-%
+% 
 %    \begin{macrocode}
 \xeja_declare_kanji_shape:nnnn { mc } { m } { n }
   { [HaranoAjiMincho-Regular.otf]:+fwid }
@@ -503,18 +549,24 @@
 \xeja_kanji_family:n { mc }
 %    \end{macrocode}
 %
+% \begin{macro}{\@@_enter_kanji_font:,\@@_leave_kanji_font:}
+%   和文フォントと欧文フォントを切り替える。
 %    \begin{macrocode}
-\cs_new:Npn \xeja_enter_kanji_font:
+\cs_new:Npn \@@_enter_kanji_font:
   {
     \bool_if:NTF \l_@@_tate_text_bool
-      { \xeja_select_tate_kanji_font: }
-      { \xeja_select_yoko_kanji_font: }
+      { \@@_select_tate_kanji_font: }
+      { \@@_select_yoko_kanji_font: }
   }
-\cs_new:Npn \xeja_leave_kanji_font:
+%    \end{macrocode}
+%   欧文フォントへの切り替えはとりあえず|selectfont|を呼ぶだけ。
+%    \begin{macrocode}
+\cs_new:Npn \@@_leave_kanji_font:
   {
     \selectfont
   }
 %    \end{macrocode}
+% \end{macro}
 %
 % \subsection{文字クラス}
 % 
@@ -782,7 +834,7 @@
   {
     \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_smallkana_class_int }
   }
-\tl_map_inline:nn { ￥＄￡＃€№ }
+\tl_map_inline:nn { ￥＄￡＃№ }
   {
     \xeja_set_char_class:nn { `#1 }
       { \c_xeja_kanji_prefixedabbreviations_class_int }
@@ -851,6 +903,36 @@
 %    \end{macrocode}
 %%
 % \subsubsection{組版パラメーター}
+%
+% \begin{macro}{\xeja_set_kanjiskip:n}
+%   kanjiskipを設定する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_set_kanjiskip:n #1
+  { \tl_set:Nn \l_@@_kanjiskip_tl {#1} }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\xeja_get_kanjiskip:}
+%   kanjiskipを取得する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_get_kanjiskip:
+  { \tl_use:N \l_@@_kanjiskip_tl }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\xeja_set_xkanjiskip:n}
+%   xkanjiskipを設定する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_set_xkanjiskip:n #1
+  { \tl_set:Nn \l_@@_xkanjiskip_tl {#1} }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\xeja_get_xkanjiskip:}
+%   xkanjiskipを取得する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_get_xkanjiskip:
+  { \tl_use:N \l_@@_xkanjiskip_tl }
+%    \end{macrocode}
+% \end{macro}
 %
 % \begin{macro}{\l_@@_prebreakpenalty_prop}
 %   行頭禁則ペナルティーを保持するprop変数。
@@ -1287,7 +1369,7 @@
 % 和文フォント切り替え。
 %    \begin{macrocode}
         \@@_append_interchar_tokens:nnn {#1} {##1}
-          { \xeja_enter_kanji_font: }
+          { \@@_enter_kanji_font: }
 %    \end{macrocode}
 % 行頭禁則ペナルティー。
 %    \begin{macrocode}
@@ -1328,7 +1410,7 @@
 % 欧文フォント切り替え。
 %    \begin{macrocode}
         \@@_append_interchar_tokens:nnn {#1} {##1}
-          { \xeja_leave_kanji_font: }
+          { \@@_leave_kanji_font: }
 %    \end{macrocode}
 % 欧文ベースライン補正開始。
 %    \begin{macrocode}
@@ -1368,7 +1450,7 @@
 % 和文フォント切り替え。
 %    \begin{macrocode}
     \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
-      { \xeja_enter_kanji_font: }
+      { \@@_enter_kanji_font: }
 %    \end{macrocode}
 % 
 %    \begin{macrocode}
@@ -1496,7 +1578,7 @@
 % 欧文フォント切り替え。
 %    \begin{macrocode}
     \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
-      { \xeja_leave_kanji_font: }
+      { \@@_leave_kanji_font: }
 %    \end{macrocode}
 % 和文直後の改行を無視するようにしたいが、
 % すでに空白トークンに変換されてしまっており区別もできないため、

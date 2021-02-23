@@ -1,0 +1,46 @@
+\RequirePackage{expl3}
+\ProvidesExplFile{bxjsja-xelatexja.def}
+  {2021/02/23}{0.0.1}{XeLaTeX-ja BXjscls ja driver file}
+
+\input{bxjsja-minimal.def}
+
+\cs_if_exist:NT \zw
+  { \cs_undefine:N \zw }
+
+\RequirePackage[jascale={\jsZw/\f@size pt}]{xelatexja}
+
+\dim_const:Nn \jQ { 0.25mm }
+\cs_new_eq:NN \jH \jQ
+\dim_const:Nn \trueQ  { 0.25truemm }
+\cs_new_eq:NN \trueH \trueQ
+\dim_const:Nn \ascQ { \fp_to_dim:n { 1\trueQ / \xeja_get_jascale: } }
+\dim_const:Nn \ascpt
+  { \fp_to_dim:n  { \dim_eval:n { 1truept } / \xeja_get_jascale: } }
+
+\newcommand*\setkanjiskip[1]
+  { \xeja_set_kanjiskip:n {#1} }
+\newcommand*\getkanjiskip
+  { \xeja_get_kanjiskip: }
+
+\newcommand*\setxkanjiskip[1]
+  { \xeja_set_xkanjiskip:n {#1} }
+\newcommand*\getxkanjiskip
+  { \xeja_get_xkanjiskip: }
+
+\DeclareRobustCommand{\mcfamily}{ \xeja_kanji_family:n { mc } }
+\DeclareRobustCommand{\gtfamily}{ \xeja_kanji_family:n { gt } }
+
+\DeclareJaTextFontCommand{\textmc}{\mcfamily}
+\DeclareJaTextFontCommand{\textgt}{\gtfamily}
+
+\hook_gput_code:nnn { rmfamily } { . }
+  { \mcfamily }
+\hook_gput_code:nnn { sffamily } { . }
+  { \gtfamily }
+\hook_gput_code:nnn { ttfamily } { . }
+  { \gtfamily }
+
+\setkanjiskip{0pt plus.1\zw minus.01\zw}
+\ifx\jsDocClass\jsSlide \setxkanjiskip{0.1em}
+\else \setxkanjiskip{0.25em plus 0.15em minus 0.06em}
+\fi
