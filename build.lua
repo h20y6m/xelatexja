@@ -1,7 +1,9 @@
 #!/usr/bin/env texlua
 
+-- The name of the module
 module = "xelatexja"
 
+-- Directories
 maindir = "."
 -- docfiledir = "."
 -- sourcefiledir = "."
@@ -11,21 +13,37 @@ maindir = "."
 -- texmfdir = maindir .. "/texmf"
 -- textfiledir = "."
 
+-- Root directory of the TDS structure for the bundle/module to be installed into
 tdsroot = "xelatex"
 
-textfiles = {"README.md", "LICENSE"}
-sourcefiles = {"*.dtx", "*.ins", "*-????-??-??.sty", "bxjsja-xelatexja.def"}
+-- Files
+installfiles = {
+  "xelatexja.sty",
+  "xejajfm-standard.def",
+  "bxjsja-xelatexja.def",
+}
+sourcefiles = {
+  "xelatexja.dtx",
+  "xelatexja.ins",
+}
+textfiles = {
+  "README.md",
+  "LICENSE",
+}
 typesetfiles = {
-  module .. ".dtx",
+  "xelatexja-doc.tex",
+  "xelatexja-code.tex",
   "example-yoko.tex",
   "example-tate.tex",
   "example-bxjs.tex",
 }
 
+-- Check
 checkengines = {"xetex"}
 stdengine    = "xetex"
-checkformat  = "latex"
+-- checkformat  = "latex"
 
+-- Executable
 typesetexe = "xelatex"
 unpackexe  = "xetex"
 

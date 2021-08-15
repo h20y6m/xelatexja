@@ -1,0 +1,678 @@
+%%
+%% This is file `xejajfm-standard.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% xelatexja.dtx  (with options: `jfm,standard')
+%% 
+%% Copyright (c) 2021 Yukimasa Morimi (h20y6m)
+%%   GitHub:   https://github.com/h20y6m
+%% 
+%% This package is distributed under the MIT License.
+%% 
+%% File: xelatexja.dtx
+\RequirePackage{expl3}[2021-07-12]
+\ProvidesExplFile{xejajfm-standard.def}
+  {2021/08/15}{0.1.0}{Japanese typesetting with XeLaTeX}
+\xeja_class_new_kanji:n { kanji/open }
+\xeja_class_new_kanji:n { kanji/close }
+\xeja_class_new_kanji:n { kanji/middle }
+\xeja_class_new_kanji:n { kanji/fullstop }
+\xeja_class_new_kanji:n { kanji/nodiv }
+\xeja_class_new_kanji:n { kanji/noprebreak }
+\xeja_class_new_kanji:n { kanji/nopostbreak }
+\xeja_class_new_kanji:n { kanji/samllkana }
+\xeja_class_update:
+\xeja_char_set_class:nn { "00A1 } { kanji/default }
+\xeja_char_set_class:nn { "00A4 } { kanji/default }
+\xeja_char_set_class:nn { "00A7 } { kanji/default }
+\xeja_char_set_class:nn { "00A8 } { kanji/default }
+\xeja_char_set_class:nn { "00AA } { kanji/default }
+\xeja_char_set_class:nn { "00AD } { kanji/default }
+\xeja_char_set_class:nn { "00AE } { kanji/default }
+\xeja_char_set_class:nn { "00B0 } { kanji/default }
+\xeja_char_set_class:nn { "00B1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00B2 } { "00B3 } { kanji/default }
+\xeja_char_set_class:nn { "00B4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00B6 } { "00B7 } { kanji/default }
+\xeja_char_set_class:nn { "00B8 } { kanji/default }
+\xeja_char_set_class:nn { "00B9 } { kanji/default }
+\xeja_char_set_class:nn { "00BA } { kanji/default }
+\xeja_char_set_class_range:nnn { "00BC } { "00BE } { kanji/default }
+\xeja_char_set_class:nn { "00BF } { kanji/default }
+\xeja_char_set_class:nn { "00C6 } { kanji/default }
+\xeja_char_set_class:nn { "00D0 } { kanji/default }
+\xeja_char_set_class:nn { "00D7 } { kanji/default }
+\xeja_char_set_class:nn { "00D8 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00DE } { "00E1 } { kanji/default }
+\xeja_char_set_class:nn { "00E6 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00E8 } { "00EA } { kanji/default }
+\xeja_char_set_class_range:nnn { "00EC } { "00ED } { kanji/default }
+\xeja_char_set_class:nn { "00F0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00F2 } { "00F3 } { kanji/default }
+\xeja_char_set_class:nn { "00F7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00F8 } { "00FA } { kanji/default }
+\xeja_char_set_class:nn { "00FC } { kanji/default }
+\xeja_char_set_class:nn { "00FE } { kanji/default }
+\xeja_char_set_class:nn { "0101 } { kanji/default }
+\xeja_char_set_class:nn { "0111 } { kanji/default }
+\xeja_char_set_class:nn { "0113 } { kanji/default }
+\xeja_char_set_class:nn { "011B } { kanji/default }
+\xeja_char_set_class_range:nnn { "0126 } { "0127 } { kanji/default }
+\xeja_char_set_class:nn { "012B } { kanji/default }
+\xeja_char_set_class_range:nnn { "0131 } { "0133 } { kanji/default }
+\xeja_char_set_class:nn { "0138 } { kanji/default }
+\xeja_char_set_class_range:nnn { "013F } { "0142 } { kanji/default }
+\xeja_char_set_class:nn { "0144 } { kanji/default }
+\xeja_char_set_class_range:nnn { "0148 } { "014B } { kanji/default }
+\xeja_char_set_class:nn { "014D } { kanji/default }
+\xeja_char_set_class_range:nnn { "0152 } { "0153 } { kanji/default }
+\xeja_char_set_class_range:nnn { "0166 } { "0167 } { kanji/default }
+\xeja_char_set_class:nn { "016B } { kanji/default }
+\xeja_char_set_class:nn { "01CE } { kanji/default }
+\xeja_char_set_class:nn { "01D0 } { kanji/default }
+\xeja_char_set_class:nn { "01D2 } { kanji/default }
+\xeja_char_set_class:nn { "01D4 } { kanji/default }
+\xeja_char_set_class:nn { "01D6 } { kanji/default }
+\xeja_char_set_class:nn { "01D8 } { kanji/default }
+\xeja_char_set_class:nn { "01DA } { kanji/default }
+\xeja_char_set_class:nn { "01DC } { kanji/default }
+\xeja_char_set_class:nn { "0251 } { kanji/default }
+\xeja_char_set_class:nn { "0261 } { kanji/default }
+\xeja_char_set_class:nn { "02C4 } { kanji/default }
+\xeja_char_set_class:nn { "02C7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "02C9 } { "02CB } { kanji/default }
+\xeja_char_set_class:nn { "02CD } { kanji/default }
+\xeja_char_set_class:nn { "02D0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "02D8 } { "02DB } { kanji/default }
+\xeja_char_set_class:nn { "02DD } { kanji/default }
+\xeja_char_set_class:nn { "02DF } { kanji/default }
+\xeja_char_set_class_range:nnn { "0300 } { "036F } { kanji/default }
+\xeja_char_set_class_range:nnn { "0391 } { "03A1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "03A3 } { "03A9 } { kanji/default }
+\xeja_char_set_class_range:nnn { "03B1 } { "03C1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "03C3 } { "03C9 } { kanji/default }
+\xeja_char_set_class:nn { "0401 } { kanji/default }
+\xeja_char_set_class_range:nnn { "0410 } { "044F } { kanji/default }
+\xeja_char_set_class:nn { "0451 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1100 } { "115F } { kanji/default }
+\xeja_char_set_class:nn { "2010 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2013 } { "2015 } { kanji/default }
+\xeja_char_set_class:nn { "2016 } { kanji/default }
+\xeja_char_set_class:nn { "2018 } { kanji/default }
+\xeja_char_set_class:nn { "2019 } { kanji/default }
+\xeja_char_set_class:nn { "201C } { kanji/default }
+\xeja_char_set_class:nn { "201D } { kanji/default }
+\xeja_char_set_class_range:nnn { "2020 } { "2022 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2024 } { "2027 } { kanji/default }
+\xeja_char_set_class:nn { "2030 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2032 } { "2033 } { kanji/default }
+\xeja_char_set_class:nn { "2035 } { kanji/default }
+\xeja_char_set_class:nn { "203B } { kanji/default }
+\xeja_char_set_class:nn { "203E } { kanji/default }
+\xeja_char_set_class:nn { "2074 } { kanji/default }
+\xeja_char_set_class:nn { "207F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2081 } { "2084 } { kanji/default }
+\xeja_char_set_class:nn { "20A9 } { kanji/default }
+\xeja_char_set_class:nn { "20AC } { kanji/default }
+\xeja_char_set_class:nn { "2103 } { kanji/default }
+\xeja_char_set_class:nn { "2105 } { kanji/default }
+\xeja_char_set_class:nn { "2109 } { kanji/default }
+\xeja_char_set_class:nn { "2113 } { kanji/default }
+\xeja_char_set_class:nn { "2116 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2121 } { "2122 } { kanji/default }
+\xeja_char_set_class:nn { "2126 } { kanji/default }
+\xeja_char_set_class:nn { "212B } { kanji/default }
+\xeja_char_set_class_range:nnn { "2153 } { "2154 } { kanji/default }
+\xeja_char_set_class_range:nnn { "215B } { "215E } { kanji/default }
+\xeja_char_set_class_range:nnn { "2160 } { "216B } { kanji/default }
+\xeja_char_set_class_range:nnn { "2170 } { "2179 } { kanji/default }
+\xeja_char_set_class:nn { "2189 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2190 } { "2194 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2195 } { "2199 } { kanji/default }
+\xeja_char_set_class_range:nnn { "21B8 } { "21B9 } { kanji/default }
+\xeja_char_set_class:nn { "21D2 } { kanji/default }
+\xeja_char_set_class:nn { "21D4 } { kanji/default }
+\xeja_char_set_class:nn { "21E7 } { kanji/default }
+\xeja_char_set_class:nn { "2200 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2202 } { "2203 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2207 } { "2208 } { kanji/default }
+\xeja_char_set_class:nn { "220B } { kanji/default }
+\xeja_char_set_class:nn { "220F } { kanji/default }
+\xeja_char_set_class:nn { "2211 } { kanji/default }
+\xeja_char_set_class:nn { "2215 } { kanji/default }
+\xeja_char_set_class:nn { "221A } { kanji/default }
+\xeja_char_set_class_range:nnn { "221D } { "2220 } { kanji/default }
+\xeja_char_set_class:nn { "2223 } { kanji/default }
+\xeja_char_set_class:nn { "2225 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2227 } { "222C } { kanji/default }
+\xeja_char_set_class:nn { "222E } { kanji/default }
+\xeja_char_set_class_range:nnn { "2234 } { "2237 } { kanji/default }
+\xeja_char_set_class_range:nnn { "223C } { "223D } { kanji/default }
+\xeja_char_set_class:nn { "2248 } { kanji/default }
+\xeja_char_set_class:nn { "224C } { kanji/default }
+\xeja_char_set_class:nn { "2252 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2260 } { "2261 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2264 } { "2267 } { kanji/default }
+\xeja_char_set_class_range:nnn { "226A } { "226B } { kanji/default }
+\xeja_char_set_class_range:nnn { "226E } { "226F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2282 } { "2283 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2286 } { "2287 } { kanji/default }
+\xeja_char_set_class:nn { "2295 } { kanji/default }
+\xeja_char_set_class:nn { "2299 } { kanji/default }
+\xeja_char_set_class:nn { "22A5 } { kanji/default }
+\xeja_char_set_class:nn { "22BF } { kanji/default }
+\xeja_char_set_class:nn { "2312 } { kanji/default }
+\xeja_char_set_class_range:nnn { "231A } { "231B } { kanji/default }
+\xeja_char_set_class:nn { "2329 } { kanji/default }
+\xeja_char_set_class:nn { "232A } { kanji/default }
+\xeja_char_set_class_range:nnn { "23E9 } { "23EC } { kanji/default }
+\xeja_char_set_class:nn { "23F0 } { kanji/default }
+\xeja_char_set_class:nn { "23F3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2460 } { "249B } { kanji/default }
+\xeja_char_set_class_range:nnn { "249C } { "24E9 } { kanji/default }
+\xeja_char_set_class_range:nnn { "24EB } { "24FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2500 } { "254B } { kanji/default }
+\xeja_char_set_class_range:nnn { "2550 } { "2573 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2580 } { "258F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2592 } { "2595 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25A0 } { "25A1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25A3 } { "25A9 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25B2 } { "25B3 } { kanji/default }
+\xeja_char_set_class:nn { "25B6 } { kanji/default }
+\xeja_char_set_class:nn { "25B7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25BC } { "25BD } { kanji/default }
+\xeja_char_set_class:nn { "25C0 } { kanji/default }
+\xeja_char_set_class:nn { "25C1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25C6 } { "25C8 } { kanji/default }
+\xeja_char_set_class:nn { "25CB } { kanji/default }
+\xeja_char_set_class_range:nnn { "25CE } { "25D1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25E2 } { "25E5 } { kanji/default }
+\xeja_char_set_class:nn { "25EF } { kanji/default }
+\xeja_char_set_class_range:nnn { "25FD } { "25FE } { kanji/default }
+\xeja_char_set_class_range:nnn { "2605 } { "2606 } { kanji/default }
+\xeja_char_set_class:nn { "2609 } { kanji/default }
+\xeja_char_set_class_range:nnn { "260E } { "260F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2614 } { "2615 } { kanji/default }
+\xeja_char_set_class:nn { "261C } { kanji/default }
+\xeja_char_set_class:nn { "261E } { kanji/default }
+\xeja_char_set_class:nn { "2640 } { kanji/default }
+\xeja_char_set_class:nn { "2642 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2648 } { "2653 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2660 } { "2661 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2663 } { "2665 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2667 } { "266A } { kanji/default }
+\xeja_char_set_class_range:nnn { "266C } { "266D } { kanji/default }
+\xeja_char_set_class:nn { "266F } { kanji/default }
+\xeja_char_set_class:nn { "267F } { kanji/default }
+\xeja_char_set_class:nn { "2693 } { kanji/default }
+\xeja_char_set_class_range:nnn { "269E } { "269F } { kanji/default }
+\xeja_char_set_class:nn { "26A1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26AA } { "26AB } { kanji/default }
+\xeja_char_set_class_range:nnn { "26BD } { "26BE } { kanji/default }
+\xeja_char_set_class:nn { "26BF } { kanji/default }
+\xeja_char_set_class_range:nnn { "26C4 } { "26C5 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26C6 } { "26CD } { kanji/default }
+\xeja_char_set_class:nn { "26CE } { kanji/default }
+\xeja_char_set_class_range:nnn { "26CF } { "26D3 } { kanji/default }
+\xeja_char_set_class:nn { "26D4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26D5 } { "26E1 } { kanji/default }
+\xeja_char_set_class:nn { "26E3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26E8 } { "26E9 } { kanji/default }
+\xeja_char_set_class:nn { "26EA } { kanji/default }
+\xeja_char_set_class_range:nnn { "26EB } { "26F1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26F2 } { "26F3 } { kanji/default }
+\xeja_char_set_class:nn { "26F4 } { kanji/default }
+\xeja_char_set_class:nn { "26F5 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26F6 } { "26F9 } { kanji/default }
+\xeja_char_set_class:nn { "26FA } { kanji/default }
+\xeja_char_set_class_range:nnn { "26FB } { "26FC } { kanji/default }
+\xeja_char_set_class:nn { "26FD } { kanji/default }
+\xeja_char_set_class_range:nnn { "26FE } { "26FF } { kanji/default }
+\xeja_char_set_class:nn { "2705 } { kanji/default }
+\xeja_char_set_class_range:nnn { "270A } { "270B } { kanji/default }
+\xeja_char_set_class:nn { "2728 } { kanji/default }
+\xeja_char_set_class:nn { "273D } { kanji/default }
+\xeja_char_set_class:nn { "274C } { kanji/default }
+\xeja_char_set_class:nn { "274E } { kanji/default }
+\xeja_char_set_class_range:nnn { "2753 } { "2755 } { kanji/default }
+\xeja_char_set_class:nn { "2757 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2776 } { "277F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2795 } { "2797 } { kanji/default }
+\xeja_char_set_class:nn { "27B0 } { kanji/default }
+\xeja_char_set_class:nn { "27BF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B1B } { "2B1C } { kanji/default }
+\xeja_char_set_class:nn { "2B50 } { kanji/default }
+\xeja_char_set_class:nn { "2B55 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B56 } { "2B59 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2E80 } { "2E99 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2E9B } { "2EF3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2F00 } { "2FD5 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2FF0 } { "2FFB } { kanji/default }
+\xeja_char_set_class:nn { "3000 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3001 } { "3003 } { kanji/default }
+\xeja_char_set_class:nn { "3004 } { kanji/default }
+\xeja_char_set_class:nn { "3005 } { kanji/default }
+\xeja_char_set_class:nn { "3006 } { kanji/default }
+\xeja_char_set_class:nn { "3007 } { kanji/default }
+\xeja_char_set_class:nn { "3008 } { kanji/default }
+\xeja_char_set_class:nn { "3009 } { kanji/default }
+\xeja_char_set_class:nn { "300A } { kanji/default }
+\xeja_char_set_class:nn { "300B } { kanji/default }
+\xeja_char_set_class:nn { "300C } { kanji/default }
+\xeja_char_set_class:nn { "300D } { kanji/default }
+\xeja_char_set_class:nn { "300E } { kanji/default }
+\xeja_char_set_class:nn { "300F } { kanji/default }
+\xeja_char_set_class:nn { "3010 } { kanji/default }
+\xeja_char_set_class:nn { "3011 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3012 } { "3013 } { kanji/default }
+\xeja_char_set_class:nn { "3014 } { kanji/default }
+\xeja_char_set_class:nn { "3015 } { kanji/default }
+\xeja_char_set_class:nn { "3016 } { kanji/default }
+\xeja_char_set_class:nn { "3017 } { kanji/default }
+\xeja_char_set_class:nn { "3018 } { kanji/default }
+\xeja_char_set_class:nn { "3019 } { kanji/default }
+\xeja_char_set_class:nn { "301A } { kanji/default }
+\xeja_char_set_class:nn { "301B } { kanji/default }
+\xeja_char_set_class:nn { "301C } { kanji/default }
+\xeja_char_set_class:nn { "301D } { kanji/default }
+\xeja_char_set_class_range:nnn { "301E } { "301F } { kanji/default }
+\xeja_char_set_class:nn { "3020 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3021 } { "3029 } { kanji/default }
+\xeja_char_set_class_range:nnn { "302A } { "302D } { kanji/default }
+\xeja_char_set_class_range:nnn { "302E } { "302F } { kanji/default }
+\xeja_char_set_class:nn { "3030 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3031 } { "3035 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3036 } { "3037 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3038 } { "303A } { kanji/default }
+\xeja_char_set_class:nn { "303B } { kanji/default }
+\xeja_char_set_class:nn { "303C } { kanji/default }
+\xeja_char_set_class:nn { "303D } { kanji/default }
+\xeja_char_set_class:nn { "303E } { kanji/default }
+\xeja_char_set_class_range:nnn { "3041 } { "3096 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3099 } { "309A } { kanji/default }
+\xeja_char_set_class_range:nnn { "309B } { "309C } { kanji/default }
+\xeja_char_set_class_range:nnn { "309D } { "309E } { kanji/default }
+\xeja_char_set_class:nn { "309F } { kanji/default }
+\xeja_char_set_class:nn { "30A0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "30A1 } { "30FA } { kanji/default }
+\xeja_char_set_class:nn { "30FB } { kanji/default }
+\xeja_char_set_class_range:nnn { "30FC } { "30FE } { kanji/default }
+\xeja_char_set_class:nn { "30FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "3105 } { "312F } { kanji/default }
+\xeja_char_set_class_range:nnn { "3131 } { "318E } { kanji/default }
+\xeja_char_set_class_range:nnn { "3190 } { "3191 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3192 } { "3195 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3196 } { "319F } { kanji/default }
+\xeja_char_set_class_range:nnn { "31A0 } { "31BF } { kanji/default }
+\xeja_char_set_class_range:nnn { "31C0 } { "31E3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "31F0 } { "31FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "3200 } { "321E } { kanji/default }
+\xeja_char_set_class_range:nnn { "3220 } { "3229 } { kanji/default }
+\xeja_char_set_class_range:nnn { "322A } { "3247 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3248 } { "324F } { kanji/default }
+\xeja_char_set_class:nn { "3250 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3251 } { "325F } { kanji/default }
+\xeja_char_set_class_range:nnn { "3260 } { "327F } { kanji/default }
+\xeja_char_set_class_range:nnn { "3280 } { "3289 } { kanji/default }
+\xeja_char_set_class_range:nnn { "328A } { "32B0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "32B1 } { "32BF } { kanji/default }
+\xeja_char_set_class_range:nnn { "32C0 } { "32FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "3300 } { "33FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "3400 } { "4DBF } { kanji/default }
+\xeja_char_set_class_range:nnn { "4E00 } { "9FFC } { kanji/default }
+\xeja_char_set_class_range:nnn { "9FFD } { "9FFF } { kanji/default }
+\xeja_char_set_class_range:nnn { "A000 } { "A014 } { kanji/default }
+\xeja_char_set_class:nn { "A015 } { kanji/default }
+\xeja_char_set_class_range:nnn { "A016 } { "A48C } { kanji/default }
+\xeja_char_set_class_range:nnn { "A490 } { "A4C6 } { kanji/default }
+\xeja_char_set_class_range:nnn { "A960 } { "A97C } { kanji/default }
+\xeja_char_set_class_range:nnn { "AC00 } { "D7A3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "E000 } { "F8FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "F900 } { "FA6D } { kanji/default }
+\xeja_char_set_class_range:nnn { "FA6E } { "FA6F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FA70 } { "FAD9 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FADA } { "FAFF } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE00 } { "FE0F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE10 } { "FE16 } { kanji/default }
+\xeja_char_set_class:nn { "FE17 } { kanji/default }
+\xeja_char_set_class:nn { "FE18 } { kanji/default }
+\xeja_char_set_class:nn { "FE19 } { kanji/default }
+\xeja_char_set_class:nn { "FE30 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE31 } { "FE32 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE33 } { "FE34 } { kanji/default }
+\xeja_char_set_class:nn { "FE35 } { kanji/default }
+\xeja_char_set_class:nn { "FE36 } { kanji/default }
+\xeja_char_set_class:nn { "FE37 } { kanji/default }
+\xeja_char_set_class:nn { "FE38 } { kanji/default }
+\xeja_char_set_class:nn { "FE39 } { kanji/default }
+\xeja_char_set_class:nn { "FE3A } { kanji/default }
+\xeja_char_set_class:nn { "FE3B } { kanji/default }
+\xeja_char_set_class:nn { "FE3C } { kanji/default }
+\xeja_char_set_class:nn { "FE3D } { kanji/default }
+\xeja_char_set_class:nn { "FE3E } { kanji/default }
+\xeja_char_set_class:nn { "FE3F } { kanji/default }
+\xeja_char_set_class:nn { "FE40 } { kanji/default }
+\xeja_char_set_class:nn { "FE41 } { kanji/default }
+\xeja_char_set_class:nn { "FE42 } { kanji/default }
+\xeja_char_set_class:nn { "FE43 } { kanji/default }
+\xeja_char_set_class:nn { "FE44 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE45 } { "FE46 } { kanji/default }
+\xeja_char_set_class:nn { "FE47 } { kanji/default }
+\xeja_char_set_class:nn { "FE48 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE49 } { "FE4C } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE4D } { "FE4F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE50 } { "FE52 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE54 } { "FE57 } { kanji/default }
+\xeja_char_set_class:nn { "FE58 } { kanji/default }
+\xeja_char_set_class:nn { "FE59 } { kanji/default }
+\xeja_char_set_class:nn { "FE5A } { kanji/default }
+\xeja_char_set_class:nn { "FE5B } { kanji/default }
+\xeja_char_set_class:nn { "FE5C } { kanji/default }
+\xeja_char_set_class:nn { "FE5D } { kanji/default }
+\xeja_char_set_class:nn { "FE5E } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE5F } { "FE61 } { kanji/default }
+\xeja_char_set_class:nn { "FE62 } { kanji/default }
+\xeja_char_set_class:nn { "FE63 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE64 } { "FE66 } { kanji/default }
+\xeja_char_set_class:nn { "FE68 } { kanji/default }
+\xeja_char_set_class:nn { "FE69 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE6A } { "FE6B } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF01 } { "FF03 } { kanji/default }
+\xeja_char_set_class:nn { "FF04 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF05 } { "FF07 } { kanji/default }
+\xeja_char_set_class:nn { "FF08 } { kanji/default }
+\xeja_char_set_class:nn { "FF09 } { kanji/default }
+\xeja_char_set_class:nn { "FF0A } { kanji/default }
+\xeja_char_set_class:nn { "FF0B } { kanji/default }
+\xeja_char_set_class:nn { "FF0C } { kanji/default }
+\xeja_char_set_class:nn { "FF0D } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF0E } { "FF0F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF10 } { "FF19 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF1A } { "FF1B } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF1C } { "FF1E } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF1F } { "FF20 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF21 } { "FF3A } { kanji/default }
+\xeja_char_set_class:nn { "FF3B } { kanji/default }
+\xeja_char_set_class:nn { "FF3C } { kanji/default }
+\xeja_char_set_class:nn { "FF3D } { kanji/default }
+\xeja_char_set_class:nn { "FF3E } { kanji/default }
+\xeja_char_set_class:nn { "FF3F } { kanji/default }
+\xeja_char_set_class:nn { "FF40 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF41 } { "FF5A } { kanji/default }
+\xeja_char_set_class:nn { "FF5B } { kanji/default }
+\xeja_char_set_class:nn { "FF5C } { kanji/default }
+\xeja_char_set_class:nn { "FF5D } { kanji/default }
+\xeja_char_set_class:nn { "FF5E } { kanji/default }
+\xeja_char_set_class:nn { "FF5F } { kanji/default }
+\xeja_char_set_class:nn { "FF60 } { kanji/default }
+\xeja_char_set_class:nn { "FF61 } { kanji/default }
+\xeja_char_set_class:nn { "FF62 } { kanji/default }
+\xeja_char_set_class:nn { "FF63 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF64 } { "FF65 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF66 } { "FF6F } { kanji/default }
+\xeja_char_set_class:nn { "FF70 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF71 } { "FF9D } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF9E } { "FF9F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFA0 } { "FFBE } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFC2 } { "FFC7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFCA } { "FFCF } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFD2 } { "FFD7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFDA } { "FFDC } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFE0 } { "FFE1 } { kanji/default }
+\xeja_char_set_class:nn { "FFE2 } { kanji/default }
+\xeja_char_set_class:nn { "FFE3 } { kanji/default }
+\xeja_char_set_class:nn { "FFE4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFE5 } { "FFE6 } { kanji/default }
+\xeja_char_set_class:nn { "FFE8 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFE9 } { "FFEC } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFED } { "FFEE } { kanji/default }
+\xeja_char_set_class:nn { "FFFD } { kanji/default }
+\xeja_char_set_class_range:nnn { "16FE0 } { "16FE1 } { kanji/default }
+\xeja_char_set_class:nn { "16FE2 } { kanji/default }
+\xeja_char_set_class:nn { "16FE3 } { kanji/default }
+\xeja_char_set_class:nn { "16FE4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "16FF0 } { "16FF1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "17000 } { "187F7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "18800 } { "18AFF } { kanji/default }
+\xeja_char_set_class_range:nnn { "18B00 } { "18CD5 } { kanji/default }
+\xeja_char_set_class_range:nnn { "18D00 } { "18D08 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B000 } { "1B0FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B100 } { "1B11E } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B150 } { "1B152 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B164 } { "1B167 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B170 } { "1B2FB } { kanji/default }
+\xeja_char_set_class:nn { "1F004 } { kanji/default }
+\xeja_char_set_class:nn { "1F0CF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F100 } { "1F10A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F110 } { "1F12D } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F130 } { "1F169 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F170 } { "1F18D } { kanji/default }
+\xeja_char_set_class:nn { "1F18E } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F18F } { "1F190 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F191 } { "1F19A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F19B } { "1F1AC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F200 } { "1F202 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F210 } { "1F23B } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F240 } { "1F248 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F250 } { "1F251 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F260 } { "1F265 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F300 } { "1F320 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F32D } { "1F335 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F337 } { "1F37C } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F37E } { "1F393 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3A0 } { "1F3CA } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3CF } { "1F3D3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3E0 } { "1F3F0 } { kanji/default }
+\xeja_char_set_class:nn { "1F3F4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3F8 } { "1F3FA } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3FB } { "1F3FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F400 } { "1F43E } { kanji/default }
+\xeja_char_set_class:nn { "1F440 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F442 } { "1F4FC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F4FF } { "1F53D } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F54B } { "1F54E } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F550 } { "1F567 } { kanji/default }
+\xeja_char_set_class:nn { "1F57A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F595 } { "1F596 } { kanji/default }
+\xeja_char_set_class:nn { "1F5A4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F5FB } { "1F5FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F600 } { "1F64F } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F680 } { "1F6C5 } { kanji/default }
+\xeja_char_set_class:nn { "1F6CC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F6D0 } { "1F6D2 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F6D5 } { "1F6D7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F6EB } { "1F6EC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F6F4 } { "1F6FC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F7E0 } { "1F7EB } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F90C } { "1F93A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F93C } { "1F945 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F947 } { "1F978 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F97A } { "1F9CB } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F9CD } { "1F9FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FA70 } { "1FA74 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FA78 } { "1FA7A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FA80 } { "1FA86 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FA90 } { "1FAA8 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FAB0 } { "1FAB6 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FAC0 } { "1FAC2 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FAD0 } { "1FAD6 } { kanji/default }
+\xeja_char_set_class_range:nnn { "20000 } { "2A6DD } { kanji/default }
+\xeja_char_set_class_range:nnn { "2A6DE } { "2A6FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2A700 } { "2B734 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B735 } { "2B73F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B740 } { "2B81D } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B81E } { "2B81F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B820 } { "2CEA1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2CEA2 } { "2CEAF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2CEB0 } { "2EBE0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2EBE1 } { "2F7FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2F800 } { "2FA1D } { kanji/default }
+\xeja_char_set_class_range:nnn { "2FA1E } { "2FA1F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2FA20 } { "2FFFD } { kanji/default }
+\xeja_char_set_class_range:nnn { "30000 } { "3134A } { kanji/default }
+\xeja_char_set_class_range:nnn { "3134B } { "3FFFD } { kanji/default }
+\xeja_char_set_class_range:nnn { "E0100 } { "E01EF } { kanji/default }
+\xeja_char_set_class_range:nnn { "F0000 } { "FFFFD } { kanji/default }
+\xeja_char_set_class_range:nnn { "100000 } { "10FFFD } { kanji/default }
+\clist_map_inline:nn
+  {
+    "2018 , "201C , "2329 , "3008 , "300A , "300C , "300E , "3010 ,
+    "3014 , "3016 , "3018 , "301A , "301D , "FF08 , "FF3B , "FF5B ,
+    "FF5F
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/open }
+  }
+\clist_map_inline:nn
+  {
+    "2019 , "201D , "232A , "3001 , "3009 , "300B , "300D , "300F ,
+    "3011 , "3015 , "3017 , "3019 , "301B , "301E , "301F , "FF09 ,
+    "FF0C , "FF3D , "FF5D , "FF60
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/close }
+  }
+\clist_map_inline:nn
+  {
+    "00B7 , "30FB , "FF1A , "FF1B
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/middle }
+  }
+\clist_map_inline:nn
+  {
+    "3002 , "FF0E
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/fullstop }
+  }
+\clist_map_inline:nn
+  {
+    "2014 , "2015 , "2025 , "2026
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/nodiv }
+  }
+\clist_map_inline:nn
+  {
+    "00AA , "00B2 , "00B3 , "00B4 , "00B9 , "00BA , "02D0 , "2122 ,
+    "3005 , "3033 , "3034 , "3035 , "303B , "309B , "309C , "309D ,
+    "309E , "30FC , "30FD , "30FE , "FF01 , "FF1F , "FF61 , "FF63 ,
+    "FF64 , "FF9E , "FF9F
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/noprebreak }
+  }
+\clist_map_inline:nn
+  {
+    "00A1 , "00BF , "20AC , "FF40 , "FF62
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/nopostbreak }
+  }
+\clist_map_inline:nn
+  {
+    "3041 , "3043 , "3045 , "3047 , "3049 , "3063 , "3083 , "3085 ,
+    "3087 , "308E , "30A1 , "30A3 , "30A5 , "30A7 , "30A9 , "30C3 ,
+    "30E3 , "30E5 , "30E7 , "30EE , "30F5 , "30F6 , "3095 , "3096 ,
+    "31F0 , "31F1 , "31F2 , "31F3 , "31F4 , "31F5 , "31F6 , "31F7 ,
+    "31F8 , "31F9 , "31FA , "31FB , "31FC , "31FD , "31FE , "31FF
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/samllkana }
+  }
+\xeja_jfm_set_glue:nnn { kanji/default } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/default } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/open } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/default }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/nodiv }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/noprebreak }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/nopostbreak }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/samllkana }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/default }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/open }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/close }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/middle }
+  { 0.5\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/fullstop }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nodiv }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/noprebreak }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nopostbreak }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/samllkana }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/default }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/open }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/middle }
+  { 0.75\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nodiv }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/noprebreak }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nopostbreak }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/samllkana }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_kern:nnn { kanji/nodiv } { kanji/nodiv }
+  { \c_zero_dim }
+\xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/samllkana } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/samllkana } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_precharwd:nn { kanji/open } { -0.5\zw }
+\xeja_jfm_set_postcharwd:nn { kanji/close } { -0.5\zw }
+\xeja_jfm_set_precharwd:nn { kanji/middle } { -0.25\zw }
+\xeja_jfm_set_postcharwd:nn { kanji/middle } { -0.25\zw }
+\xeja_jfm_set_postcharwd:nn { kanji/fullstop } { -0.5\zw }
+\xeja_jfm_set_postbreakpenalty:nn { kanji/open } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/close } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/fullstop } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/middle } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/nodiv } { 250 }
+\xeja_jfm_set_postbreakpenalty:nn { kanji/nopostbreak } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/noprebreak } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/samllkana } { 150 }
+\xeja_jfm_set_xspmode:nn { kanji/open } { preonly }
+\xeja_jfm_set_xspmode:nn { kanji/close } { postonly }
+\xeja_jfm_set_xspmode:nn { kanji/fullstop } { postonly }
+\xeja_jfm_set_xspmode:nn { kanji/middle } { inhibit }
+\xeja_jfm_set_xspmode:nn { kanji/nodiv } { inhibit }
+\xeja_jfm_set_xspmode:nn { kanji/nopostbreak } { preonly }
+\xeja_jfm_set_xspmode:nn { kanji/noprebreak } { postonly }
+%% 
+%%
+%% End of file `xejajfm-standard.def'.

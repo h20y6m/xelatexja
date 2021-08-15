@@ -26,6 +26,13 @@ This package is distributed under the MIT License.
 
 \keepsilent
 
-\generate{\file{xelatexja.sty}  {\from{xelatexja.dtx}  {package}}}
+\generate{
+  \file{xelatexja.sty}{
+    \from{xelatexja.dtx}{package}}
+  \file{xejajfm-standard.def}{
+    \from{xelatexja.dtx}{jfm,standard}}
+  \file{bxjsja-xelatexja.def}{
+    \from{xelatexja.dtx}{bxjsja}}
+}
 
 \endbatchfile

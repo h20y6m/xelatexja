@@ -10,7 +10,24 @@
 % -----------------------------------------------------------------------
 %
 %<*driver>
-\documentclass[full]{l3doc}
+\iffalse
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[2021-06-01]
+\RequirePackage{expl3}[2021-07-12]
+%<package>\ProvidesExplPackage{xelatexja}
+%<standard>\ProvidesExplFile{xejajfm-standard.def}
+%<bxjsja>\ProvidesExplFile{bxjsja-xelatexja.def}
+  {2021/08/15}{0.1.0}{Japanese typesetting with XeLaTeX}
+%<*driver>
+\fi
+%</driver>
+%
+% \fi
+%
+% \iffalse
+%
+%<*driver>
+\documentclass{l3doc}
 \usepackage[jascale=0.92]{xelatexja}
 \usepackage[japanese]{babel}
 \usepackage[verb]{bxghost}
@@ -19,57 +36,51 @@
 \usepackage{indentfirst}
 \setlength{\parindent}{1\zw}
 \setlength{\textwidth}{\numexpr\textwidth/\zw\relax\zw}
-\renewcommand{\labelitemi}{•}
-\ExplSyntaxOn
-\xeja_set_prebreakpenalty:nn { \c_xeja_kanji_smallkana_class_int } { 100 }
-\ExplSyntaxOff
+\EnableCrossrefs
+\CodelineIndex
 \begin{document}
-  \DocInput{\jobname.dtx}
+  \DocInput{xelatexja.dtx}
 \end{document}
 %</driver>
 %
-%<*package>
-\NeedsTeXFormat{LaTeX2e}[2020-10-01]
-\RequirePackage{expl3}[2020-12-07]
-\ProvidesExplPackage{xelatexja}{2021/02/23}{0.0.1}
-  {Japanese typesetting with XeLaTeX}
-%</package>
-%
 % \fi
+%
 %
 % \title{\textsf{\XeLaTeX-ja}パッケージ}
 % \author{森見幸正 (h20y6m)}
-% \date{2021年2月23日}
+% \date{2021年8月15日}
 %
 % \maketitle
 %
-% \begin{abstract}
-%   これは\XeLaTeX で和文組版を行う実験的なパッケージである。
-% \end{abstract}
 %
 % \tableofcontents
 %
-% \begin{documentation}
 %
-% \section{使い方}
+% \section{はじめに}
 %
-% \subsection{動作要件}
+% これは\XeLaTeX で和文組版を行う実験的なパッケージである。
+%
+% \subsection{使い方}
 %
 % 本パッケージは\XeLaTeX 上で動作する。
 %
-% 本パッケージは\XeTeX の「文字間トークン自動挿入機能」を独占的に利用する。
-% これらを利用する他のパッケージとは共存できない。
-%
-% \subsection{パッケージ読込}
-%
+% |\usepackge|で読み込む。
 % \begin{quote}
-%   \cs{usepackage}|[|\meta{オプション}|]{xelatexja}|
+%   |\usepackage[|\meta{options}|]{xelatexja}|
 % \end{quote}
+%
 % オプションは以下の通り。
 % \begin{itemize}
-%   \item |tate|\quad 文書全体を縦組みにする。 
-%   \item |jascale=|\meta{fpexper}\quad 和文フォントスケールを指定する。 
+%   \item |tate|：
+%     文書全体を縦組みにする。 
+%   \item |jascale=|\meta{fpexpr}：
+%     和文フォントスケールを指定する。 
+%   \item |jfm=|\meta{name}：
+%     JFMを指定する。 
 % \end{itemize}
+%
+% 本パッケージは\XeTeX の「文字間トークン自動挿入機能」を独占的に利用する。
+% これらを利用する他のパッケージとは共存できない。
 %
 % \section{expl3インターフェイス}
 %
@@ -91,7 +102,7 @@
 %
 % \subsection{フォント}
 %
-% \begin{function}{\xeja_get_jascale:}
+% \begin{function}[EXP]{\xeja_get_jascale:}
 %   \begin{syntax}
 %     \cs{xeja_get_jascale:}
 %   \end{syntax}
@@ -103,41 +114,71 @@
 % \end{variable}
 %
 % \subsection{文字クラス}
+%
+% \begin{function}{\xeja_class_new_kanji:n}
+%   \begin{syntax}
+%     \cs{xeja_class_new_kanji:n} \Arg{class}
+%   \end{syntax}
+%   和文文字クラスを新規に作成する。
+% \end{function}
+%
+% \begin{function}{\xeja_class_new_alpha:n}
+%   \begin{syntax}
+%     \cs{xeja_class_new_alpha:n} \Arg{class}
+%   \end{syntax}
+%   欧文文字クラスを新規に作成する。
+% \end{function}
+%
+% \begin{function}{\xeja_class_new_kanji:nn}
+%   \begin{syntax}
+%     \cs{xeja_class_new_kanji:nn} \Arg{class} \Arg{integer}
+%   \end{syntax}
+%   |\newXeTeXintercharclass|で作成した文字クラスを
+%   和文文字クラスとして定義する。
+% \end{function}
+%
+% \begin{function}{\xeja_class_new_alpha:nn}
+%   \begin{syntax}
+%     \cs{xeja_class_new_alpha:nn} \Arg{class} \Arg{integer}
+%   \end{syntax}
+%   |\newXeTeXintercharclass|で作成した文字クラスを
+%   欧文文字クラスとして定義する。
+% \end{function}
 % 
-% \begin{variable}
-%   {
-%     \c_xeja_kanji_class_int ,
-%     \c_xeja_kanji_openingbrackets_class_int ,
-%     \c_xeja_kanji_closingbrackets_class_int ,
-%     \c_xeja_kanji_hyphens_class_int ,
-%     \c_xeja_kanji_dividingpunctuationmarks_class_int ,
-%     \c_xeja_kanji_middledots_class_int ,
-%     \c_xeja_kanji_fullstops_class_int ,
-%     \c_xeja_kanji_commas_class_int ,
-%     \c_xeja_kanji_inseparablecharacters_class_int ,
-%     \c_xeja_kanji_iterationmarks_class_int ,
-%     \c_xeja_kanji_prolongedsoundmark_class_int ,
-%     \c_xeja_kanji_smallkana_class_int ,
-%     \c_xeja_kanji_prefixedabbreviations_class_int ,
-%     \c_xeja_kanji_hiragana_class_int ,
-%     \c_xeja_kanji_katakana_class_int
-%   }
-%   和文文字クラスを表す定数。
+% \begin{variable}{kanji/default,alpha/default,boundary,ignored}
+%   定義済み文字クラス。
+%   \begin{description}
+%   \item[\texttt{kanji/default}]
+%     デフォルトの和文文字クラス。
+%   \item[\texttt{alpha/default}]
+%     デフォルトの欧文文字クラス。
+%   \item[\texttt{boundary}]
+%     文字境界。
+%   \item[\texttt{ignored}]
+%     無視される文字。
+%   \end{description}
 % \end{variable}
-% 
-% \begin{variable}
-%   {
-%     \c_xeja_alpha_class_int ,
-%     \c_xeja_alpha_left_class_int ,
-%     \c_xeja_alpha_right_class_int ,
-%     \c_xeja_alpha_middle_class_int
-%   }
-%   欧文文字クラスを表す定数。
-% \end{variable}
-% 
-% \begin{variable}{\c_xeja_bound_class_int}
-%   文字境界（グルー・カーン・数式・ボックス等の文字以外のもの）を表す定数。
-% \end{variable}
+%
+% \begin{function}{\xeja_char_set_class:nn}
+%   \begin{syntax}
+%     \cs{xeja_char_set_class:nn} \Arg{charcode} \Arg{class}
+%   \end{syntax}
+%   文字コードが\meta{charcode}の文字の文字クラスを\meta{class}に設定する。
+% \end{function}
+%
+% \begin{function}{\xeja_char_set_class_range:nnn}
+%   \begin{syntax}
+%     \cs{xeja_char_set_class_range:nnn} \Arg{charcode_1} \Arg{charcode_2} \Arg{class}
+%   \end{syntax}
+%   文字コードが\meta{charcode_1}から\meta{charcode_2}の文字の文字クラスを\meta{class}に設定する。
+% \end{function}
+%
+% \begin{function}{\xeja_class_update:}
+%   \begin{syntax}
+%     \cs{xeja_class_update:}
+%   \end{syntax}
+%   文字クラス設定を更新する。
+% \end{function}
 %
 % \subsection{組版パラメーター}
 %
@@ -148,7 +189,7 @@
 %   和文間空白（kanjiskip）を\meta{tl}に設定する。
 % \end{function}
 %
-% \begin{function}{\xeja_get_kanjiskip:}
+% \begin{function}[EXP]{\xeja_get_kanjiskip:}
 %   \begin{syntax}
 %     \cs{xeja_get_kanjiskip:}
 %   \end{syntax}
@@ -162,56 +203,132 @@
 %   和欧文間空白（xkanjiskip）を\meta{tl}に設定する。
 % \end{function}
 %
-% \begin{function}{\xeja_get_xkanjiskip:}
+% \begin{function}[EXP]{\xeja_get_xkanjiskip:}
 %   \begin{syntax}
 %     \cs{xeja_get_xkanjiskip:}
 %   \end{syntax}
 %   xkanjiskipを取得する。
 % \end{function}
 %
-% \begin{function}{\xeja_set_prebreakpenalty:nn}
-%   \begin{syntax}
-%     \cs{xeja_set_prebreakpenalty:nn} \Arg{intexpr_1} \Arg{intexpr_2}
-%   \end{syntax}
-%   和文文字クラス\meta{intexpr_1}の行頭禁則ペナルティーを\meta{intexpr_2}に設定する。
-% \end{function}
 %
-% \begin{function}{\xeja_set_postbreakpenalty:nn}
-%   \begin{syntax}
-%     \cs{xeja_set_postbreakpenalty:nn} \Arg{intexpr_1} \Arg{intexpr_2}
-%   \end{syntax}
-%   和文文字クラス\meta{intexpr_1}の行末禁則ペナルティーを\meta{intexpr_2}に設定する。
-% \end{function}
+% \subsubsection{グルー・カーン}
 %
-% \begin{function}{\xeja_set_interchar_skip:nnn}
-%   \begin{syntax}
-%     \cs{xeja_set_interchar_skip:nnn} \Arg{intexpr_1} \Arg{intexpr_2} \Arg{skipexper}
-%   \end{syntax}
-%   和文文字クラス\meta{intexpr_1}→\meta{intexpr_2}間のアキを\meta{skipexper}に設定する。
-% \end{function}
-% 
-% \begin{variable}
+% \begin{function}
 %   {
-%     \c_xeja_xspmode_inhibit_int ,
-%     \c_xeja_xspmode_preonly_int ,
-%     \c_xeja_xspmode_postonly_int ,
-%     \c_xeja_xspmode_allow_int
+%     \xeja_jfm_set_glue:nnn ,
+%     \xeja_jfm_set_kern:nnn ,
 %   }
-%   和欧文間空白の挿入するかどうかの設定を表す定数。
-% \end{variable}
-%
-% \begin{function}{\xeja_set_xspmode:nn}
 %   \begin{syntax}
-%     \cs{xeja_set_xspmode:nn} \Arg{intexpr_1} \Arg{intexpr_2}
+%     \cs{xeja_jfm_set_glue:nnn} \Arg{class_1} \Arg{class_2} \Arg{glue}
+%     \cs{xeja_jfm_set_kern:nnn} \Arg{class_1} \Arg{class_2} \Arg{kern}
 %   \end{syntax}
-%   文字クラス\meta{intexpr_1}の前後に和欧文間空白の挿入を許可するかどうかを設定する。
+%   和文文字クラス間に挿入するグルー・カーンを設定する。
+%   \meta{glue}および\meta{kern}は挿入時に評価される。
+%   グルーとカーンを同時に設定することはできず、後から設定した方で上書きされる。
 % \end{function}
 %
-% \end{documentation}
+% \begin{function}{\xeja_jfm_clear_glue_kern:nn}
+%   \begin{syntax}
+%     \cs{xeja_jfm_clear_glue_kern:nn} \Arg{class_1} \Arg{class_2}
+%   \end{syntax}
+%   和文文字クラス間に挿入するグルー・カーンを削除する。
+% \end{function}
 %
-% \StopEventually{}
 %
-% \begin{implementation}
+% \subsubsection{文字幅調整}
+%
+% \begin{function}
+%   {
+%     \xeja_jfm_set_precharwd:nn ,
+%     \xeja_jfm_set_postcharwd:nn ,
+%   }
+%   \begin{syntax}
+%     \cs{xeja_jfm_set_precharwd:nn} \Arg{class} \Arg{width}
+%     \cs{xeja_jfm_set_postcharwd:nn} \Arg{class} \Arg{width}
+%   \end{syntax}
+%   和文文字クラスの文字幅調整を設定する。
+%   例えば全角の括弧類・句読点類を半角で組むために|-0.5\zw|を設定する。
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xeja_jfm_clear_precharwd:n ,
+%     \xeja_jfm_clear_postcharwd:n ,
+%   }
+%   \begin{syntax}
+%     \cs{xeja_jfm_clear_precharwd:n} \Arg{class}
+%     \cs{xeja_jfm_clear_postcharwd:n} \Arg{class}
+%   \end{syntax}
+%   和文文字クラスの文字幅調整を削除する。
+% \end{function}
+%
+%
+% \subsubsection{禁則ペナルティ}
+%
+% \begin{function}
+%   {
+%     \xeja_jfm_set_prebreakpenalty:nn ,
+%     \xeja_jfm_set_postbreakpenalty:nn ,
+%   }
+%   \begin{syntax}
+%     \cs{xeja_jfm_set_prebreakpenalty:nn} \Arg{class} \Arg{intexpr}
+%     \cs{xeja_jfm_set_postbreakpenalty:nn} \Arg{class} \Arg{intexpr}
+%   \end{syntax}
+%   和文文字クラス\meta{class}の行頭・行末禁則ペナルティーを\meta{intexpr}に設定する。
+% \end{function}
+%
+%
+% \begin{function}
+%   {
+%     \xeja_jfm_clear_prebreakpenalty:n ,
+%     \xeja_jfm_clear_postbreakpenalty:n ,
+%   }
+%   \begin{syntax}
+%     \cs{xeja_jfm_clear_prebreakpenalty:n} \Arg{class}
+%     \cs{xeja_jfm_clear_postbreakpenalty:n} \Arg{class}
+%   \end{syntax}
+%   和文文字クラス\meta{class}の行頭・行末禁則ペナルティー削除する。
+% \end{function}
+%
+%
+% \subsubsection{和欧文間空白挿入設定}
+%
+% \begin{function}{\xeja_jfm_set_xspmode:nn}
+%   \begin{syntax}
+%     \cs{xeja_jfm_set_xspmode:nn} \Arg{class} \Arg{xspmode}
+%   \end{syntax}
+%   文字クラス\meta{class}の前後に和欧文間空白の挿入を許可するかどうかを設定する。
+%   \meta{xspmode}に指定できる値は以下の
+%   \begin{description}
+%   \item[\texttt{inhibit}]
+%     文字の前後とも和欧文間空白の挿入を許可しない。
+%   \item[\texttt{preonly}]
+%     文字の前のみ和欧文間空白の挿入を許可し、後ろには許可しない。
+%   \item[\texttt{postonly}]
+%     文字の後ろのみ和欧文間空白の挿入を許可し、前には許可しない。
+%   \item[\texttt{allow}]
+%     文字の前後とも和欧文間空白の挿入を許可する。（デフォルト）
+%   \end{description}
+% \end{function}
+%
+%
+% \subsection{ボックス}
+%
+% \begin{function}{\xeja_yoko_hbox:n}
+%   \begin{syntax}
+%     \cs{xeja_yoko_hbox:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_hbox:n}
+%   \begin{syntax}
+%     \cs{xeja_tate_hbox:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \StopEventually{\setlength\IndexMin{200pt}  \PrintIndex  }
+%
+%
 %
 % \section{\pkg{xelatexja}の実装}
 %
@@ -236,7 +353,6 @@
 % 依存パッケージの読込。
 %    \begin{macrocode}
 \RequirePackage{l3keys2e,xparse}
-\RequirePackage{everysel}
 %    \end{macrocode}
 %
 % \subsection{変数}
@@ -287,9 +403,17 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\g_@@_jfm_tl}
+%    \begin{macrocode}
+\tl_new:N \g_@@_jfm_tl
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\l_@@_ybaselineshift_tl,\l_@@_tbaselineshift_tl}
-%   それぞれ横組み・縦組みでの欧文ベースラインの補正値。
-%   正の値が設定されている場合、欧文のベースラインを指定値だけ行送り方向に移動する。
+%   それぞれ横組み・縦組みでの和文ベースラインの補正値。
+%   (u)p\LaTeX とは異なり欧文ではなく和文に対して補正を行う。
+%   正の値が設定されている場合、和文のベースラインを指定値だけ
+%   行送りと逆方向に移動する。
 %    \begin{macrocode}
 \tl_new:N \l_@@_ybaselineshift_tl
 \tl_new:N \l_@@_tbaselineshift_tl
@@ -314,7 +438,12 @@
   {
     tate .bool_gset:N = \g_@@_tate_document_bool,
     jascale .fp_gset:N = \g_@@_jascale_fp,
+    jfm .tl_gset:N = \g_@@_jfm_tl,
   }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\keys_set:nn { xelatexja } { jfm = standard }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -322,6 +451,10 @@
 %    \end{macrocode}
 %
 % \subsection{組方向}
+%
+%    \begin{macrocode}
+\bool_set_eq:NN \l_@@_tate_text_bool \g_@@_tate_document_bool
+%    \end{macrocode}
 %
 % \begin{macro}[pTF]{\xeja_if_tate_document:}
 %   文書全体が縦組かどうかの条件式。
@@ -371,7 +504,8 @@
 %    \end{macrocode}
 % フォント変更時に|\zw|を更新する。
 %    \begin{macrocode}
-\EverySelectfont { \@@_update_zw: }
+\hook_gput_code:nnn { selectfont } { . }
+  { \@@_update_zw: }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -465,7 +599,8 @@
                   {
                     \msg_warning:nnx { xelatexja } { font / undefined }
                       { #2 / #3 / #4 }
-                    \cs_gset_eq:cN { #1 / #2 / #3 / #4 / #5 } \prg_do_nothing:
+                    \cs_gset_eq:cN { #1 / #2 / #3 / #4 / #5 }
+                      \prg_do_nothing:
                   }
               }
           }
@@ -559,7 +694,7 @@
       { \@@_select_yoko_kanji_font: }
   }
 %    \end{macrocode}
-%   欧文フォントへの切り替えはとりあえず|selectfont|を呼ぶだけ。
+%   欧文フォントへの切り替えはとりあえず|\selectfont|を呼ぶだけ。
 %    \begin{macrocode}
 \cs_new:Npn \@@_leave_kanji_font:
   {
@@ -569,1116 +704,840 @@
 % \end{macro}
 %
 % \subsection{文字クラス}
-% 
-% \subsubsection{文字クラス定義}
-%
-% \begin{macro}{\c_xeja_kanji_class_int}
-%   和文文字。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_openingbrackets_class_int}
-%   始め括弧類（cl-01）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_openingbrackets_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_closingbrackets_class_int}
-%   終わり括弧類（cl-02）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_closingbrackets_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_hyphens_class_int}
-%   ハイフン類（cl-03）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_hyphens_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_dividingpunctuationmarks_class_int}
-%   区切り約物（cl-04）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_dividingpunctuationmarks_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_middledots_class_int}
-%   中点類（cl-05）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_middledots_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_fullstops_class_int}
-%   句点類（cl-06）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_fullstops_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_commas_class_int}
-%   読点類（cl-07）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_commas_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_inseparablecharacters_class_int}
-%   分離禁止文字（cl-08）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_inseparablecharacters_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_iterationmarks_class_int}
-%   繰返し記号（cl-09）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_iterationmarks_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_prolongedsoundmark_class_int}
-%   長音記号（cl-10）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_prolongedsoundmark_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_smallkana_class_int}
-%   小書き仮名（cl-11）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_smallkana_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_prefixedabbreviations_class_int}
-%   前置省略記号（cl-12）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_prefixedabbreviations_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_hiragana_class_int}
-%   平仮名（cl-15）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_hiragana_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_kanji_katakana_class_int}
-%   片仮名（cl-16）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_kanji_katakana_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_alpha_class_int}
-%   欧文文字（デフォルト）。
-%    \begin{macrocode}
-\int_const:Nn \c_xeja_alpha_class_int { 0 }
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_alpha_left_class_int}
-%   欧文約物（後に和欧文間空白をいれないもの）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_alpha_left_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_alpha_right_class_int}
-%   欧文約物（前に和欧文間空白をいれないもの）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_alpha_right_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_alpha_middle_class_int}
-%   欧文約物（前後に和欧文間空白をいれないもの）。
-%    \begin{macrocode}
-\newXeTeXintercharclass \c_xeja_alpha_middle_class_int
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\c_xeja_bound_class_int}
-%   文字境界。
-%    \begin{macrocode}
-\int_const:Nn \c_xeja_bound_class_int { 4095 }
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\g_@@_kanji_class_seq}
-% 和文文字クラスのリスト。
-%    \begin{macrocode}
-\seq_new:N \g_@@_kanji_class_seq
-\seq_gset_from_clist:Nn \g_@@_kanji_class_seq
-  {
-    \c_xeja_kanji_class_int ,
-    \c_xeja_kanji_openingbrackets_class_int ,
-    \c_xeja_kanji_closingbrackets_class_int ,
-    \c_xeja_kanji_hyphens_class_int ,
-    \c_xeja_kanji_dividingpunctuationmarks_class_int ,
-    \c_xeja_kanji_middledots_class_int ,
-    \c_xeja_kanji_fullstops_class_int ,
-    \c_xeja_kanji_commas_class_int ,
-    \c_xeja_kanji_inseparablecharacters_class_int ,
-    \c_xeja_kanji_iterationmarks_class_int ,
-    \c_xeja_kanji_prolongedsoundmark_class_int ,
-    \c_xeja_kanji_smallkana_class_int ,
-    \c_xeja_kanji_prefixedabbreviations_class_int ,
-    \c_xeja_kanji_hiragana_class_int ,
-    \c_xeja_kanji_katakana_class_int
-  }
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\g_@@_kanji_class_seq}
-% 欧文文字クラスのリスト。
-%    \begin{macrocode}
-\seq_new:N \g_@@_alpha_class_seq
-\seq_gset_from_clist:Nn \g_@@_alpha_class_seq
-  {
-    \c_xeja_alpha_class_int ,
-    \c_xeja_alpha_left_class_int ,
-    \c_xeja_alpha_right_class_int ,
-    \c_xeja_alpha_middle_class_int ,
-  }
-%    \end{macrocode}
-% \end{macro}
-%
-% \subsubsection{文字クラス設定}
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_set_char_class:nn #1#2
-  {
-    \tex_global:D
-    \tex_XeTeXcharclass:D \int_eval:n {#1} = \int_eval:n {#2} ~
-  }
-\cs_new:Npn \xeja_set_char_class:nnn #1#2#3
-  { \int_step_inline:nnn {#1} {#2} { \xeja_set_char_class:nn {##1} {#3} } }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_char_set_kanji:n #1
-  { \xeja_set_char_class:nn {#1} { \c_xeja_kanji_class_int } }
-\cs_new:Npn \xeja_char_set_kanji:nn #1#2
-  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_kanji_class_int } }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_char_set_alpha:n #1
-  { \xeja_set_char_class:nn {#1} { \c_xeja_alpha_class_int } }
-\cs_new:Npn \xeja_char_set_alpha:nn #1#2
-  { \xeja_set_char_class:nnn {#1} {#2} { \c_xeja_alpha_class_int } }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\xeja_char_set_kanji:nn { "0080 } { "00FF }
-\xeja_char_set_kanji:nn { "0250 } { "1DFF }
-\xeja_char_set_kanji:nn { "1F00 } { "D7FF }
-\xeja_char_set_kanji:nn { "E000 } { "FFEF }
-\xeja_char_set_kanji:nn { "10000 } { "2FFFF }
-\xeja_char_set_kanji:nn { "F0000 } { "FFFFF }
-\xeja_char_set_kanji:nn { "100000 } { "10FFFF }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\xeja_char_set_alpha:nn { "0000 } { "007F } % Basic Latin
-\xeja_char_set_alpha:nn { "0100 } { "017F } % Latin Extended-A
-\xeja_char_set_alpha:nn { "0180 } { "024F } % Latin Extended-B
-\xeja_char_set_alpha:nn { "1E00 } { "1EFF } % Latin Extended Additional
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\xeja_char_set_alpha:n { "00AA } % Feminine Ordinal Indicator
-\xeja_char_set_alpha:n { "00BA } % Masculine ordinal indicator
-\xeja_char_set_alpha:nn { "00C0 } { "00FF }
-\xeja_char_set_kanji:n { "00D7 } % Multiplication sign
-\xeja_char_set_kanji:n { "00F7 } % Division sign
-%    \end{macrocode}
-%
-% とりあえずjlreqと同じ
-%    \begin{macrocode}
-\tl_map_inline:nn { （〔［｛〈《「『【‘“｟〘〖〝 }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_openingbrackets_class_int }
-  }
-\tl_map_inline:nn { ）〕］｝〉》」』】’”｠〙〗〟 }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_closingbrackets_class_int }
-  }
-\tl_map_inline:nn { ‐〜～゠– }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hyphens_class_int }
-  }
-\tl_map_inline:nn { ！？‼⁇⁈⁉ }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_dividingpunctuationmarks_class_int }
-  }
-\tl_map_inline:nn { ・：； }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_middledots_class_int }
-  }
-\tl_map_inline:nn { 。． }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_fullstops_class_int }
-  }
-\tl_map_inline:nn { 、， }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_commas_class_int }
-  }
-\tl_map_inline:nn { —―…‥〳〴〵 }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_inseparablecharacters_class_int }
-  }
-\tl_map_inline:nn { ヽヾゝゞ々〻 }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_iterationmarks_class_int }
-  }
-\tl_map_inline:nn { ー }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_prolongedsoundmark_class_int }
-  }
-\tl_map_inline:nn { ぁぃぅぇぉァィゥェォっゃゅょゎッャュョヮヵヶゕゖㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_smallkana_class_int }
-  }
-\tl_map_inline:nn { ￥＄￡＃№ }
-  {
-    \xeja_set_char_class:nn { `#1 }
-      { \c_xeja_kanji_prefixedabbreviations_class_int }
-  }
-\tl_map_inline:nn { あいうえおかがきぎくぐけげこごさざしじすずせぜそぞただちぢつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもやゆよらりるれろわゐゑをんゔ }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_hiragana_class_int }
-  }
-\tl_map_inline:nn { アイウエオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤユヨラリルレロワヰヱヲンヴヷヸヹヺ }
-  {
-    \xeja_set_char_class:nn { `#1 } { \c_xeja_kanji_katakana_class_int }
-  }
-%    \end{macrocode}
-%    \begin{macrocode}
-\xeja_set_char_class:nn { `( } { \c_xeja_alpha_left_class_int }
-\xeja_set_char_class:nn { `) } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `[ } { \c_xeja_alpha_left_class_int }
-\xeja_set_char_class:nn { `] } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `` } { \c_xeja_alpha_left_class_int }
-\xeja_set_char_class:nn { `' } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `; } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `, } { \c_xeja_alpha_right_class_int }
-\xeja_set_char_class:nn { `. } { \c_xeja_alpha_right_class_int }
-%    \end{macrocode}
-%
-% \subsection{文字間トークン}
 %
 % 文字間トークン挿入機能の有効化
 %    \begin{macrocode}
 \tex_XeTeXinterchartokenstate:D = 1 ~
 %    \end{macrocode}
 %
+% \begin{macro}{\g_@@_class_seq}
+%   文字クラス一覧。
 %    \begin{macrocode}
-\cs_new:Npn \@@_the_interchar_tokens:nn #1#2
-  {
-    \tex_the:D \tex_XeTeXinterchartoks:D \int_eval:n {#1} ~ \int_eval:n {#2} ~
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \@@_set_interchar_tokens:nnn #1#2#3
-  {
-    \tex_XeTeXinterchartoks:D \int_eval:n {#1} ~ \int_eval:n {#2} = {#3}
-  }
-\cs_generate_variant:Nn \@@_set_interchar_tokens:nnn
-  { nnV, nnv, nno, nnf, nnx }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \@@_clear_interchar_tokens:nn #1#2
-  {
-    \@@_set_interchar_tokens:nnn {#1} {#2} {}
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \@@_append_interchar_tokens:nnn #1#2#3
-  {
-    \@@_set_interchar_tokens:nnx {#1} {#2}
-      {
-        \@@_the_interchar_tokens:nn {#1} {#2}
-        \exp_not:n {#3}
-      }
-  }
-\cs_generate_variant:Nn \@@_append_interchar_tokens:nnn { nnV, nno, nnx }
-%    \end{macrocode}
-%%
-% \subsubsection{組版パラメーター}
-%
-% \begin{macro}{\xeja_set_kanjiskip:n}
-%   kanjiskipを設定する。
-%    \begin{macrocode}
-\cs_new:Npn \xeja_set_kanjiskip:n #1
-  { \tl_set:Nn \l_@@_kanjiskip_tl {#1} }
+\seq_new:N \g_@@_class_seq
 %    \end{macrocode}
 % \end{macro}
+%
+%    \begin{macrocode}
+\msg_new:nnnn { xelatexja } { class-exists }
+  { Class~'#1'~has~already~been~declared. }
+  {
+    There~already~exists~a~class~declaration~with~this~name.\\
+    Please~use~a~different~name~for~your~class.
+  }
+%    \end{macrocode}
+% 
+% \begin{macro}{\@@_class_new:n}
+%   新しい文字クラスを定義する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_class_new:n #1
+  {
+    \seq_if_in:NnTF \g_@@_class_seq {#1}
+      {
+        \msg_error:nnn { xelatexja } { class-exists } {#1}
+      }
+      {
+        \exp_args:Nc
+          \newXeTeXintercharclass
+          { c_@@_class_#1_int }
+        \seq_gput_right:Nn \g_@@_class_seq {#1}
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_class_new:nn}
+%   文字クラスを定義する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_class_new:nn #1#2
+  {
+    \seq_if_in:NnTF \g_@@_class_seq {#1}
+      {
+        \msg_error:nnn { xelatexja } { class-exists } {#1}
+      }
+      {
+        \int_const:cn 
+          { c_@@_class_#1_int }
+          {#2}
+        \seq_gput_right:Nn \g_@@_class_seq {#1}
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_class_use:n}
+%    \begin{macrocode}
+\cs_new:Npn \@@_class_use:n #1
+  {
+    \int_use:c 
+      { c_@@_class_#1_int }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\g_@@_class_kanji_seq}
+% \begin{macro}{\g_@@_class_alpha_seq}
+%    \begin{macrocode}
+\seq_new:N \g_@@_class_kanji_seq
+\seq_new:N \g_@@_class_alpha_seq
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{macro}{\xeja_class_new_kanji:n}
+% \begin{macro}{\xeja_class_new_alpha:n}
+%   和文・欧文文字クラスを新規に作成する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_class_new_kanji:n #1
+  {
+    \@@_class_new:n {#1}
+    \seq_gput_right:Nn \g_@@_class_kanji_seq {#1}
+  }
+\cs_new:Npn \xeja_class_new_alpha:n #1
+  {
+    \@@_class_new:n {#1}
+    \seq_gput_right:Nn \g_@@_class_alpha_seq {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_class_new_kanji:nn}
+% \begin{macro}{\xeja_class_new_alpha:nn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_class_new_kanji:nn #1#2
+  {
+    \@@_class_new:nn {#1} {#2}
+    \seq_gput_right:Nn \g_@@_class_kanji_seq {#1}
+  }
+\cs_new:Npn \xeja_class_new_alpha:nn #1#2
+  {
+    \@@_class_new:nn {#1} {#2}
+    \seq_gput_right:Nn \g_@@_class_alpha_seq {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{kanji/default,alpha/default,boundary,ignored}
+%    \begin{macrocode}
+\xeja_class_new_kanji:n { kanji/default }
+\xeja_class_new_alpha:nn { alpha/default } { 0 }
+\@@_class_new:nn { boundary } { 4095 }
+\@@_class_new:nn { ignored } { 4096 }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\xeja_char_set_class:nn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_char_set_class:nn #1#2
+  {
+    \tex_XeTeXcharclass:D \int_eval:n {#1} = \@@_class_use:n {#2} ~
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\xeja_char_set_class_range:nnn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_char_set_class_range:nnn #1#2#3
+  {
+    \int_step_inline:nnn {#1} {#2}
+      {
+        \xeja_char_set_class:nn {##1} {#3}
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\xeja_class_update:}
+%   文字クラス設定を更新する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_class_update:
+  {
+    \seq_map_inline:Nn \g_@@_class_kanji_seq
+      {
+        \seq_map_inline:Nn \g_@@_class_kanji_seq
+          {
+            \@@_interchar_gset:nnn {##1} {####1}
+              { \@@_interchar_kanji_to_kanji:nn {##1} {####1} }
+          }
+        \seq_map_inline:Nn \g_@@_class_alpha_seq
+          {
+            \@@_interchar_gset:nnn {##1} {####1}
+              { \@@_interchar_kanji_to_alpha:nn {##1} {####1} }
+            \@@_interchar_gset:nnn {####1} {##1}
+              { \@@_interchar_alpha_to_kanji:nn {####1} {##1} }
+          }
+        \@@_interchar_gset:nnn {##1} { boundary }
+          { \@@_interchar_kanji_to_boundary:n {##1} }
+        \@@_interchar_gset:nnn { boundary } {##1}
+          { \@@_interchar_boundary_to_kanji:n {##1} }
+      }
+    \seq_map_inline:Nn \g_@@_class_alpha_seq
+      {
+        \@@_interchar_gset:nnn {##1} { boundary }
+          { \@@_interchar_alpha_to_boundary:n {##1} }
+        \@@_interchar_gset:nnn { boundary } {##1}
+          { \@@_interchar_boundary_to_alpha:n {##1} }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_interchar_gset:nnn}
+%   文字クラス間挿入トークンを設定する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_interchar_gset:nnn #1#2#3
+  {
+    \tex_global:D \tex_XeTeXinterchartoks:D
+      \@@_class_use:n {#1} ~ \@@_class_use:n {#2} = {#3}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_interchar_kanji_to_kanji:nn}
+%   和文→和文に挿入するトークン。
+%    \begin{macrocode}
+\cs_new:Npn \@@_interchar_kanji_to_kanji:nn #1#2
+  {
+    \@@_jfm_use_postcharwd:n {#1}
+    \@@_baselineshift_end:
+    \@@_jfm_use_postbreakpenalty:n {#1}
+    \@@_jfm_use_prebreakpenalty:n {#2}
+    \@@_jfm_use_glue_kern_or:nnn {#1} {#2}
+      { \@@_glue:n { \l_@@_kanjiskip_tl } }
+    \@@_baselineshift_begin:
+    \@@_jfm_use_precharwd:n {#2}
+    % \iow_term:n { K2K:~#1->#2 }
+    \scan_stop:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_interchar_alpha_to_kanji:nn}
+%   和文→欧文に挿入するトークン。
+%    \begin{macrocode}
+\cs_new:Npn \@@_interchar_kanji_to_alpha:nn #1#2
+  {
+    \@@_jfm_use_postcharwd:n {#1}
+    \@@_baselineshift_end:
+    \@@_jfm_use_postbreakpenalty:n {#1}
+    \@@_jfm_use_glue_kern_or:nnn {#1} { kanji/default }
+      {
+        \@@_jfm_if_xspmode_inhibit:nnF {#1} {#2}
+          { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+      }
+    \@@_leave_kanji_font:
+    % \iow_term:n { K2A:~#1->#2 }
+    \scan_stop:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_interchar_kanji_to_alpha:nn}
+%   欧文→和文に挿入するトークン。
+%    \begin{macrocode}
+\cs_new:Npn \@@_interchar_alpha_to_kanji:nn #1#2
+  {
+    \@@_enter_kanji_font:
+    \@@_jfm_use_prebreakpenalty:n {#2}
+    \@@_jfm_use_glue_kern_or:nnn { kanji/default } {#2}
+      {
+        \@@_jfm_if_xspmode_inhibit:nnF {#1} {#2}
+          { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+      }
+    \@@_baselineshift_begin:
+    \@@_jfm_use_precharwd:n {#2}
+    % \iow_term:n { A2K:~#1->#2 }
+    \scan_stop:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_interchar_kanji_to_boundary:n}
+%   和文→境界に挿入するトークン。
+%    \begin{macrocode}
+\cs_new:Npn \@@_interchar_kanji_to_boundary:n #1
+  {
+    \@@_jfm_use_postcharwd:n {#1}
+    \@@_baselineshift_end:
+    \@@_jfm_use_postbreakpenalty:n {#1}
+    \@@_leave_kanji_font:
+    % \iow_term:n { K2B:~#1->boundary }
+    \scan_stop:
+    \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
+      {
+        \@@_jfm_use_glue_kern_or:nnn {#1} { kanji/default }
+          {
+            \@@_jfm_if_xspmode_inhibit:nnF {#1} { kanji/default }
+              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+          }
+      }
+      {
+        \@@_lastnode_kanji:n {#1}
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_interchar_boundary_to_kanji:n}
+%   境界→和文に挿入するトークン。
+%    \begin{macrocode}
+\cs_new:Npn \@@_interchar_boundary_to_kanji:n #1
+  {
+    \@@_lastnode_check:
+    \@@_enter_kanji_font:
+    \@@_jfm_use_prebreakpenalty:n {#1}
+    \@@_lastnode_switch:nnn
+      {
+        \@@_jfm_use_glue_kern_or:nnn { kanji/default } {#1}
+          {
+            \@@_jfm_if_xspmode_inhibit:nnF { kanji/default } {#1}
+              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+          }
+      }
+      {
+        \@@_jfm_use_glue_kern_or:nnn
+          { \g_@@_lastnode_class_tl } {#1}
+          { \@@_glue:n { \l_@@_kanjiskip_tl } }
+      }
+      {
+        \@@_jfm_use_glue_kern_or:nnn
+          { kanji/default } { \g_@@_lastnode_class_tl }
+          {
+            \@@_jfm_if_xspmode_inhibit:nnF
+              {#1} { \g_@@_lastnode_class_tl }
+              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+          }
+      }
+    \@@_baselineshift_begin:
+    \@@_jfm_use_precharwd:n {#1}
+    \@@_lastnode_clear:
+    % \iow_term:n { B2K:~boundary->#1 }
+    \scan_stop:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_interchar_alpha_to_boundary:n}
+%   欧文→境界に挿入するトークン。
+%    \begin{macrocode}
+\cs_new:Npn \@@_interchar_alpha_to_boundary:n #1
+  {
+    \@@_lastnode_alpha:n {#1}
+    % \iow_term:n { A2B:~#1->boundary }
+    \scan_stop:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_interchar_boundary_to_alpha:n}
+%   境界→欧文に挿入するトークン。
+%    \begin{macrocode}
+\cs_new:Npn \@@_interchar_boundary_to_alpha:n #1
+  {
+    \@@_lastnode_check:
+    \@@_lastnode_switch:nnn
+      {}
+      {
+        \@@_jfm_use_glue_kern_or:nnn
+          { \g_@@_lastnode_class_tl } { kanji/default }
+          {
+            \@@_jfm_if_xspmode_inhibit:nnF
+              { \g_@@_lastnode_class_tl } {#1}
+              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+          }
+      }
+      {}
+    \@@_lastnode_clear:
+    % \iow_term:n { B2A:~boundary->#1 }
+    \scan_stop:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\bool_new:N \l_@@_lastnode_math_bool
+\bool_new:N \g_@@_lastnode_kanji_bool
+\bool_new:N \g_@@_lastnode_alpha_bool
+\tl_new:N \g_@@_lastnode_class_tl
+%    \end{macrocode}
+%
+% \begin{macro}
+%   {
+%     \@@_lastnode_kanji:n ,
+%     \@@_lastnode_alpha:n ,
+%     \@@_lastnode_clear: ,
+%   }
+%    \begin{macrocode}
+\cs_new:Npn \@@_lastnode_kanji:n #1
+  {
+    \bool_gset_true:N \g_@@_lastnode_kanji_bool
+    \bool_gset_false:N \g_@@_lastnode_alpha_bool
+    \tl_gset:Nn \g_@@_lastnode_class_tl {#1}
+  }
+\cs_new:Npn \@@_lastnode_alpha:n #1
+  {
+    \bool_gset_false:N \g_@@_lastnode_kanji_bool
+    \bool_gset_true:N \g_@@_lastnode_alpha_bool
+    \tl_gset:Nn \g_@@_lastnode_class_tl {#1}
+  }
+\cs_new:Npn \@@_lastnode_clear:
+  {
+    \bool_gset_false:N \g_@@_lastnode_kanji_bool
+    \bool_gset_false:N \g_@@_lastnode_alpha_bool
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}
+%   {
+%     \@@_lastnode_check: ,
+%     \@@_lastnode_switch:nnn ,
+%   }
+%    \begin{macrocode}
+\cs_new:Npn \@@_lastnode_check:
+  {
+    \bool_set_false:N \l_@@_lastnode_math_bool
+    \int_case:nn { \tex_lastnodetype:D }
+      {
+        { -1 }
+        {
+          \@@_lastnode_clear:
+        }
+        {  1 }
+        {
+          \@@_lastnode_clear:
+        }
+        {  2 }
+        {
+          \@@_lastnode_clear:
+        }
+        { 10 }
+        {
+          \@@_lastnode_clear:
+          \bool_set_true:N \l_@@_lastnode_math_bool
+        }
+        { 11 }
+        {
+          \@@_lastnode_clear:
+        }
+        { 12 }
+        {
+          \dim_compare:nNnF { \tex_lastkern:D } = { \c_zero_dim }
+            {
+              \@@_lastnode_clear:
+            }
+        }
+      }
+  }
+\cs_new:Npn \@@_lastnode_switch:nnn #1#2#3
+  {
+    \bool_case_true:n
+      {
+        { \l_@@_lastnode_math_bool } {#1}
+        { \g_@@_lastnode_kanji_bool } {#2}
+        { \g_@@_lastnode_alpha_bool } {#3}
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_baselineshift_begin:}
+% \begin{macro}{\@@_baselineshift_end:}
+%    \begin{macrocode}
+\dim_new:N \l_@@_baselineshift_dim
+\cs_new:Npn \@@_baselineshift_begin:
+  {
+    \dim_set:Nn \l_@@_baselineshift_dim
+      {
+        \xeja_if_tate_text:TF
+          { \l_@@_tbaselineshift_tl }
+          { \l_@@_ybaselineshift_tl }
+      }
+    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+      {
+        \tex_raise:D \l_@@_baselineshift_dim
+          \tex_hbox:D \c_group_begin_token
+      }
+  }
+\cs_new:Npn \@@_baselineshift_end:
+  {
+    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+      {
+        \c_group_end_token
+        \@@_kern:n { \c_zero_dim }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{JFMパラメータ}
+%
+% \begin{macro}{\xeja_set_kanjiskip:n}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_set_kanjiskip:n #1
+  {
+    \tl_set:Nn \l_@@_kanjiskip_tl {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\xeja_get_kanjiskip:}
-%   kanjiskipを取得する。
 %    \begin{macrocode}
 \cs_new:Npn \xeja_get_kanjiskip:
-  { \tl_use:N \l_@@_kanjiskip_tl }
+  {
+    \l_@@_kanjiskip_tl
+  }
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\xeja_set_xkanjiskip:n}
-%   xkanjiskipを設定する。
 %    \begin{macrocode}
 \cs_new:Npn \xeja_set_xkanjiskip:n #1
-  { \tl_set:Nn \l_@@_xkanjiskip_tl {#1} }
+  {
+    \tl_set:Nn \l_@@_xkanjiskip_tl {#1}
+  }
 %    \end{macrocode}
 % \end{macro}
+%
 % \begin{macro}{\xeja_get_xkanjiskip:}
-%   xkanjiskipを取得する。
 %    \begin{macrocode}
 \cs_new:Npn \xeja_get_xkanjiskip:
-  { \tl_use:N \l_@@_xkanjiskip_tl }
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\l_@@_prebreakpenalty_prop}
-%   行頭禁則ペナルティーを保持するprop変数。
-%    \begin{macrocode}
-\prop_new:N \l_@@_prebreakpenalty_prop
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\xeja_set_prebreakpenalty:nn}
-%   行頭禁則ペナルティーを設定する関数。
-%    \begin{macrocode}
-\cs_new:Npn \xeja_set_prebreakpenalty:nn #1#2
   {
-    \int_compare:nNnTF {#2} = { 0 }
-      {
-        \exp_args:NNx \prop_remove:Nn \l_@@_prebreakpenalty_prop
-          { \int_eval:n {#1} }
-      }
-      {
-        \prop_put:Nxx \l_@@_prebreakpenalty_prop
-          { \int_eval:n {#1} }
-          { \int_eval:n {#2} }
-      }
-  }
-%    \end{macrocode}
-% \end{macro}
-% 終わり括弧類・ハイフン類・区切り約物・中点類・句点類・読点類・繰返し記号・
-% 長音記号・小書き仮名を行頭禁則に設定する。
-%    \begin{macrocode}
-\clist_map_inline:nn
-  { 
-    \c_xeja_kanji_closingbrackets_class_int ,
-    \c_xeja_kanji_hyphens_class_int ,
-    \c_xeja_kanji_dividingpunctuationmarks_class_int ,
-    \c_xeja_kanji_middledots_class_int ,
-    \c_xeja_kanji_fullstops_class_int ,
-    \c_xeja_kanji_commas_class_int ,
-    \c_xeja_kanji_inseparablecharacters_class_int ,
-    \c_xeja_kanji_iterationmarks_class_int ,
-    \c_xeja_kanji_prolongedsoundmark_class_int ,
-    \c_xeja_kanji_smallkana_class_int
-  }
-  {
-    \xeja_set_prebreakpenalty:nn {#1} { 10000 }
-  }
-%    \end{macrocode}
-%
-% \begin{macro}{\l_@@_postbreakpenalty_prop}
-%   行末禁則ペナルティーを保持するprop変数。
-%    \begin{macrocode}
-\prop_new:N \l_@@_postbreakpenalty_prop
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\xeja_set_postbreakpenalty:nn}
-%   行末禁則ペナルティーを設定する関数。
-%    \begin{macrocode}
-\cs_new:Npn \xeja_set_postbreakpenalty:nn #1#2
-  {
-    \int_compare:nNnTF {#2} = { 0 }
-      {
-        \exp_args:NNx \prop_remove:Nn \l_@@_postbreakpenalty_prop
-          { \int_eval:n {#1} }
-      }
-      {
-        \prop_put:Nxx \l_@@_postbreakpenalty_prop
-          { \int_eval:n {#1} }
-          { \int_eval:n {#2} }
-      }
-  }
-%    \end{macrocode}
-% \end{macro}
-% 始め括弧類と前置省略記号を行末禁則に設定する。
-%    \begin{macrocode}
-\clist_map_inline:nn
-  { 
-    \c_xeja_kanji_openingbrackets_class_int ,
-    \c_xeja_kanji_prefixedabbreviations_class_int ,
-  }
-  {
-    \xeja_set_postbreakpenalty:nn {#1} { 10000 }
-  }
-%    \end{macrocode}
-%
-% \begin{macro}{\l_@@_postbreakpenalty_prop}
-%   和文文字間のアキを定義する。
-%    \begin{macrocode}
-\prop_new:N \l_@@_interchar_skip_prop
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\xeja_set_interchar_skip:nnn}
-%   和文文字間のアキを定義する。
-%    \begin{macrocode}
-\cs_new:Npn \xeja_set_interchar_skip:nnn #1#2#3
-  { 
-    \tl_if_empty:nTF {#3}
-      {
-        \exp_args:NNx \prop_remove:Nn \l_@@_interchar_skip_prop
-          { \int_eval:n {#1} / \int_eval:n {#2} }
-      }
-      {
-        \exp_args:NNx \prop_put:Nnn \l_@@_interchar_skip_prop
-          { \int_eval:n {#1} / \int_eval:n {#2} }
-          {#3}
-      }
-  }
-%    \end{macrocode}
-% \end{macro}
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \xeja_set_interchar_skip:nnn
-      {#1} { \c_xeja_kanji_openingbrackets_class_int }
-      { 0.5\zw plus 0.25\zw minus 0.5\zw }
-    \xeja_set_interchar_skip:nnn
-      { \c_xeja_kanji_closingbrackets_class_int } {#1}
-      { 0.5\zw plus 0.25\zw minus 0.5\zw }
-    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_fullstops_class_int } {#1}
-      { 0.5\zw plus 0.25\zw }
-    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_commas_class_int } {#1}
-      { 0.5\zw plus 0.25\zw minus 0.5\zw }
-  }
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \xeja_set_interchar_skip:nnn
-      { \c_xeja_kanji_openingbrackets_class_int } {#1}
-      { 0\zw }
-    \xeja_set_interchar_skip:nnn
-      {#1} { \c_xeja_kanji_closingbrackets_class_int }
-      { 0\zw }
-    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_fullstops_class_int }
-      { 0\zw }
-    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_commas_class_int }
-      { 0\zw }
-  }
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \xeja_set_interchar_skip:nnn {#1} { \c_xeja_kanji_middledots_class_int }
-      { 0.25\zw plus 0.25\zw minus 0.25\zw }
-    \xeja_set_interchar_skip:nnn { \c_xeja_kanji_middledots_class_int } {#1}
-      { 0.25\zw plus 0.25\zw minus 0.25\zw }
-  }
-\xeja_set_interchar_skip:nnn
-  { \c_xeja_kanji_middledots_class_int }
-  { \c_xeja_kanji_middledots_class_int }
-  { 0.5\zw plus 0.25\zw minus 0.5\zw }
-\xeja_set_interchar_skip:nnn
-  { \c_xeja_kanji_inseparablecharacters_class_int }
-  { \c_xeja_kanji_inseparablecharacters_class_int }
-  { 0\zw }
-%    \end{macrocode}
-%
-% \begin{macro}{\@@_append_interchar_precharwdadjust:nn}
-%   次の文字対する字幅調整用コードを追加する。
-%    \begin{macrocode}
-\cs_new:Npn \@@_append_interchar_precharwdadjust:nn #1#2
-  {
-    \int_case:nn {#2}
-      {
-        { \c_xeja_kanji_openingbrackets_class_int }
-        {
-          \@@_append_interchar_tokens:nnn {#1} {#2}
-            { \tex_vrule:D width 0pt \tex_kern:D -0.5\zw }
-        }
-        { \c_xeja_kanji_middledots_class_int }
-        {
-          \@@_append_interchar_tokens:nnn {#1} {#2}
-            { \tex_vrule:D width 0pt \tex_kern:D -0.25\zw }
-        }
-      }
+    \l_@@_xkanjiskip_tl
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_append_interchar_postcharwdadjust:nn}
-%   前の文字に対する字幅調整用コードを追加する。
+% \begin{macro}{\@@_jfm_exp_args_param:Nnn}
+% \begin{macro}{\@@_jfm_exp_args_param:Nnnn}
 %    \begin{macrocode}
-\cs_new:Npn \@@_append_interchar_postcharwdadjust:nn #1#2
+\cs_new:Npn \@@_jfm_exp_args_param:Nnn #1#2#3
   {
-    \int_case:nn {#1}
-      {
-        { \c_xeja_kanji_closingbrackets_class_int }
-        {
-          \@@_append_interchar_tokens:nnn {#1} {#2}
-            { \tex_kern:D -0.5\zw \tex_vrule:D width 0pt \tex_relax:D }
-        }
-        { \c_xeja_kanji_middledots_class_int }
-        {
-          \@@_append_interchar_tokens:nnn {#1} {#2}
-            { \tex_kern:D -0.25\zw \tex_vrule:D width 0pt \tex_relax:D }
-        }
-        { \c_xeja_kanji_fullstops_class_int }
-        {
-          \@@_append_interchar_tokens:nnn {#1} {#2}
-            { \tex_kern:D -0.5\zw \tex_vrule:D width 0pt \tex_relax:D }
-        }
-        { \c_xeja_kanji_commas_class_int }
-        {
-          \@@_append_interchar_tokens:nnn {#1} {#2}
-            { \tex_kern:D -0.5\zw \tex_vrule:D width 0pt \tex_relax:D }
-        }
-      }
+    \exp_args:Nc #1 { l_@@_jfm_#2_#3_tl }
+  }
+\cs_new:Npn \@@_jfm_exp_args_param:Nnnn #1#2#3#4
+  {
+    \exp_args:Nc #1 { l_@@_jfm_#2_#3->#4_tl }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@@_jfm_set_param:nnn}
+% \begin{macro}{\@@_jfm_set_param:nnnn}
+%    \begin{macrocode}
+\cs_new:Npn \@@_jfm_set_param:nnn #1#2#3
+  {
+    \@@_jfm_exp_args_param:Nnn
+      \@@_jfm_set_param:Nn {#1} {#2}
+        {#3}
+  }
+\cs_new:Npn \@@_jfm_set_param:nnnn #1#2#3#4
+  {
+    \@@_jfm_exp_args_param:Nnnn
+      \@@_jfm_set_param:Nn {#1} {#2} {#3}
+        {#4}
+  }
+\cs_new:Npn \@@_jfm_set_param:Nn #1#2
+  {
+    \tl_if_exist:NF #1 { \tl_new:N #1 }
+    \tl_set:Nn #1 {#2}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@@_jfm_clear_param:nn}
+% \begin{macro}{\@@_jfm_clear_param:nnn}
+%    \begin{macrocode}
+\cs_new:Npn \@@_jfm_clear_param:nn #1#2
+  {
+    \@@_jfm_exp_args_param:Nnn
+      \@@_jfm_clear_param:N {#1} {#2}
+  }
+\cs_new:Npn \@@_jfm_clear_param:nnn #1#2#3
+  {
+    \@@_jfm_exp_args_param:Nnnn
+      \@@_jfm_clear_param:N {#1} {#2} {#3}
+  }
+\cs_new:Npn \@@_jfm_clear_param:N #1
+  {
+    \tl_if_exist:NF #1 { \tl_clear:N #1 }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@@_jfm_if_exist_use_param:nnTF}
+% \begin{macro}{\@@_jfm_if_exist_use_param:nnnTF}
+%    \begin{macrocode}
+\cs_new:Npn \@@_jfm_if_exist_use_param:nnTF #1#2#3#4
+  {
+    \@@_jfm_exp_args_param:Nnn
+      \@@_jfm_if_exist_use_param:NTF {#1} {#2}
+        {#3} {#4}
+  }
+\cs_new:Npn \@@_jfm_if_exist_use_param:nnnTF #1#2#3#4#5
+  {
+    \@@_jfm_exp_args_param:Nnnn
+      \@@_jfm_if_exist_use_param:NTF {#1} {#2} {#3}
+        {#4} {#5}
+  }
+\cs_new:Npn \@@_jfm_if_exist_use_param:NTF #1#2#3
+  {
+    \tl_if_exist:NTF #1
+      { \tl_if_empty:NTF #1 {#3} { #1 #2 } }
+      {#3}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@@_glue:n}
+%    \begin{macrocode}
+\cs_new_eq:NN \@@_glue:n \skip_horizontal:n
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_kern:n}
+%    \begin{macrocode}
+\cs_new:Npn \@@_kern:n #1
+  { \tex_kern:D \dim_eval:n {#1} }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_vrule_zero:}
+%   ゼロ幅（不可視）垂直罫線の挿入。
+%    \begin{macrocode}
+\cs_new:Npn \@@_vrule_zero:
+  { \tex_vrule:D width \c_zero_dim \scan_stop: }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_penalty:n}
+%   ペナルティの挿入。
+%    \begin{macrocode}
+\cs_new:Npn \@@_penalty:n #1
+  { \tex_penalty:D \int_eval:n {#1} \exp_stop_f: }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{グルー・カーン}
+%
+% \begin{macro}{\xeja_jfm_set_glue:nnn}
+% \begin{macro}{\xeja_jfm_set_kern:nnn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_jfm_set_glue:nnn #1#2#3
+  {
+    \@@_jfm_set_param:nnnn { glue_kern } {#1} {#2}
+      { \@@_glue:n {#3} }
+  }
+\cs_new:Npn \xeja_jfm_set_kern:nnn #1#2#3
+  {
+    \@@_jfm_set_param:nnnn { glue_kern } {#1} {#2}
+      { \@@_kern:n {#3} }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_jfm_clear_glue_kern:nn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_jfm_clear_glue_kern:nn #1#2
+  {
+    \@@_jfm_clear_param:nnn { glue_kern } {#1} {#2}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\@@_jfm_use_glue_kern_or:nnn}
+%    \begin{macrocode}
+\cs_new:Npn \@@_jfm_use_glue_kern_or:nnn #1#2#3
+  {
+    \@@_jfm_if_exist_use_param:nnnTF { glue_kern } {#1} {#2} {} {#3}
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_append_interchar_prebreakpenalty:nn}
-%   行頭禁則ペナルティー挿入用コードを追加する。
+% \subsubsection{文字幅調整}
+%
+% \begin{macro}{\@@_jfm_precharwd:n}
+% \begin{macro}{\@@_jfm_postcharwd:n}
+%   文字幅調整処理。
 %    \begin{macrocode}
-\cs_new:Npn \@@_append_interchar_prebreakpenalty:nn #1#2
+\cs_new:Npn \@@_jfm_precharwd:n #1
+  { \@@_vrule_zero: \@@_kern:n {#1} }
+\cs_new:Npn \@@_jfm_postcharwd:n #1
+  { \@@_kern:n {#1} \@@_vrule_zero: }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_jfm_set_precharwd:nn}
+% \begin{macro}{\xeja_jfm_set_postcharwd:nn}
+%   文字幅調整を設定する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_jfm_set_precharwd:nn #1#2
   {
-    \cs_set:Npn \@@_tmp:w ##1##2
+    \@@_jfm_set_param:nnn { precharwd } {#1}
+      { \@@_jfm_precharwd:n {#2} }
+  }
+\cs_new:Npn \xeja_jfm_set_postcharwd:nn #1#2
+  {
+    \@@_jfm_set_param:nnn { postcharwd } {#1}
+      { \@@_jfm_postcharwd:n {#2} }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_jfm_clear_precharwd:n}
+% \begin{macro}{\xeja_jfm_clear_postcharwd:n}
+%   文字幅調整の設定をクリアする。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_jfm_clear_precharwd:n #1
+  {
+    \@@_jfm_clear_param:nn { precharwd } {#1}
+  }
+\cs_new:Npn \xeja_jfm_clear_postcharwd:n #1
+  {
+    \@@_jfm_clear_param:nn { postcharwd } {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@@_jfm_use_precharwd:n}
+% \begin{macro}{\@@_jfm_use_postcharwd:n}
+%   文字幅調整が設定されていたら挿入する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_jfm_use_precharwd:n #1
+  { \@@_jfm_if_exist_use_param:nnTF { precharwd } {#1} {} {} }
+\cs_new:Npn \@@_jfm_use_postcharwd:n #1
+  { \@@_jfm_if_exist_use_param:nnTF { postcharwd } {#1} {} {} }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+%
+% \subsubsection{禁則ペナルティ}
+%
+% \begin{macro}{\xeja_jfm_set_prebreakpenalty:nn}
+% \begin{macro}{\xeja_jfm_set_postbreakpenalty:nn}
+%   禁則ペナルティを設定する。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_jfm_set_prebreakpenalty:nn #1#2
+  {
+    \@@_jfm_set_param:nnn { prebreakpenalty } {#1}
+      { \@@_penalty:n {#2} }
+  }
+\cs_new:Npn \xeja_jfm_set_postbreakpenalty:nn #1#2
+  {
+    \@@_jfm_set_param:nnn { postbreakpenalty } {#1}
+      { \@@_penalty:n {#2} }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_jfm_clear_prebreakpenalty:n}
+% \begin{macro}{\xeja_jfm_clear_postbreakpenalty:n}
+%   禁則をクリアする。
+%    \begin{macrocode}
+\cs_new:Npn \xeja_jfm_clear_prebreakpenalty:n #1
+  {
+    \@@_jfm_clear_param:nn { prebreakpenalty } {#1}
+  }
+\cs_new:Npn \xeja_jfm_clear_postbreakpenalty:n #1
+  {
+    \@@_jfm_clear_param:nn { postbreakpenalty } {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@@_jfm_use_prebreakpenalty:n}
+% \begin{macro}{\@@_jfm_use_postbreakpenalty:n}
+%   禁則が設定されていたら禁則ペナルティを挿入する。
+%    \begin{macrocode}
+\cs_new:Npn \@@_jfm_use_prebreakpenalty:n #1
+  { \@@_jfm_if_exist_use_param:nnTF { prebreakpenalty } {#1} {} {} }
+\cs_new:Npn \@@_jfm_use_postbreakpenalty:n #1
+  { \@@_jfm_if_exist_use_param:nnTF { postbreakpenalty } {#1} {} {} }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{和欧文間空白挿入設定}
+%
+% \begin{macro}{\xeja_jfm_set_xspmode:nn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_jfm_set_xspmode:nn #1#2
+  {
+    \str_case:nnF {#2}
       {
-        \@@_append_interchar_tokens:nnn {##1} {##2}
-          {
-            \prop_get:NnNT \l_@@_prebreakpenalty_prop {##2}
-              \l_@@_tmpa_tl
-              {
-                \tex_penalty:D \l_@@_tmpa_tl
-              }
-          }
+        { inhibit }
+        { \@@_jfm_set_param:nnn { xspmode } {#1} { 0 } }
+        { preonly }
+        { \@@_jfm_set_param:nnn { xspmode } {#1} { 1 } }
+        { postonly }
+        { \@@_jfm_set_param:nnn { xspmode } {#1} { 2 } }
+        { allow }
+        { \@@_jfm_set_param:nnn { xspmode } {#1} { 3 } }
       }
-    \exp_args:Nff \@@_tmp:w { \int_eval:n {#1} } { \int_eval:n {#2} }
+      { \msg_error:nnn { xelatexja } { unknown-xspmode } {#2} }
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_append_interchar_postbreakpenalty:nn}
-%   行末禁則ペナルティー挿入用コードを追加する。
 %    \begin{macrocode}
-\cs_new:Npn \@@_append_interchar_postbreakpenalty:nn #1#2
+\msg_new:nnnn { xelatexja } { unknown-xspmode }
+  { Unknown~xspmode~'#1'.~Perhaps~a~misspelling?. }
   {
-    \cs_set:Npn \@@_tmp:w ##1##2
-      {
-        \@@_append_interchar_tokens:nnn {##1} {##2}
-          {
-            \prop_get:NnNT \l_@@_postbreakpenalty_prop {##1}
-              \l_@@_tmpa_tl
-              {
-                \tex_penalty:D \l_@@_tmpa_tl
-              }
-          }
-      }
-    \exp_args:Nff \@@_tmp:w { \int_eval:n {#1} } { \int_eval:n {#2} }
+    The~xspmode~used~not~known.~
+    Allowed~values~are~'inhibit',~'preonly',~'postonly'~or~'allow'.
   }
+%    \end{macrocode}
+%
+% \begin{macro}{\@@_jfm_use_xspmode:n}
+%    \begin{macrocode}
+\cs_new:Npn \@@_jfm_use_xspmode:n #1
+  { \@@_jfm_if_exist_use_param:nnTF { xspmode } {#1} {} { 3 } }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_append_interchar_kanjikanjiskip:nn}
-%   和文間空白挿入用コードを追加する。
+% \begin{macro}{\@@_jfm_if_xspmode_inhibit:nnF}
 %    \begin{macrocode}
-\cs_new:Npn \@@_append_interchar_kanjikanjiskip:nn #1#2
+\cs_new:Npn \@@_jfm_if_xspmode_preinhibit_p:n #1
   {
-    \cs_set:Npn \@@_tmp:w ##1##2
+    \int_case:nnF { \@@_jfm_use_xspmode:n {#1} }
       {
-        \@@_append_interchar_tokens:nnn {##1} {##2}
-          {
-            \prop_get:NnNTF \l_@@_interchar_skip_prop { ##1 / ##2 }
-              \l_@@_tmpa_tl
-              {
-                \skip_horizontal:n { \l_@@_tmpa_tl }
-              }
-              {
-                \skip_horizontal:n { \l_@@_kanjiskip_tl }
-              }
-          }
+        { 0 } { \c_true_bool }
+        { 2 } { \c_true_bool }
       }
-    \exp_args:Nff \@@_tmp:w { \int_eval:n {#1} } { \int_eval:n {#2} }
+      { \c_false_bool }
   }
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\l_@@_xspmode_prop}
-%   和欧文間空白の挿入するかどうかの設定を保持するprop変数。
-%    \begin{macrocode}
-\prop_new:N \l_@@_xspmode_prop
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}
-%   {
-%     \c_xeja_xspmode_inhibit_int ,
-%     \c_xeja_xspmode_preonly_int,
-%     \c_xeja_xspmode_postonly_int,
-%     \c_xeja_xspmode_allow_int
-%   }
-%   和欧文間空白の挿入するかどうかの設定を表す定数。
-%    \begin{macrocode}
-\int_const:Nn \c_xeja_xspmode_inhibit_int { 0 }
-\int_const:Nn \c_xeja_xspmode_preonly_int { 1 }
-\int_const:Nn \c_xeja_xspmode_postonly_int { 2 }
-\int_const:Nn \c_xeja_xspmode_allow_int { 3 }
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}{\xeja_set_xspmode:nn}
-%   和欧文間空白の挿入するかどうかを設定する。
-%    \begin{macrocode}
-\cs_new:Npn \xeja_set_xspmode:nn #1#2
+\cs_new:Npn \@@_jfm_if_xspmode_postinhibit_p:n #1
   {
-    \exp_args:NNx \prop_put:Nnx \l_@@_xspmode_prop
-      { \int_eval:n {#1} }
+    \int_case:nnF { \@@_jfm_use_xspmode:n {#1} }
       {
-        \int_eval:n
-          {
-            \cs_if_exist_use:cF 
-              { c_xeja_xspmode_\tl_to_str:n{#2}_int }
-              {#2}
-          }
+        { 0 } { \c_true_bool }
+        { 1 } { \c_true_bool }
       }
+      { \c_false_bool }
   }
-%    \end{macrocode}
-% \end{macro}
-% \begin{macro}[TF]{\@@_if_xspmode:nn}
-%    \begin{macrocode}
-\prg_new_conditional:Npnn \@@_if_xspmode:nn #1#2 { T, F, TF }
+\cs_new:Npn \@@_jfm_if_xspmode_inhibit:nnF #1#2#3
   {
-    \exp_args:NNx \prop_get:NnNF \l_@@_xspmode_prop
-      { \int_eval:n {#1} }
-      \l_@@_tmpa_tl
-      { \tl_set:Nn \l_@@_tmpa_tl { 3 } }
-    \exp_args:NNx \prop_get:NnNF \l_@@_xspmode_prop
-      { \int_eval:n {#2} }
-      \l_@@_tmpb_tl
-      { \tl_set:Nn \l_@@_tmpb_tl { 3 } }
-    \bool_lazy_any:nTF
-      {
-        {
-          \int_compare_p:nNn { \l_@@_tmpa_tl } =
-            { \c_xeja_xspmode_inhibit_int }
-        }
-        {
-          \int_compare_p:nNn { \l_@@_tmpa_tl } =
-            { \c_xeja_xspmode_preonly_int }
-        }
-        {
-          \int_compare_p:nNn { \l_@@_tmpb_tl } =
-            { \c_xeja_xspmode_inhibit_int }
-        }
-        {
-          \int_compare_p:nNn { \l_@@_tmpb_tl } =
-            { \c_xeja_xspmode_postonly_int }
-        }
-      }
-      { \prg_return_false: }
-      { \prg_return_true: }
-  }
-%    \end{macrocode}
-% \end{macro}
-%
-% xspmodeのデフォルトを設定する。
-%    \begin{macrocode}
-\xeja_set_xspmode:nn { \c_xeja_kanji_openingbrackets_class_int }
-  { \c_xeja_xspmode_preonly_int }
-\xeja_set_xspmode:nn { \c_xeja_kanji_closingbrackets_class_int }
-  { \c_xeja_xspmode_postonly_int }
-\xeja_set_xspmode:nn { \c_xeja_kanji_hyphens_class_int }
-  { \c_xeja_xspmode_inhibit_int }
-\xeja_set_xspmode:nn { \c_xeja_kanji_dividingpunctuationmarks_class_int }
-  { \c_xeja_xspmode_postonly_int }
-\xeja_set_xspmode:nn { \c_xeja_kanji_fullstops_class_int }
-  { \c_xeja_xspmode_postonly_int }
-\xeja_set_xspmode:nn { \c_xeja_kanji_commas_class_int }
-  { \c_xeja_xspmode_postonly_int }
-\xeja_set_xspmode:nn { \c_xeja_kanji_inseparablecharacters_class_int }
-  { \c_xeja_xspmode_inhibit_int }
-\xeja_set_xspmode:nn { \c_xeja_kanji_inseparablecharacters_class_int }
-  { \c_xeja_xspmode_preonly_int }
-\xeja_set_xspmode:nn { \c_xeja_alpha_left_class_int }
-  { \c_xeja_xspmode_preonly_int }
-\xeja_set_xspmode:nn { \c_xeja_alpha_right_class_int }
-  { \c_xeja_xspmode_postonly_int }
-\xeja_set_xspmode:nn { \c_xeja_alpha_middle_class_int }
-  { \c_xeja_xspmode_inhibit_int }
-%
-%    \end{macrocode}
-% \begin{macro}{\@@_append_interchar_xkanjiskip:nn}
-%    \begin{macrocode}
-\cs_new:Npn \@@_append_interchar_xkanjiskip:nn #1#2
-  {
-    \@@_append_interchar_tokens:nnn {#1} {#2}
-      {
-        \@@_if_xspmode:nnT {#1} {#2}
-          {
-            \skip_horizontal:n { \l_@@_xkanjiskip_tl }
-          }
-      }
-  }
-%    \end{macrocode}
-% \end{macro}
-%
-% \subsubsection{和文－和文間}
-%
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \seq_map_inline:Nn \g_@@_kanji_class_seq
-      {
-        \@@_clear_interchar_tokens:nn {#1} {##1}
-%    \end{macrocode}
-% 前の文字の字幅調整。
-%    \begin{macrocode}
-        \@@_append_interchar_postcharwdadjust:nn {#1} {##1}
-%    \end{macrocode}
-% 行末禁則ペナルティー。
-%    \begin{macrocode}
-        \@@_append_interchar_postbreakpenalty:nn {#1} {##1}
-%    \end{macrocode}
-% 行頭禁則ペナルティー。
-%    \begin{macrocode}
-        \@@_append_interchar_prebreakpenalty:nn {#1} {##1}
-%    \end{macrocode}
-% 和文間空白。
-%    \begin{macrocode}
-        \@@_append_interchar_kanjikanjiskip:nn {#1} {##1}
-%    \end{macrocode}
-% 次の文字の字幅調整。
-%    \begin{macrocode}
-        \@@_append_interchar_precharwdadjust:nn {#1} {##1}
-      }
-  }
-%    \end{macrocode}
-%
-% \subsubsection{欧文－和文間}
-%
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_alpha_class_seq
-  {
-    \seq_map_inline:Nn \g_@@_kanji_class_seq
-      {
-        \@@_clear_interchar_tokens:nn {#1} {##1}
-%    \end{macrocode}
-% 欧文ベースライン補正終了。
-%    \begin{macrocode}
-        \@@_append_interchar_tokens:nnn {#1} {##1}
-          { \@@_alpha_baselineshift_end: }
-%    \end{macrocode}
-% 和文フォント切り替え。
-%    \begin{macrocode}
-        \@@_append_interchar_tokens:nnn {#1} {##1}
-          { \@@_enter_kanji_font: }
-%    \end{macrocode}
-% 行頭禁則ペナルティー。
-%    \begin{macrocode}
-        \@@_append_interchar_prebreakpenalty:nn {#1} {##1}
-%    \end{macrocode}
-% 和欧文間空白。
-%    \begin{macrocode}
-        \@@_append_interchar_xkanjiskip:nn {#1} {##1}
-%    \end{macrocode}
-% 次の文字の字幅調整。
-%    \begin{macrocode}
-        \@@_append_interchar_precharwdadjust:nn {#1} {##1}
-      }
-  }
-%    \end{macrocode}
-%
-% \subsubsection{和文－欧文間}
-%
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \seq_map_inline:Nn \g_@@_alpha_class_seq
-      {
-        \@@_clear_interchar_tokens:nn {#1} {##1}
-%    \end{macrocode}
-% 前の文字の字幅調整。
-%    \begin{macrocode}
-        \@@_append_interchar_postcharwdadjust:nn {#1} {##1}
-%    \end{macrocode}
-% 行末禁則ペナルティー。
-%    \begin{macrocode}
-        \@@_append_interchar_postbreakpenalty:nn {#1} {##1}
-%    \end{macrocode}
-% 和欧文間空白。
-%    \begin{macrocode}
-        \@@_append_interchar_xkanjiskip:nn {#1} {##1}
-%    \end{macrocode}
-% 欧文フォント切り替え。
-%    \begin{macrocode}
-        \@@_append_interchar_tokens:nnn {#1} {##1}
-          { \@@_leave_kanji_font: }
-%    \end{macrocode}
-% 欧文ベースライン補正開始。
-%    \begin{macrocode}
-        \@@_append_interchar_tokens:nnn {#1} {##1}
-          { \@@_alpha_baselineshift_begin: }
-      }
-  }
-%    \end{macrocode}
-%
-% \subsubsection{境界－和文間}
-%
-%    \begin{macrocode}
-\int_new:N \g_@@_previous_char_class_int
-\int_new:N \g_@@_previous_lastnodetype_int
-\bool_new:N \g_@@_previous_kanji_class_bool
-\bool_new:N \g_@@_previous_alpha_class_bool
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \@@_clear_interchar_tokens:nn { \c_xeja_bound_class_int } {#1}
-%    \end{macrocode}
-% 直前のノードが数式だった場合は和欧文空白を挿入する。
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
-      {
-        \int_compare:nNnT { \tex_lastnodetype:D } = { 10 }
-          {
-            \@@_if_xspmode:nnT { 0 } {#1}
-              {
-                \skip_horizontal:n { \l_@@_xkanjiskip_tl }
-              }
-          }
-      }
-%    \end{macrocode}
-% 和文フォント切り替え。
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
-      { \@@_enter_kanji_font: }
-%    \end{macrocode}
-% 
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
-      {
-        \bool_if:NT \g_@@_previous_kanji_class_bool
-          {
-            \int_compare:nNnT
-              { \tex_lastnodetype:D } = { \g_@@_previous_lastnodetype_int }
-              {
-%    \end{macrocode}
-% 行頭禁則ペナルティー。
-%    \begin{macrocode}
-                \exp_args:NNx \prop_get:NnNT \l_@@_prebreakpenalty_prop
-                  { \int_eval:n {#1} } \l_@@_tmpa_tl
-                  { \tex_penalty:D \l_@@_tmpa_tl }
-%    \end{macrocode}
-% 和文間空白。
-%    \begin{macrocode}
-                \exp_args:NNx \prop_get:NnNTF \l_@@_interchar_skip_prop
-                  {
-                    \int_eval:n { \g_@@_previous_char_class_int }
-                    / \int_eval:n {#1}
-                  }
-                  \l_@@_tmpa_tl
-                  { \skip_horizontal:n { \l_@@_tmpa_tl } }
-                  { \skip_horizontal:n { \l_@@_kanjiskip_tl } }
-                }
-%    \end{macrocode}
-%    \begin{macrocode}
-              \bool_gset_false:N \g_@@_previous_kanji_class_bool
-          }
-%    \end{macrocode}
-% 
-%    \begin{macrocode}
-        \bool_if:NT \g_@@_previous_alpha_class_bool
-          {
-            \int_compare:nNnT
-              { \tex_lastnodetype:D } = { \g_@@_previous_lastnodetype_int }
-              {
-%    \end{macrocode}
-% 和欧文間空白の挿入
-%    \begin{macrocode}
-                \@@_if_xspmode:nnT
-                  { \g_@@_previous_char_class_int } {#1}
-                  {
-                    \skip_horizontal:n { \l_@@_xkanjiskip_tl }
-                  }
-%    \end{macrocode}
-%    \begin{macrocode}
-              }
-            \bool_gset_false:N \g_@@_previous_alpha_class_bool
-          }
-      }
-%    \end{macrocode}
-% 次の文字の字幅調整。
-%    \begin{macrocode}
-    \@@_append_interchar_precharwdadjust:nn
-      { \c_xeja_bound_class_int } {#1}
-  }
-%    \end{macrocode}
-%
-% \subsubsection{境界－欧文間}
-%
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_alpha_class_seq
-  {
-    \@@_clear_interchar_tokens:nn { \c_xeja_bound_class_int } {#1}
-%    \end{macrocode}
-% 
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
-      {
-        \bool_if:NT \g_@@_previous_kanji_class_bool
-          {
-            \int_compare:nNnT
-              { \tex_lastnodetype:D } = { \g_@@_previous_lastnodetype_int }
-              {
-%    \end{macrocode}
-% 和欧文間空白。
-%    \begin{macrocode}
-                \@@_if_xspmode:nnT
-                  { \g_@@_previous_char_class_int } {#1}
-                  {
-                    \skip_horizontal:n { \l_@@_xkanjiskip_tl }
-                  }
-%    \end{macrocode}
-%    \begin{macrocode}
-              }
-            \bool_gset_false:N \g_@@_previous_kanji_class_bool
-          }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-        \bool_if:NT \g_@@_previous_alpha_class_bool
-          {
-            \bool_gset_false:N \g_@@_previous_alpha_class_bool
-          }
-      }
-%    \end{macrocode}
-% ベースライン補正開始。
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn { \c_xeja_bound_class_int } {#1}
-      { \@@_alpha_baselineshift_begin: }
-  }
-%    \end{macrocode}
-%
-% \subsubsection{和文－境界間}
-%
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_kanji_class_seq
-  {
-    \@@_clear_interchar_tokens:nn {#1} { \c_xeja_bound_class_int }
-%    \end{macrocode}
-% 前の文字の字幅調整。
-%    \begin{macrocode}
-    \@@_append_interchar_postcharwdadjust:nn
-      {#1} { \c_xeja_bound_class_int }
-%    \end{macrocode}
-% 行末禁則ペナルティー。
-%    \begin{macrocode}
-    \@@_append_interchar_postbreakpenalty:nn
-      {#1} { \c_xeja_bound_class_int }
-%    \end{macrocode}
-% 欧文フォント切り替え。
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
-      { \@@_leave_kanji_font: }
-%    \end{macrocode}
-% 和文直後の改行を無視するようにしたいが、
-% すでに空白トークンに変換されてしまっており区別もできないため、
-% 和文後の空白トークンを無条件に取り除くことにする。
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
-      {
-        \int_gset:Nn \g_@@_previous_char_class_int {#1}
-        \@@_check_after_kanji_ignore_spaces:
-      }
-  }
-%    \end{macrocode}
-%    \begin{macrocode}
-\cs_new:Npn \@@_check_after_kanji_ignore_spaces:
-  {
-    \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
-      {
-%    \end{macrocode}
-% 和文数式間のときは和欧文間空白を挿入する。
-%    \begin{macrocode}
-        \@@_if_xspmode:nnT { \g_@@_previous_char_class_int } { 0 }
-          {
-            \skip_horizontal:n { \l_@@_xkanjiskip_tl }
-          }
-      }
-      {
-        \token_if_expandable:NTF \l_peek_token
-          {
-            \exp_after:wN
-            \@@_check_after_kanji_ignore_spaces:
-          }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-          {
-            \int_gset:Nn \g_@@_previous_lastnodetype_int
-              { \tex_lastnodetype:D }
-            \bool_gset_true:N \g_@@_previous_kanji_class_bool
-          }
-      }
-  }
-%    \end{macrocode}
-%
-% \subsubsection{欧文－境界間}
-%
-%    \begin{macrocode}
-\seq_map_inline:Nn \g_@@_alpha_class_seq
-  {
-    \@@_clear_interchar_tokens:nn {#1} { \c_xeja_bound_class_int }
-%    \end{macrocode}
-% ベースライン補正終了
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
-      { \@@_alpha_baselineshift_end: }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-    \@@_append_interchar_tokens:nnn {#1} { \c_xeja_bound_class_int }
-      {
-        \int_gset:Nn \g_@@_previous_lastnodetype_int
-          { \tex_lastnodetype:D }
-        \int_gset:Nn \g_@@_previous_char_class_int {#1}
-        \bool_gset_true:N \g_@@_previous_alpha_class_bool
-      }
-  }
-%    \end{macrocode}
-%
-% \subsubsection{ベースライン補正}
-%    \begin{macrocode}
-\bool_new:N \g_@@_inside_alpha_baselineshift_bool
-\cs_new:Npn \@@_alpha_baselineshift_begin:
-  {
-    \dim_set:Nn \l_@@_tmpa_dim
-      {
-        \bool_if:NTF \l_@@_tate_text_bool
-          { \l_@@_tbaselineshift_tl }
-          { \l_@@_ybaselineshift_tl }
-      }
     \bool_lazy_or:nnF
-      { \g_@@_inside_alpha_baselineshift_bool }
-      { \dim_compare_p:nNn { \l_@@_tmpa_dim } = { 0pt } }
-      {
-        \bool_gset_true:N \g_@@_inside_alpha_baselineshift_bool
-        \tex_lower:D \l_@@_tmpa_dim
-        \tex_hbox:D
-        \c_group_begin_token
-      }
+      { \@@_jfm_if_xspmode_postinhibit_p:n {#1} }
+      { \@@_jfm_if_xspmode_preinhibit_p:n {#2} }
+      {#3}
   }
 %    \end{macrocode}
+% \end{macro}
 %
-%    \begin{macrocode}
-\cs_new:Npn \@@_alpha_baselineshift_end:
-  {
-    \bool_if:NT \g_@@_inside_alpha_baselineshift_bool
-      {
-        \c_group_end_token
-        \bool_gset_false:N \g_@@_inside_alpha_baselineshift_bool
-      }
-  }
-%    \end{macrocode}
 %
 % \subsection{ボックス}
 %
@@ -1809,26 +1668,38 @@
 % \end{macro}
 %
 %    \begin{macrocode}
-\box_new:N \l__xeja_tate_yoko_box
+\box_new:N \l_@@_tate_yoko_box
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \cs_new:Npn \@@_yoko_in_tate_hbox:n #1
   {
-    \hbox_set:Nn \l__xeja_tate_yoko_box
+    \hbox_set:Nn \l_@@_tate_yoko_box
       { \bool_set_false:N \l_@@_tate_text_bool #1 }
-    \@@_rotate_box_yoko_in_tate:N \l__xeja_tate_yoko_box
-    \box_use_drop:N \l__xeja_tate_yoko_box
+    \@@_rotate_box_yoko_in_tate:N \l_@@_tate_yoko_box
+    \dim_set:Nn \l_@@_baselineshift_dim { \l_@@_tbaselineshift_tl }
+    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+      {
+        \tex_raise:D \l_@@_baselineshift_dim
+        \tex_box:D \l_@@_tate_yoko_box
+      }
+    \box_use_drop:N \l_@@_tate_yoko_box
   }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \cs_new:Npn \@@_tate_in_yoko_hbox:n #1
   {
-    \hbox_set:Nn \l__xeja_tate_yoko_box
+    \hbox_set:Nn \l_@@_tate_yoko_box
       { \bool_set_true:N \l_@@_tate_text_bool #1 }
-    \@@_rotate_box_tate_in_yoko:N \l__xeja_tate_yoko_box
-    \box_use_drop:N \l__xeja_tate_yoko_box
+    \@@_rotate_box_tate_in_yoko:N \l_@@_tate_yoko_box
+    \dim_set:Nn \l_@@_baselineshift_dim { \l_@@_ybaselineshift_tl }
+    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+      {
+        \tex_raise:D \l_@@_baselineshift_dim
+        \tex_box:D \l_@@_tate_yoko_box
+      }
+    \box_use_drop:N \l_@@_tate_yoko_box
   }
 %    \end{macrocode}
 %
@@ -1894,18 +1765,841 @@
   }
 %    \end{macrocode}
 %
+%
+% \subsection{\LaTeXe インターフェイス}
+%
 %    \begin{macrocode}
-\hook_gput_code:nnn { begindocument } { xelatexja / tate }
-  {
-    \bool_if:NT \g_@@_tate_document_bool
-      { \bool_set_true:N \l_@@_tate_text_bool }
-  }
+\cs_new_eq:NN \xejaIfTateDocumentTF \xeja_if_tate_document:TF
+\cs_new_eq:NN \xejaIfTateTextTF \xeja_if_tate_text:TF
+%    \end{macrocode}
+%
+%
+% \subsection{JFMファイル読込}
+%
+%    \begin{macrocode}
+\input{xejajfm-\g_@@_jfm_tl.def}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 %</package>
 %    \end{macrocode}
 %
-% \end{implementation}
 %
-% \PrintIndex
+% \section{JFMファイル}
+%
+%    \begin{macrocode}
+%<*jfm>
+%    \end{macrocode}
+%
+% \subsection{standard}
+%
+%    \begin{macrocode}
+%<*standard>
+%    \end{macrocode}
+%
+% 文字クラス
+%    \begin{macrocode}
+\xeja_class_new_kanji:n { kanji/open }
+\xeja_class_new_kanji:n { kanji/close }
+\xeja_class_new_kanji:n { kanji/middle }
+\xeja_class_new_kanji:n { kanji/fullstop }
+\xeja_class_new_kanji:n { kanji/nodiv }
+\xeja_class_new_kanji:n { kanji/noprebreak }
+\xeja_class_new_kanji:n { kanji/nopostbreak }
+\xeja_class_new_kanji:n { kanji/samllkana }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\xeja_class_update:
+%    \end{macrocode}
+%
+% 「Unicode Standard Annex \#11 (UAX 11) East Asian Width」において、
+% Fullwidth (F)、Halfwidth (H)、Wide (W)、Ambiguous (A)と
+% 設定されている文字を和文文字とする。
+%    \begin{macrocode}
+\xeja_char_set_class:nn { "00A1 } { kanji/default }
+\xeja_char_set_class:nn { "00A4 } { kanji/default }
+\xeja_char_set_class:nn { "00A7 } { kanji/default }
+\xeja_char_set_class:nn { "00A8 } { kanji/default }
+\xeja_char_set_class:nn { "00AA } { kanji/default }
+\xeja_char_set_class:nn { "00AD } { kanji/default }
+\xeja_char_set_class:nn { "00AE } { kanji/default }
+\xeja_char_set_class:nn { "00B0 } { kanji/default }
+\xeja_char_set_class:nn { "00B1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00B2 } { "00B3 } { kanji/default }
+\xeja_char_set_class:nn { "00B4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00B6 } { "00B7 } { kanji/default }
+\xeja_char_set_class:nn { "00B8 } { kanji/default }
+\xeja_char_set_class:nn { "00B9 } { kanji/default }
+\xeja_char_set_class:nn { "00BA } { kanji/default }
+\xeja_char_set_class_range:nnn { "00BC } { "00BE } { kanji/default }
+\xeja_char_set_class:nn { "00BF } { kanji/default }
+\xeja_char_set_class:nn { "00C6 } { kanji/default }
+\xeja_char_set_class:nn { "00D0 } { kanji/default }
+\xeja_char_set_class:nn { "00D7 } { kanji/default }
+\xeja_char_set_class:nn { "00D8 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00DE } { "00E1 } { kanji/default }
+\xeja_char_set_class:nn { "00E6 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00E8 } { "00EA } { kanji/default }
+\xeja_char_set_class_range:nnn { "00EC } { "00ED } { kanji/default }
+\xeja_char_set_class:nn { "00F0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00F2 } { "00F3 } { kanji/default }
+\xeja_char_set_class:nn { "00F7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "00F8 } { "00FA } { kanji/default }
+\xeja_char_set_class:nn { "00FC } { kanji/default }
+\xeja_char_set_class:nn { "00FE } { kanji/default }
+\xeja_char_set_class:nn { "0101 } { kanji/default }
+\xeja_char_set_class:nn { "0111 } { kanji/default }
+\xeja_char_set_class:nn { "0113 } { kanji/default }
+\xeja_char_set_class:nn { "011B } { kanji/default }
+\xeja_char_set_class_range:nnn { "0126 } { "0127 } { kanji/default }
+\xeja_char_set_class:nn { "012B } { kanji/default }
+\xeja_char_set_class_range:nnn { "0131 } { "0133 } { kanji/default }
+\xeja_char_set_class:nn { "0138 } { kanji/default }
+\xeja_char_set_class_range:nnn { "013F } { "0142 } { kanji/default }
+\xeja_char_set_class:nn { "0144 } { kanji/default }
+\xeja_char_set_class_range:nnn { "0148 } { "014B } { kanji/default }
+\xeja_char_set_class:nn { "014D } { kanji/default }
+\xeja_char_set_class_range:nnn { "0152 } { "0153 } { kanji/default }
+\xeja_char_set_class_range:nnn { "0166 } { "0167 } { kanji/default }
+\xeja_char_set_class:nn { "016B } { kanji/default }
+\xeja_char_set_class:nn { "01CE } { kanji/default }
+\xeja_char_set_class:nn { "01D0 } { kanji/default }
+\xeja_char_set_class:nn { "01D2 } { kanji/default }
+\xeja_char_set_class:nn { "01D4 } { kanji/default }
+\xeja_char_set_class:nn { "01D6 } { kanji/default }
+\xeja_char_set_class:nn { "01D8 } { kanji/default }
+\xeja_char_set_class:nn { "01DA } { kanji/default }
+\xeja_char_set_class:nn { "01DC } { kanji/default }
+\xeja_char_set_class:nn { "0251 } { kanji/default }
+\xeja_char_set_class:nn { "0261 } { kanji/default }
+\xeja_char_set_class:nn { "02C4 } { kanji/default }
+\xeja_char_set_class:nn { "02C7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "02C9 } { "02CB } { kanji/default }
+\xeja_char_set_class:nn { "02CD } { kanji/default }
+\xeja_char_set_class:nn { "02D0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "02D8 } { "02DB } { kanji/default }
+\xeja_char_set_class:nn { "02DD } { kanji/default }
+\xeja_char_set_class:nn { "02DF } { kanji/default }
+\xeja_char_set_class_range:nnn { "0300 } { "036F } { kanji/default }
+\xeja_char_set_class_range:nnn { "0391 } { "03A1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "03A3 } { "03A9 } { kanji/default }
+\xeja_char_set_class_range:nnn { "03B1 } { "03C1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "03C3 } { "03C9 } { kanji/default }
+\xeja_char_set_class:nn { "0401 } { kanji/default }
+\xeja_char_set_class_range:nnn { "0410 } { "044F } { kanji/default }
+\xeja_char_set_class:nn { "0451 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1100 } { "115F } { kanji/default }
+\xeja_char_set_class:nn { "2010 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2013 } { "2015 } { kanji/default }
+\xeja_char_set_class:nn { "2016 } { kanji/default }
+\xeja_char_set_class:nn { "2018 } { kanji/default }
+\xeja_char_set_class:nn { "2019 } { kanji/default }
+\xeja_char_set_class:nn { "201C } { kanji/default }
+\xeja_char_set_class:nn { "201D } { kanji/default }
+\xeja_char_set_class_range:nnn { "2020 } { "2022 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2024 } { "2027 } { kanji/default }
+\xeja_char_set_class:nn { "2030 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2032 } { "2033 } { kanji/default }
+\xeja_char_set_class:nn { "2035 } { kanji/default }
+\xeja_char_set_class:nn { "203B } { kanji/default }
+\xeja_char_set_class:nn { "203E } { kanji/default }
+\xeja_char_set_class:nn { "2074 } { kanji/default }
+\xeja_char_set_class:nn { "207F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2081 } { "2084 } { kanji/default }
+\xeja_char_set_class:nn { "20A9 } { kanji/default }
+\xeja_char_set_class:nn { "20AC } { kanji/default }
+\xeja_char_set_class:nn { "2103 } { kanji/default }
+\xeja_char_set_class:nn { "2105 } { kanji/default }
+\xeja_char_set_class:nn { "2109 } { kanji/default }
+\xeja_char_set_class:nn { "2113 } { kanji/default }
+\xeja_char_set_class:nn { "2116 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2121 } { "2122 } { kanji/default }
+\xeja_char_set_class:nn { "2126 } { kanji/default }
+\xeja_char_set_class:nn { "212B } { kanji/default }
+\xeja_char_set_class_range:nnn { "2153 } { "2154 } { kanji/default }
+\xeja_char_set_class_range:nnn { "215B } { "215E } { kanji/default }
+\xeja_char_set_class_range:nnn { "2160 } { "216B } { kanji/default }
+\xeja_char_set_class_range:nnn { "2170 } { "2179 } { kanji/default }
+\xeja_char_set_class:nn { "2189 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2190 } { "2194 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2195 } { "2199 } { kanji/default }
+\xeja_char_set_class_range:nnn { "21B8 } { "21B9 } { kanji/default }
+\xeja_char_set_class:nn { "21D2 } { kanji/default }
+\xeja_char_set_class:nn { "21D4 } { kanji/default }
+\xeja_char_set_class:nn { "21E7 } { kanji/default }
+\xeja_char_set_class:nn { "2200 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2202 } { "2203 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2207 } { "2208 } { kanji/default }
+\xeja_char_set_class:nn { "220B } { kanji/default }
+\xeja_char_set_class:nn { "220F } { kanji/default }
+\xeja_char_set_class:nn { "2211 } { kanji/default }
+\xeja_char_set_class:nn { "2215 } { kanji/default }
+\xeja_char_set_class:nn { "221A } { kanji/default }
+\xeja_char_set_class_range:nnn { "221D } { "2220 } { kanji/default }
+\xeja_char_set_class:nn { "2223 } { kanji/default }
+\xeja_char_set_class:nn { "2225 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2227 } { "222C } { kanji/default }
+\xeja_char_set_class:nn { "222E } { kanji/default }
+\xeja_char_set_class_range:nnn { "2234 } { "2237 } { kanji/default }
+\xeja_char_set_class_range:nnn { "223C } { "223D } { kanji/default }
+\xeja_char_set_class:nn { "2248 } { kanji/default }
+\xeja_char_set_class:nn { "224C } { kanji/default }
+\xeja_char_set_class:nn { "2252 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2260 } { "2261 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2264 } { "2267 } { kanji/default }
+\xeja_char_set_class_range:nnn { "226A } { "226B } { kanji/default }
+\xeja_char_set_class_range:nnn { "226E } { "226F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2282 } { "2283 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2286 } { "2287 } { kanji/default }
+\xeja_char_set_class:nn { "2295 } { kanji/default }
+\xeja_char_set_class:nn { "2299 } { kanji/default }
+\xeja_char_set_class:nn { "22A5 } { kanji/default }
+\xeja_char_set_class:nn { "22BF } { kanji/default }
+\xeja_char_set_class:nn { "2312 } { kanji/default }
+\xeja_char_set_class_range:nnn { "231A } { "231B } { kanji/default }
+\xeja_char_set_class:nn { "2329 } { kanji/default }
+\xeja_char_set_class:nn { "232A } { kanji/default }
+\xeja_char_set_class_range:nnn { "23E9 } { "23EC } { kanji/default }
+\xeja_char_set_class:nn { "23F0 } { kanji/default }
+\xeja_char_set_class:nn { "23F3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2460 } { "249B } { kanji/default }
+\xeja_char_set_class_range:nnn { "249C } { "24E9 } { kanji/default }
+\xeja_char_set_class_range:nnn { "24EB } { "24FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2500 } { "254B } { kanji/default }
+\xeja_char_set_class_range:nnn { "2550 } { "2573 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2580 } { "258F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2592 } { "2595 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25A0 } { "25A1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25A3 } { "25A9 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25B2 } { "25B3 } { kanji/default }
+\xeja_char_set_class:nn { "25B6 } { kanji/default }
+\xeja_char_set_class:nn { "25B7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25BC } { "25BD } { kanji/default }
+\xeja_char_set_class:nn { "25C0 } { kanji/default }
+\xeja_char_set_class:nn { "25C1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25C6 } { "25C8 } { kanji/default }
+\xeja_char_set_class:nn { "25CB } { kanji/default }
+\xeja_char_set_class_range:nnn { "25CE } { "25D1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "25E2 } { "25E5 } { kanji/default }
+\xeja_char_set_class:nn { "25EF } { kanji/default }
+\xeja_char_set_class_range:nnn { "25FD } { "25FE } { kanji/default }
+\xeja_char_set_class_range:nnn { "2605 } { "2606 } { kanji/default }
+\xeja_char_set_class:nn { "2609 } { kanji/default }
+\xeja_char_set_class_range:nnn { "260E } { "260F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2614 } { "2615 } { kanji/default }
+\xeja_char_set_class:nn { "261C } { kanji/default }
+\xeja_char_set_class:nn { "261E } { kanji/default }
+\xeja_char_set_class:nn { "2640 } { kanji/default }
+\xeja_char_set_class:nn { "2642 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2648 } { "2653 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2660 } { "2661 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2663 } { "2665 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2667 } { "266A } { kanji/default }
+\xeja_char_set_class_range:nnn { "266C } { "266D } { kanji/default }
+\xeja_char_set_class:nn { "266F } { kanji/default }
+\xeja_char_set_class:nn { "267F } { kanji/default }
+\xeja_char_set_class:nn { "2693 } { kanji/default }
+\xeja_char_set_class_range:nnn { "269E } { "269F } { kanji/default }
+\xeja_char_set_class:nn { "26A1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26AA } { "26AB } { kanji/default }
+\xeja_char_set_class_range:nnn { "26BD } { "26BE } { kanji/default }
+\xeja_char_set_class:nn { "26BF } { kanji/default }
+\xeja_char_set_class_range:nnn { "26C4 } { "26C5 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26C6 } { "26CD } { kanji/default }
+\xeja_char_set_class:nn { "26CE } { kanji/default }
+\xeja_char_set_class_range:nnn { "26CF } { "26D3 } { kanji/default }
+\xeja_char_set_class:nn { "26D4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26D5 } { "26E1 } { kanji/default }
+\xeja_char_set_class:nn { "26E3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26E8 } { "26E9 } { kanji/default }
+\xeja_char_set_class:nn { "26EA } { kanji/default }
+\xeja_char_set_class_range:nnn { "26EB } { "26F1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26F2 } { "26F3 } { kanji/default }
+\xeja_char_set_class:nn { "26F4 } { kanji/default }
+\xeja_char_set_class:nn { "26F5 } { kanji/default }
+\xeja_char_set_class_range:nnn { "26F6 } { "26F9 } { kanji/default }
+\xeja_char_set_class:nn { "26FA } { kanji/default }
+\xeja_char_set_class_range:nnn { "26FB } { "26FC } { kanji/default }
+\xeja_char_set_class:nn { "26FD } { kanji/default }
+\xeja_char_set_class_range:nnn { "26FE } { "26FF } { kanji/default }
+\xeja_char_set_class:nn { "2705 } { kanji/default }
+\xeja_char_set_class_range:nnn { "270A } { "270B } { kanji/default }
+\xeja_char_set_class:nn { "2728 } { kanji/default }
+\xeja_char_set_class:nn { "273D } { kanji/default }
+\xeja_char_set_class:nn { "274C } { kanji/default }
+\xeja_char_set_class:nn { "274E } { kanji/default }
+\xeja_char_set_class_range:nnn { "2753 } { "2755 } { kanji/default }
+\xeja_char_set_class:nn { "2757 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2776 } { "277F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2795 } { "2797 } { kanji/default }
+\xeja_char_set_class:nn { "27B0 } { kanji/default }
+\xeja_char_set_class:nn { "27BF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B1B } { "2B1C } { kanji/default }
+\xeja_char_set_class:nn { "2B50 } { kanji/default }
+\xeja_char_set_class:nn { "2B55 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B56 } { "2B59 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2E80 } { "2E99 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2E9B } { "2EF3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2F00 } { "2FD5 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2FF0 } { "2FFB } { kanji/default }
+\xeja_char_set_class:nn { "3000 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3001 } { "3003 } { kanji/default }
+\xeja_char_set_class:nn { "3004 } { kanji/default }
+\xeja_char_set_class:nn { "3005 } { kanji/default }
+\xeja_char_set_class:nn { "3006 } { kanji/default }
+\xeja_char_set_class:nn { "3007 } { kanji/default }
+\xeja_char_set_class:nn { "3008 } { kanji/default }
+\xeja_char_set_class:nn { "3009 } { kanji/default }
+\xeja_char_set_class:nn { "300A } { kanji/default }
+\xeja_char_set_class:nn { "300B } { kanji/default }
+\xeja_char_set_class:nn { "300C } { kanji/default }
+\xeja_char_set_class:nn { "300D } { kanji/default }
+\xeja_char_set_class:nn { "300E } { kanji/default }
+\xeja_char_set_class:nn { "300F } { kanji/default }
+\xeja_char_set_class:nn { "3010 } { kanji/default }
+\xeja_char_set_class:nn { "3011 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3012 } { "3013 } { kanji/default }
+\xeja_char_set_class:nn { "3014 } { kanji/default }
+\xeja_char_set_class:nn { "3015 } { kanji/default }
+\xeja_char_set_class:nn { "3016 } { kanji/default }
+\xeja_char_set_class:nn { "3017 } { kanji/default }
+\xeja_char_set_class:nn { "3018 } { kanji/default }
+\xeja_char_set_class:nn { "3019 } { kanji/default }
+\xeja_char_set_class:nn { "301A } { kanji/default }
+\xeja_char_set_class:nn { "301B } { kanji/default }
+\xeja_char_set_class:nn { "301C } { kanji/default }
+\xeja_char_set_class:nn { "301D } { kanji/default }
+\xeja_char_set_class_range:nnn { "301E } { "301F } { kanji/default }
+\xeja_char_set_class:nn { "3020 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3021 } { "3029 } { kanji/default }
+\xeja_char_set_class_range:nnn { "302A } { "302D } { kanji/default }
+\xeja_char_set_class_range:nnn { "302E } { "302F } { kanji/default }
+\xeja_char_set_class:nn { "3030 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3031 } { "3035 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3036 } { "3037 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3038 } { "303A } { kanji/default }
+\xeja_char_set_class:nn { "303B } { kanji/default }
+\xeja_char_set_class:nn { "303C } { kanji/default }
+\xeja_char_set_class:nn { "303D } { kanji/default }
+\xeja_char_set_class:nn { "303E } { kanji/default }
+\xeja_char_set_class_range:nnn { "3041 } { "3096 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3099 } { "309A } { kanji/default }
+\xeja_char_set_class_range:nnn { "309B } { "309C } { kanji/default }
+\xeja_char_set_class_range:nnn { "309D } { "309E } { kanji/default }
+\xeja_char_set_class:nn { "309F } { kanji/default }
+\xeja_char_set_class:nn { "30A0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "30A1 } { "30FA } { kanji/default }
+\xeja_char_set_class:nn { "30FB } { kanji/default }
+\xeja_char_set_class_range:nnn { "30FC } { "30FE } { kanji/default }
+\xeja_char_set_class:nn { "30FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "3105 } { "312F } { kanji/default }
+\xeja_char_set_class_range:nnn { "3131 } { "318E } { kanji/default }
+\xeja_char_set_class_range:nnn { "3190 } { "3191 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3192 } { "3195 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3196 } { "319F } { kanji/default }
+\xeja_char_set_class_range:nnn { "31A0 } { "31BF } { kanji/default }
+\xeja_char_set_class_range:nnn { "31C0 } { "31E3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "31F0 } { "31FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "3200 } { "321E } { kanji/default }
+\xeja_char_set_class_range:nnn { "3220 } { "3229 } { kanji/default }
+\xeja_char_set_class_range:nnn { "322A } { "3247 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3248 } { "324F } { kanji/default }
+\xeja_char_set_class:nn { "3250 } { kanji/default }
+\xeja_char_set_class_range:nnn { "3251 } { "325F } { kanji/default }
+\xeja_char_set_class_range:nnn { "3260 } { "327F } { kanji/default }
+\xeja_char_set_class_range:nnn { "3280 } { "3289 } { kanji/default }
+\xeja_char_set_class_range:nnn { "328A } { "32B0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "32B1 } { "32BF } { kanji/default }
+\xeja_char_set_class_range:nnn { "32C0 } { "32FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "3300 } { "33FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "3400 } { "4DBF } { kanji/default }
+\xeja_char_set_class_range:nnn { "4E00 } { "9FFC } { kanji/default }
+\xeja_char_set_class_range:nnn { "9FFD } { "9FFF } { kanji/default }
+\xeja_char_set_class_range:nnn { "A000 } { "A014 } { kanji/default }
+\xeja_char_set_class:nn { "A015 } { kanji/default }
+\xeja_char_set_class_range:nnn { "A016 } { "A48C } { kanji/default }
+\xeja_char_set_class_range:nnn { "A490 } { "A4C6 } { kanji/default }
+\xeja_char_set_class_range:nnn { "A960 } { "A97C } { kanji/default }
+\xeja_char_set_class_range:nnn { "AC00 } { "D7A3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "E000 } { "F8FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "F900 } { "FA6D } { kanji/default }
+\xeja_char_set_class_range:nnn { "FA6E } { "FA6F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FA70 } { "FAD9 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FADA } { "FAFF } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE00 } { "FE0F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE10 } { "FE16 } { kanji/default }
+\xeja_char_set_class:nn { "FE17 } { kanji/default }
+\xeja_char_set_class:nn { "FE18 } { kanji/default }
+\xeja_char_set_class:nn { "FE19 } { kanji/default }
+\xeja_char_set_class:nn { "FE30 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE31 } { "FE32 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE33 } { "FE34 } { kanji/default }
+\xeja_char_set_class:nn { "FE35 } { kanji/default }
+\xeja_char_set_class:nn { "FE36 } { kanji/default }
+\xeja_char_set_class:nn { "FE37 } { kanji/default }
+\xeja_char_set_class:nn { "FE38 } { kanji/default }
+\xeja_char_set_class:nn { "FE39 } { kanji/default }
+\xeja_char_set_class:nn { "FE3A } { kanji/default }
+\xeja_char_set_class:nn { "FE3B } { kanji/default }
+\xeja_char_set_class:nn { "FE3C } { kanji/default }
+\xeja_char_set_class:nn { "FE3D } { kanji/default }
+\xeja_char_set_class:nn { "FE3E } { kanji/default }
+\xeja_char_set_class:nn { "FE3F } { kanji/default }
+\xeja_char_set_class:nn { "FE40 } { kanji/default }
+\xeja_char_set_class:nn { "FE41 } { kanji/default }
+\xeja_char_set_class:nn { "FE42 } { kanji/default }
+\xeja_char_set_class:nn { "FE43 } { kanji/default }
+\xeja_char_set_class:nn { "FE44 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE45 } { "FE46 } { kanji/default }
+\xeja_char_set_class:nn { "FE47 } { kanji/default }
+\xeja_char_set_class:nn { "FE48 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE49 } { "FE4C } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE4D } { "FE4F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE50 } { "FE52 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE54 } { "FE57 } { kanji/default }
+\xeja_char_set_class:nn { "FE58 } { kanji/default }
+\xeja_char_set_class:nn { "FE59 } { kanji/default }
+\xeja_char_set_class:nn { "FE5A } { kanji/default }
+\xeja_char_set_class:nn { "FE5B } { kanji/default }
+\xeja_char_set_class:nn { "FE5C } { kanji/default }
+\xeja_char_set_class:nn { "FE5D } { kanji/default }
+\xeja_char_set_class:nn { "FE5E } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE5F } { "FE61 } { kanji/default }
+\xeja_char_set_class:nn { "FE62 } { kanji/default }
+\xeja_char_set_class:nn { "FE63 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE64 } { "FE66 } { kanji/default }
+\xeja_char_set_class:nn { "FE68 } { kanji/default }
+\xeja_char_set_class:nn { "FE69 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FE6A } { "FE6B } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF01 } { "FF03 } { kanji/default }
+\xeja_char_set_class:nn { "FF04 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF05 } { "FF07 } { kanji/default }
+\xeja_char_set_class:nn { "FF08 } { kanji/default }
+\xeja_char_set_class:nn { "FF09 } { kanji/default }
+\xeja_char_set_class:nn { "FF0A } { kanji/default }
+\xeja_char_set_class:nn { "FF0B } { kanji/default }
+\xeja_char_set_class:nn { "FF0C } { kanji/default }
+\xeja_char_set_class:nn { "FF0D } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF0E } { "FF0F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF10 } { "FF19 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF1A } { "FF1B } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF1C } { "FF1E } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF1F } { "FF20 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF21 } { "FF3A } { kanji/default }
+\xeja_char_set_class:nn { "FF3B } { kanji/default }
+\xeja_char_set_class:nn { "FF3C } { kanji/default }
+\xeja_char_set_class:nn { "FF3D } { kanji/default }
+\xeja_char_set_class:nn { "FF3E } { kanji/default }
+\xeja_char_set_class:nn { "FF3F } { kanji/default }
+\xeja_char_set_class:nn { "FF40 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF41 } { "FF5A } { kanji/default }
+\xeja_char_set_class:nn { "FF5B } { kanji/default }
+\xeja_char_set_class:nn { "FF5C } { kanji/default }
+\xeja_char_set_class:nn { "FF5D } { kanji/default }
+\xeja_char_set_class:nn { "FF5E } { kanji/default }
+\xeja_char_set_class:nn { "FF5F } { kanji/default }
+\xeja_char_set_class:nn { "FF60 } { kanji/default }
+\xeja_char_set_class:nn { "FF61 } { kanji/default }
+\xeja_char_set_class:nn { "FF62 } { kanji/default }
+\xeja_char_set_class:nn { "FF63 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF64 } { "FF65 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF66 } { "FF6F } { kanji/default }
+\xeja_char_set_class:nn { "FF70 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF71 } { "FF9D } { kanji/default }
+\xeja_char_set_class_range:nnn { "FF9E } { "FF9F } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFA0 } { "FFBE } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFC2 } { "FFC7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFCA } { "FFCF } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFD2 } { "FFD7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFDA } { "FFDC } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFE0 } { "FFE1 } { kanji/default }
+\xeja_char_set_class:nn { "FFE2 } { kanji/default }
+\xeja_char_set_class:nn { "FFE3 } { kanji/default }
+\xeja_char_set_class:nn { "FFE4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFE5 } { "FFE6 } { kanji/default }
+\xeja_char_set_class:nn { "FFE8 } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFE9 } { "FFEC } { kanji/default }
+\xeja_char_set_class_range:nnn { "FFED } { "FFEE } { kanji/default }
+\xeja_char_set_class:nn { "FFFD } { kanji/default }
+\xeja_char_set_class_range:nnn { "16FE0 } { "16FE1 } { kanji/default }
+\xeja_char_set_class:nn { "16FE2 } { kanji/default }
+\xeja_char_set_class:nn { "16FE3 } { kanji/default }
+\xeja_char_set_class:nn { "16FE4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "16FF0 } { "16FF1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "17000 } { "187F7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "18800 } { "18AFF } { kanji/default }
+\xeja_char_set_class_range:nnn { "18B00 } { "18CD5 } { kanji/default }
+\xeja_char_set_class_range:nnn { "18D00 } { "18D08 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B000 } { "1B0FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B100 } { "1B11E } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B150 } { "1B152 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B164 } { "1B167 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1B170 } { "1B2FB } { kanji/default }
+\xeja_char_set_class:nn { "1F004 } { kanji/default }
+\xeja_char_set_class:nn { "1F0CF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F100 } { "1F10A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F110 } { "1F12D } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F130 } { "1F169 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F170 } { "1F18D } { kanji/default }
+\xeja_char_set_class:nn { "1F18E } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F18F } { "1F190 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F191 } { "1F19A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F19B } { "1F1AC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F200 } { "1F202 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F210 } { "1F23B } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F240 } { "1F248 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F250 } { "1F251 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F260 } { "1F265 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F300 } { "1F320 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F32D } { "1F335 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F337 } { "1F37C } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F37E } { "1F393 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3A0 } { "1F3CA } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3CF } { "1F3D3 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3E0 } { "1F3F0 } { kanji/default }
+\xeja_char_set_class:nn { "1F3F4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3F8 } { "1F3FA } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F3FB } { "1F3FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F400 } { "1F43E } { kanji/default }
+\xeja_char_set_class:nn { "1F440 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F442 } { "1F4FC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F4FF } { "1F53D } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F54B } { "1F54E } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F550 } { "1F567 } { kanji/default }
+\xeja_char_set_class:nn { "1F57A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F595 } { "1F596 } { kanji/default }
+\xeja_char_set_class:nn { "1F5A4 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F5FB } { "1F5FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F600 } { "1F64F } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F680 } { "1F6C5 } { kanji/default }
+\xeja_char_set_class:nn { "1F6CC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F6D0 } { "1F6D2 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F6D5 } { "1F6D7 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F6EB } { "1F6EC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F6F4 } { "1F6FC } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F7E0 } { "1F7EB } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F90C } { "1F93A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F93C } { "1F945 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F947 } { "1F978 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F97A } { "1F9CB } { kanji/default }
+\xeja_char_set_class_range:nnn { "1F9CD } { "1F9FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FA70 } { "1FA74 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FA78 } { "1FA7A } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FA80 } { "1FA86 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FA90 } { "1FAA8 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FAB0 } { "1FAB6 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FAC0 } { "1FAC2 } { kanji/default }
+\xeja_char_set_class_range:nnn { "1FAD0 } { "1FAD6 } { kanji/default }
+\xeja_char_set_class_range:nnn { "20000 } { "2A6DD } { kanji/default }
+\xeja_char_set_class_range:nnn { "2A6DE } { "2A6FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2A700 } { "2B734 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B735 } { "2B73F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B740 } { "2B81D } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B81E } { "2B81F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2B820 } { "2CEA1 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2CEA2 } { "2CEAF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2CEB0 } { "2EBE0 } { kanji/default }
+\xeja_char_set_class_range:nnn { "2EBE1 } { "2F7FF } { kanji/default }
+\xeja_char_set_class_range:nnn { "2F800 } { "2FA1D } { kanji/default }
+\xeja_char_set_class_range:nnn { "2FA1E } { "2FA1F } { kanji/default }
+\xeja_char_set_class_range:nnn { "2FA20 } { "2FFFD } { kanji/default }
+\xeja_char_set_class_range:nnn { "30000 } { "3134A } { kanji/default }
+\xeja_char_set_class_range:nnn { "3134B } { "3FFFD } { kanji/default }
+\xeja_char_set_class_range:nnn { "E0100 } { "E01EF } { kanji/default }
+\xeja_char_set_class_range:nnn { "F0000 } { "FFFFD } { kanji/default }
+\xeja_char_set_class_range:nnn { "100000 } { "10FFFD } { kanji/default }
+%    \end{macrocode}
+%
+% 開き括弧類
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "2018 , "201C , "2329 , "3008 , "300A , "300C , "300E , "3010 ,
+    "3014 , "3016 , "3018 , "301A , "301D , "FF08 , "FF3B , "FF5B ,
+    "FF5F
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/open }
+  }
+%    \end{macrocode}
+%
+% 閉じ括弧類
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "2019 , "201D , "232A , "3001 , "3009 , "300B , "300D , "300F ,
+    "3011 , "3015 , "3017 , "3019 , "301B , "301E , "301F , "FF09 ,
+    "FF0C , "FF3D , "FF5D , "FF60
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/close }
+  }
+%    \end{macrocode}
+%
+% 中点類
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "00B7 , "30FB , "FF1A , "FF1B
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/middle }
+  }
+%    \end{macrocode}
+%
+% 句点類
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "3002 , "FF0E
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/fullstop }
+  }
+%    \end{macrocode}
+%
+% 分割禁止文字
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "2014 , "2015 , "2025 , "2026
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/nodiv }
+  }
+%    \end{macrocode}
+%
+% 行頭禁則文字
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "00AA , "00B2 , "00B3 , "00B4 , "00B9 , "00BA , "02D0 , "2122 ,
+    "3005 , "3033 , "3034 , "3035 , "303B , "309B , "309C , "309D ,
+    "309E , "30FC , "30FD , "30FE , "FF01 , "FF1F , "FF61 , "FF63 ,
+    "FF64 , "FF9E , "FF9F
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/noprebreak }
+  }
+%    \end{macrocode}
+%
+% 行末禁則文字
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "00A1 , "00BF , "20AC , "FF40 , "FF62
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/nopostbreak }
+  }
+%    \end{macrocode}
+%
+% 小書き仮名
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "3041 , "3043 , "3045 , "3047 , "3049 , "3063 , "3083 , "3085 ,
+    "3087 , "308E , "30A1 , "30A3 , "30A5 , "30A7 , "30A9 , "30C3 ,
+    "30E3 , "30E5 , "30E7 , "30EE , "30F5 , "30F6 , "3095 , "3096 ,
+    "31F0 , "31F1 , "31F2 , "31F3 , "31F4 , "31F5 , "31F6 , "31F7 ,
+    "31F8 , "31F9 , "31FA , "31FB , "31FC , "31FD , "31FE , "31FF
+  }
+  {
+    \xeja_char_set_class:nn {#1} { kanji/samllkana }
+  }
+%    \end{macrocode}
+%
+% 和文文字クラス間のグルー・カーン設定
+%    \begin{macrocode}
+\xeja_jfm_set_glue:nnn { kanji/default } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/default } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/open } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/default }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/nodiv }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/noprebreak }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/nopostbreak }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/samllkana }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/default }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/open }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/close }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/middle }
+  { 0.5\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/fullstop }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nodiv }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/noprebreak }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nopostbreak }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/samllkana }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/default }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/open }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/middle }
+  { 0.75\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nodiv }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/noprebreak }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nopostbreak }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/samllkana }
+  { 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_kern:nnn { kanji/nodiv } { kanji/nodiv }
+  { \c_zero_dim }
+\xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+\xeja_jfm_set_glue:nnn { kanji/samllkana } { kanji/open }
+  { 0.5\zw minus 0.5\zw }
+\xeja_jfm_set_glue:nnn { kanji/samllkana } { kanji/middle }
+  { 0.25\zw minus 0.25\zw }
+%    \end{macrocode}
+%
+% 和文文字の文字幅調整設定
+%    \begin{macrocode}
+\xeja_jfm_set_precharwd:nn { kanji/open } { -0.5\zw }
+\xeja_jfm_set_postcharwd:nn { kanji/close } { -0.5\zw }
+\xeja_jfm_set_precharwd:nn { kanji/middle } { -0.25\zw }
+\xeja_jfm_set_postcharwd:nn { kanji/middle } { -0.25\zw }
+\xeja_jfm_set_postcharwd:nn { kanji/fullstop } { -0.5\zw }
+%    \end{macrocode}
+%
+% 和文文字の禁則設定
+%    \begin{macrocode}
+\xeja_jfm_set_postbreakpenalty:nn { kanji/open } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/close } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/fullstop } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/middle } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/nodiv } { 250 }
+\xeja_jfm_set_postbreakpenalty:nn { kanji/nopostbreak } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/noprebreak } { 10000 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/samllkana } { 150 }
+%    \end{macrocode}
+%
+% 和欧文間空白の挿入設定
+%    \begin{macrocode}
+\xeja_jfm_set_xspmode:nn { kanji/open } { preonly }
+\xeja_jfm_set_xspmode:nn { kanji/close } { postonly }
+\xeja_jfm_set_xspmode:nn { kanji/fullstop } { postonly }
+\xeja_jfm_set_xspmode:nn { kanji/middle } { inhibit }
+\xeja_jfm_set_xspmode:nn { kanji/nodiv } { inhibit }
+\xeja_jfm_set_xspmode:nn { kanji/nopostbreak } { preonly }
+\xeja_jfm_set_xspmode:nn { kanji/noprebreak } { postonly }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</standard>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</jfm>
+%    \end{macrocode}
+%
+%
+%
+% \section{BXJSドキュメントクラス用和文ドライバファイル}
+%
+%    \begin{macrocode}
+%<*bxjsja>
+%    \end{macrocode}
+%
+% minimal和文ドライバを読み込む。
+%    \begin{macrocode}
+\input{bxjsja-minimal.def}
+%    \end{macrocode}
+%
+% |\zw|が二重定義になるので削除する。
+%    \begin{macrocode}
+\cs_if_exist:NT \zw
+  { \cs_undefine:N \zw }
+%    \end{macrocode}
+%
+% \XeLaTeX-jaを読み込む。
+%    \begin{macrocode}
+\RequirePackage[jascale={\jsZw/\f@size pt}]{xelatexja}
+%    \end{macrocode}
+%
+% 単位等を定義する。
+%    \begin{macrocode}
+\dim_const:Nn \jQ { 0.25mm }
+\cs_new_eq:NN \jH \jQ
+\dim_const:Nn \trueQ  { 0.25truemm }
+\cs_new_eq:NN \trueH \trueQ
+\dim_const:Nn \ascQ { \fp_to_dim:n { 1\trueQ / \xeja_get_jascale: } }
+\dim_const:Nn \ascpt
+  { \fp_to_dim:n  { \dim_eval:n { 1truept } / \xeja_get_jascale: } }
+%    \end{macrocode}
+%
+% (x)kanjiskipを設定・取得する命令を定義する。
+%    \begin{macrocode}
+\newcommand*\setkanjiskip[1]
+  { \xeja_set_kanjiskip:n {#1} }
+\newcommand*\getkanjiskip
+  { \xeja_get_kanjiskip: }
+\newcommand*\setxkanjiskip[1]
+  { \xeja_set_xkanjiskip:n {#1} }
+\newcommand*\getxkanjiskip
+  { \xeja_get_xkanjiskip: }
+%    \end{macrocode}
+%
+% 和文フォント命令を定義する。
+%    \begin{macrocode}
+\DeclareRobustCommand{\mcfamily}{ \xeja_kanji_family:n { mc } }
+\DeclareRobustCommand{\gtfamily}{ \xeja_kanji_family:n { gt } }
+\DeclareJaTextFontCommand{\textmc}{\mcfamily}
+\DeclareJaTextFontCommand{\textgt}{\gtfamily}
+%    \end{macrocode}
+%
+% 欧文フォントファミリと和文フォントファミリを連動させる。
+%    \begin{macrocode}
+\hook_gput_code:nnn { rmfamily } { . }
+  { \mcfamily }
+\hook_gput_code:nnn { sffamily } { . }
+  { \gtfamily }
+\hook_gput_code:nnn { ttfamily } { . }
+  { \gtfamily }
+%    \end{macrocode}
+%
+% (x)kanjiskipの初期値を設定する。
+%    \begin{macrocode}
+\setkanjiskip{0pt plus.1\zw minus.01\zw}
+\ifx\jsDocClass\jsSlide \setxkanjiskip{0.1em}
+\else \setxkanjiskip{0.25em plus 0.15em minus 0.06em}
+\fi
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</bxjsja>
+%    \end{macrocode}
+%
+% \Finale
+%
