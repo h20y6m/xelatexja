@@ -22,7 +22,7 @@
 \xeja_class_new_kanji:n { kanji/nodiv }
 \xeja_class_new_kanji:n { kanji/noprebreak }
 \xeja_class_new_kanji:n { kanji/nopostbreak }
-\xeja_class_new_kanji:n { kanji/samllkana }
+\xeja_class_new_kanji:n { kanji/smallkana }
 \xeja_class_update:
 \xeja_char_set_class:nn { "00A1 } { kanji/default }
 \xeja_char_set_class:nn { "00A4 } { kanji/default }
@@ -581,7 +581,7 @@
     "31F8 , "31F9 , "31FA , "31FB , "31FC , "31FD , "31FE , "31FF
   }
   {
-    \xeja_char_set_class:nn {#1} { kanji/samllkana }
+    \xeja_char_set_class:nn {#1} { kanji/smallkana }
   }
 \xeja_jfm_set_glue:nnn { kanji/default } { kanji/open }
   { 0.5\zw minus 0.5\zw }
@@ -601,7 +601,7 @@
   { 0.5\zw minus 0.5\zw }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/nopostbreak }
   { 0.5\zw minus 0.5\zw }
-\xeja_jfm_set_glue:nnn { kanji/close } { kanji/samllkana }
+\xeja_jfm_set_glue:nnn { kanji/close } { kanji/smallkana }
   { 0.5\zw minus 0.5\zw }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/default }
   { 0.25\zw minus 0.25\zw }
@@ -619,7 +619,7 @@
   { 0.25\zw minus 0.25\zw }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nopostbreak }
   { 0.25\zw minus 0.25\zw }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/samllkana }
+\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/smallkana }
   { 0.25\zw minus 0.25\zw }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/default }
   { 0.5\zw }
@@ -633,7 +633,7 @@
   { 0.5\zw }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nopostbreak }
   { 0.5\zw }
-\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/samllkana }
+\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/smallkana }
   { 0.5\zw }
 \xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/open }
   { 0.5\zw minus 0.5\zw }
@@ -649,9 +649,9 @@
   { 0.5\zw minus 0.5\zw }
 \xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/middle }
   { 0.25\zw minus 0.25\zw }
-\xeja_jfm_set_glue:nnn { kanji/samllkana } { kanji/open }
+\xeja_jfm_set_glue:nnn { kanji/smallkana } { kanji/open }
   { 0.5\zw minus 0.5\zw }
-\xeja_jfm_set_glue:nnn { kanji/samllkana } { kanji/middle }
+\xeja_jfm_set_glue:nnn { kanji/smallkana } { kanji/middle }
   { 0.25\zw minus 0.25\zw }
 \xeja_jfm_set_precharwd:nn { kanji/open } { -0.5\zw }
 \xeja_jfm_set_postcharwd:nn { kanji/close } { -0.5\zw }
@@ -665,7 +665,7 @@
 \xeja_jfm_set_prebreakpenalty:nn { kanji/nodiv } { 250 }
 \xeja_jfm_set_postbreakpenalty:nn { kanji/nopostbreak } { 10000 }
 \xeja_jfm_set_prebreakpenalty:nn { kanji/noprebreak } { 10000 }
-\xeja_jfm_set_prebreakpenalty:nn { kanji/samllkana } { 150 }
+\xeja_jfm_set_prebreakpenalty:nn { kanji/smallkana } { 150 }
 \xeja_jfm_set_xspmode:nn { kanji/open } { preonly }
 \xeja_jfm_set_xspmode:nn { kanji/close } { postonly }
 \xeja_jfm_set_xspmode:nn { kanji/fullstop } { postonly }
