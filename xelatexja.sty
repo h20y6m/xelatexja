@@ -850,6 +850,138 @@
         \__xeja_original_output_page:
       }
   }
+\bool_new:N \g__xeja_tombow_bool
+\tl_new:N \g__xeja_tombow_color_tl
+\tl_new:N \g__xeja_tombow_banner_tl
+\tl_new:N \g__xeja_tombow_banner_font_tl
+\dim_new:N \g__xeja_tombow_thickness_dim
+\dim_new:N \g__xeja_tombow_length_dim
+\dim_new:N \g__xeja_tombow_bleed_dim
+\dim_new:N \g__xeja_tombow_hoffset_dim
+\dim_new:N \g__xeja_tombow_voffset_dim
+\keys_define:nn { xelatexja / tombow }
+  {
+    tombow      .bool_gset:N = \g__xeja_tombow_bool,
+    color       .tl_gset:N   = \g__xeja_tombow_color_tl,
+    banner      .tl_gset:N   = \g__xeja_tombow_banner_tl,
+    banner-font .tl_gset:N   = \g__xeja_tombow_banner_font_tl,
+    thickness   .dim_gset:N  = \g__xeja_tombow_thickness_dim,
+    length      .dim_gset:N  = \g__xeja_tombow_length_dim,
+    bleed       .dim_gset:N  = \g__xeja_tombow_bleed_dim,
+    hoffset     .dim_gset:N  = \g__xeja_tombow_hoffset_dim,
+    voffset     .dim_gset:N  = \g__xeja_tombow_voffset_dim,
+  }
+\keys_set:nn { xelatexja / tombow }
+  {
+    tombow      = false,
+    color       = \normalcolor,
+    banner      = {},
+    banner-font = \usefont{TU}{lmtt}{m}{n}\fontsize{9}{9}\selectfont,
+    thickness   = 0.1pt,
+    length      = 10mm,
+    bleed       = 3mm,
+    hoffset      = 1in,
+    voffset      = 1in,
+  }
+\NewDocumentCommand \xejaTombowSetup { m }
+  { \keys_set:nn { xelatexja / tombow } {#1} }
+\cs_new:Npn \__xeja_output_tombow:
+  {
+    \g__xeja_tombow_color_tl
+    \linethickness{\g__xeja_tombow_thickness_dim}
+    \put(\g__xeja_tombow_hoffset_dim,
+        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
+      { \line(-1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
+    \put(\g__xeja_tombow_hoffset_dim,
+        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
+      { \line(0,1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim)
+      { \line(-1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim)
+      { \line(0,1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
+        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
+      { \line(-1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
+        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
+      { \line(0,1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
+        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
+      { \line(1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth,
+        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
+      { \line(1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth,
+        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
+      { \line(0,1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim)
+      { \line(1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim)
+      { \line(0,1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
+    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
+      { \line(0,-1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
+      { \line(-1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
+      { \line(0,1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
+      { \line(0,-1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
+      { \line(1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
+      { \line(0,1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim,
+        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
+      { \line(-1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
+    \put(\g__xeja_tombow_hoffset_dim,
+        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
+      { \line(0,-1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-\paperheight)
+      { \line(-1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-\paperheight)
+      { \line(0,-1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
+        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
+      { \line(-1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
+        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
+      { \line(0,-1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
+        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
+      { \line(1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth,
+        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
+      { \line(1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth,
+        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
+      { \line(0,-1){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-\paperheight)
+      { \line(1,0){\g__xeja_tombow_length_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
+        -\g__xeja_tombow_voffset_dim-\paperheight)
+      { \line(0,-1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
+    \put(\g__xeja_tombow_hoffset_dim+5mm,
+        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim+4pt)
+      { \g__xeja_tombow_banner_font_tl \g__xeja_tombow_banner_tl }
+  }
+\hook_gput_code:nnn { shipout/background } { ./tombow }
+  {
+    \bool_if:NT \g__xeja_tombow_bool
+      { \__xeja_output_tombow: }
+  }
 \cs_new_eq:NN \xejaIfTateDocumentTF \xeja_if_tate_document:TF
 \cs_new_eq:NN \xejaIfTateTextTF \xeja_if_tate_text:TF
 \input{xejajfm-\g__xeja_jfm_tl.def}

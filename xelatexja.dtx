@@ -1766,6 +1766,196 @@
 %    \end{macrocode}
 %
 %
+% \subsubsection{トンボ}
+%
+%    \begin{macrocode}
+\bool_new:N \g_@@_tombow_bool
+\tl_new:N \g_@@_tombow_color_tl
+\tl_new:N \g_@@_tombow_banner_tl
+\tl_new:N \g_@@_tombow_banner_font_tl
+\dim_new:N \g_@@_tombow_thickness_dim
+\dim_new:N \g_@@_tombow_length_dim
+\dim_new:N \g_@@_tombow_bleed_dim
+\dim_new:N \g_@@_tombow_hoffset_dim
+\dim_new:N \g_@@_tombow_voffset_dim
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\keys_define:nn { xelatexja / tombow }
+  {
+    tombow      .bool_gset:N = \g_@@_tombow_bool,
+    color       .tl_gset:N   = \g_@@_tombow_color_tl,
+    banner      .tl_gset:N   = \g_@@_tombow_banner_tl,
+    banner-font .tl_gset:N   = \g_@@_tombow_banner_font_tl,
+    thickness   .dim_gset:N  = \g_@@_tombow_thickness_dim,
+    length      .dim_gset:N  = \g_@@_tombow_length_dim,
+    bleed       .dim_gset:N  = \g_@@_tombow_bleed_dim,
+    hoffset     .dim_gset:N  = \g_@@_tombow_hoffset_dim,
+    voffset     .dim_gset:N  = \g_@@_tombow_voffset_dim,
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\keys_set:nn { xelatexja / tombow }
+  {
+    tombow      = false,
+    color       = \normalcolor,
+    banner      = {},
+    banner-font = \usefont{TU}{lmtt}{m}{n}\fontsize{9}{9}\selectfont,
+    thickness   = 0.1pt,
+    length      = 10mm,
+    bleed       = 3mm,
+    hoffset      = 1in,
+    voffset      = 1in,
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\NewDocumentCommand \xejaTombowSetup { m }
+  { \keys_set:nn { xelatexja / tombow } {#1} }
+%    \end{macrocode}
+%
+%   トンボの出力
+%    \begin{macrocode}
+\cs_new:Npn \@@_output_tombow:
+  {
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+    \g_@@_tombow_color_tl
+%    \end{macrocode}
+% 線幅をセット
+%    \begin{macrocode}
+    \linethickness{\g_@@_tombow_thickness_dim}
+%    \end{macrocode}
+% 左上
+%    \begin{macrocode}
+    \put(\g_@@_tombow_hoffset_dim,
+        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
+      { \line(-1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+    \put(\g_@@_tombow_hoffset_dim,
+        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
+      { \line(0,1){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim)
+      { \line(-1,0){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim)
+      { \line(0,1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+%    \end{macrocode}
+% 上
+%    \begin{macrocode}
+    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
+        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
+      { \line(-1,0){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
+        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
+      { \line(0,1){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
+        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
+      { \line(1,0){\g_@@_tombow_length_dim} }
+%    \end{macrocode}
+% 右上
+%    \begin{macrocode}
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth,
+        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
+      { \line(1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth,
+        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
+      { \line(0,1){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim)
+      { \line(1,0){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim)
+      { \line(0,1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+%    \end{macrocode}
+% 左
+%    \begin{macrocode}
+    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-0.5\paperheight)
+      { \line(0,-1){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-0.5\paperheight)
+      { \line(-1,0){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-0.5\paperheight)
+      { \line(0,1){\g_@@_tombow_length_dim} }
+%    \end{macrocode}
+% 右
+%    \begin{macrocode}
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-0.5\paperheight)
+      { \line(0,-1){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-0.5\paperheight)
+      { \line(1,0){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-0.5\paperheight)
+      { \line(0,1){\g_@@_tombow_length_dim} }
+%    \end{macrocode}
+% 左下
+%    \begin{macrocode}
+    \put(\g_@@_tombow_hoffset_dim,
+        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
+      { \line(-1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+    \put(\g_@@_tombow_hoffset_dim,
+        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
+      { \line(0,-1){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-\paperheight)
+      { \line(-1,0){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-\paperheight)
+      { \line(0,-1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+%    \end{macrocode}
+% 下
+%    \begin{macrocode}
+    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
+        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
+      { \line(-1,0){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
+        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
+      { \line(0,-1){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
+        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
+      { \line(1,0){\g_@@_tombow_length_dim} }
+%    \end{macrocode}
+% 右下
+%    \begin{macrocode}
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth,
+        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
+      { \line(1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth,
+        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
+      { \line(0,-1){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-\paperheight)
+      { \line(1,0){\g_@@_tombow_length_dim} }
+    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
+        -\g_@@_tombow_voffset_dim-\paperheight)
+      { \line(0,-1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+%    \end{macrocode}
+% バナー
+%    \begin{macrocode}
+    \put(\g_@@_tombow_hoffset_dim+5mm,
+        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim+4pt)
+      { \g_@@_tombow_banner_font_tl \g_@@_tombow_banner_tl }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\hook_gput_code:nnn { shipout/background } { ./tombow }
+  {
+    \bool_if:NT \g_@@_tombow_bool
+      { \@@_output_tombow: }
+  }
+%    \end{macrocode}
+%
+%
 % \subsection{\LaTeXe インターフェイス}
 %
 %    \begin{macrocode}
