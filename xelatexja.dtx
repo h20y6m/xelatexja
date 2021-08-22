@@ -431,6 +431,17 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \subsection{ヘルパー関数}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_swap_dim:NN #1#2
+  {
+    \dim_set_eq:NN \l_@@_tmpa_dim #1
+    \dim_set_eq:NN #1 #2
+    \dim_set_eq:NN #2 \l_@@_tmpa_dim
+  }
+%    \end{macrocode}
+%
 % \subsection{オプション}
 %
 %    \begin{macrocode}
@@ -1723,44 +1734,59 @@
 %
 % \subsection{ページ出力}
 %
-% 縦組みにするための処理を行う。
+% \subsubsection{縦組み時のページ回転処理}
+%
+% 縦組みにするためページの回転処理を行う。
 %
 % \LaTeX では出力ルーチンで本文領域が|\@outputbox|に構築された後
 % |\@outputpage|が実行されるので、|\@outputpage|のまえに
 % |\@outputbox|を90度回転する処理を入れる。
 %    \begin{macrocode}
-\cs_set_eq:NN \@@_original_output_page: \@outputpage
-\cs_set:Npn \@outputpage
+\hook_gput_code:nnn { cmd/@outputpage/before } { ./rotate-page }
+  { \@@_output_page_before: }
+\hook_gput_code:nnn { cmd/@outputpage/after } { ./rotate-page }
+  { \@@_output_page_after: }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_output_page_before:
   {
-    \bool_if:NTF \g_@@_tate_document_bool
+    \bool_if:NT \g_@@_tate_document_bool
       {
-        \group_begin:
 %    \end{macrocode}
 % |\@outputbox|を時計回りに90度回転する。
 %    \begin{macrocode}
-          \@@_rotate_box_tate_in_yoko:N \@outputbox
+        \@@_rotate_box_tate_in_yoko:N \@outputbox
 %    \end{macrocode}
 % |\textwidth|と|\textheight|を入れ替える。
 %    \begin{macrocode}
-          \dim_set_eq:NN \l_@@_tmpa_dim \textwidth
-          \dim_set_eq:NN \textwidth \textheight
-          \dim_set_eq:NN \textheight \l_@@_tmpa_dim
+        \@@_swap_dim:NN \textwidth \textheight
 %    \end{macrocode}
 % 横組み状態で元の|\@outputpage|を実行する。
 %    \begin{macrocode}
-          \bool_set_false:N \l_@@_tate_text_bool
-          \@@_original_output_page:
-        \group_end:
+        \bool_set_false:N \l_@@_tate_text_bool
+      }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_set:Npn \@@_output_page_after:
+  {
+    \bool_if:NT \g_@@_tate_document_bool
+      {
+%    \end{macrocode}
+% 縦組みに戻す。
+%    \begin{macrocode}
+        \bool_set_true:N \l_@@_tate_text_bool
+%    \end{macrocode}
+% |\textwidth|と|\textheight|をもとに戻す。
+%    \begin{macrocode}
+        \@@_swap_dim:NN \textwidth \textheight
 %    \end{macrocode}
 % |\textwidth|と|\textheight|を入れ替えた状態で|\@colht|が
 % 設定されているので、戻った後もう一度設定しなおす。
 %    \begin{macrocode}
         \dim_gset_eq:NN \@colht \textheight
-      }
-      {
-%    \end{macrocode}
-%    \begin{macrocode}
-        \@@_original_output_page:
       }
   }
 %    \end{macrocode}
@@ -1947,6 +1973,7 @@
   }
 %    \end{macrocode}
 %
+% \textt{shipout/background}フックでトンボを描画する。
 %    \begin{macrocode}
 \hook_gput_code:nnn { shipout/background } { ./tombow }
   {
