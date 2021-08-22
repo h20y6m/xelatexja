@@ -1599,7 +1599,7 @@
     \hbox_set:Nn \l_@@_rotate_box
       {
         \tex_kern:D -\l_@@_rotate_box_wd_dim
-        \box_use:N #1
+        \box_use_drop:N #1
       }
 %    \end{macrocode}
 % ボックスを時計回りに90度回転する。
@@ -1653,7 +1653,7 @@
     \hbox_set:Nn \l_@@_rotate_box
       {
         \tex_kern:D -0.5\l_@@_rotate_box_wd_dim
-        \box_use:N #1
+        \box_use_drop:N #1
       }
 %    \end{macrocode}
 % ボックスを反時計回りに90度回転する。
@@ -1690,41 +1690,103 @@
 %    \end{macrocode}
 % \end{macro}
 %
-%    \begin{macrocode}
-\box_new:N \l_@@_tate_yoko_box
-%    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \@@_yoko_in_tate_hbox:n #1
+\cs_new:Npn \@@_yoko_in_tate_box_set:N #1
   {
-    \hbox_set:Nn \l_@@_tate_yoko_box
-      { \bool_set_false:N \l_@@_tate_text_bool #1 }
-    \@@_rotate_box_yoko_in_tate:N \l_@@_tate_yoko_box
+    \@@_rotate_box_yoko_in_tate:N #1
     \dim_set:Nn \l_@@_baselineshift_dim { \l_@@_tbaselineshift_tl }
     \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
       {
         \tex_raise:D \l_@@_baselineshift_dim
-        \tex_box:D \l_@@_tate_yoko_box
+        \tex_box:D #1
       }
-    \box_use_drop:N \l_@@_tate_yoko_box
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_tate_in_yoko_box_set:N #1
+  {
+    \@@_rotate_box_tate_in_yoko:N #1
+    \dim_set:Nn \l_@@_baselineshift_dim { \l_@@_ybaselineshift_tl }
+    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+      {
+        \tex_raise:D \l_@@_baselineshift_dim
+        \tex_box:D #1
+      }
+  }
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_yoko_in_tate_hbox_set:Nn #1#2
+  {
+    \hbox_set:Nn #1
+      { \bool_set_false:N \l_@@_tate_text_bool #2 }
+    \@@_yoko_in_tate_box_set:N #1
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_yoko_in_tate_vbox_set:Nn #1#2
+  {
+    \vbox_set:Nn #1
+      { \bool_set_false:N \l_@@_tate_text_bool #2 }
+    \@@_yoko_in_tate_box_set:N #1
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_tate_in_yoko_hbox_set:Nn #1#2
+  {
+    \hbox_set:Nn #1
+      { \bool_set_true:N \l_@@_tate_text_bool #2 }
+    \@@_tate_in_yoko_box_set:N #1
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_tate_in_yoko_vbox_set:Nn #1#2
+  {
+    \vbox_set:Nn #1
+      { \bool_set_true:N \l_@@_tate_text_bool #2 }
+    \@@_tate_in_yoko_box_set:N #1
+  }
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_yoko_in_tate_hbox:n #1
+  {
+    \@@_yoko_in_tate_hbox_set:Nn \l_@@_rotate_box {#1}
+    \box_use_drop:N \l_@@_rotate_box
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_yoko_in_tate_vbox:n #1
+  {
+    \@@_yoko_in_tate_vbox_set:Nn \l_@@_rotate_box {#1}
+    \box_use_drop:N \l_@@_rotate_box
   }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \cs_new:Npn \@@_tate_in_yoko_hbox:n #1
   {
-    \hbox_set:Nn \l_@@_tate_yoko_box
-      { \bool_set_true:N \l_@@_tate_text_bool #1 }
-    \@@_rotate_box_tate_in_yoko:N \l_@@_tate_yoko_box
-    \dim_set:Nn \l_@@_baselineshift_dim { \l_@@_ybaselineshift_tl }
-    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
-      {
-        \tex_raise:D \l_@@_baselineshift_dim
-        \tex_box:D \l_@@_tate_yoko_box
-      }
-    \box_use_drop:N \l_@@_tate_yoko_box
+    \@@_tate_in_yoko_hbox_set:Nn \l_@@_rotate_box {#1}
+    \box_use_drop:N \l_@@_rotate_box
   }
 %    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_tate_in_yoko_vbox:n #1
+  {
+    \@@_tate_in_yoko_vbox_set:Nn \l_@@_rotate_box {#1}
+    \box_use_drop:N \l_@@_rotate_box
+  }
+%    \end{macrocode}
+%
 %
 %    \begin{macrocode}
 \cs_new:Npn \xeja_yoko_hbox:n #1
@@ -1736,6 +1798,15 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_vbox:n #1
+  {
+    \bool_if:NTF \l_@@_tate_text_bool
+      { \@@_yoko_in_tate_vbox:n {#1} }
+      { \vbox:n {#1} }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_new:Npn \xeja_tate_hbox:n #1
   {
     \bool_if:NTF \l_@@_tate_text_bool
@@ -1743,6 +1814,53 @@
       { \@@_tate_in_yoko_hbox:n {#1} }
   }
 %    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \xeja_tate_vbox:n #1
+  {
+    \bool_if:NTF \l_@@_tate_text_bool
+      { \vbox:n {#1} }
+      { \@@_tate_in_yoko_vbox:n {#1} }
+  }
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_hbox_set:Nn #1#2
+  {
+    \bool_if:NTF \l_@@_tate_text_bool
+      { \@@_yoko_in_tate_hbox_set:Nn #1 {#2} }
+      { \hbox_set:Nn #1 {#2} }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_vbox_set:Nn #1#2
+  {
+    \bool_if:NTF \l_@@_tate_text_bool
+      { \@@_yoko_in_tate_vbox_set:Nn #1 {#2} }
+      { \vbox_set:Nn #1 {#2} }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \xeja_tate_hbox_set:Nn #1#2
+  {
+    \bool_if:NTF \l_@@_tate_text_bool
+      { \hbox_set:n #1 {#2} }
+      { \@@_tate_in_yoko_hbox_set:Nn #1 {#2} }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \xeja_tate_vbox_set:Nn #1#2
+  {
+    \bool_if:NTF \l_@@_tate_text_bool
+      { \vbox_set:n #1 {#2} }
+      { \@@_tate_in_yoko_vbox_set:Nn #1 {#2} }
+  }
+%    \end{macrocode}
+%
 %
 % \subsection{ページ出力}
 %
@@ -1985,7 +2103,7 @@
   }
 %    \end{macrocode}
 %
-% \textt{shipout/background}フックでトンボを描画する。
+% \texttt{shipout/background}フックでトンボを描画する。
 %    \begin{macrocode}
 \hook_gput_code:nnn { shipout/background } { ./tombow }
   {
