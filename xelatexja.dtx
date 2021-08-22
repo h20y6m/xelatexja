@@ -1157,6 +1157,8 @@
 % \begin{macro}{\@@_baselineshift_begin:}
 % \begin{macro}{\@@_baselineshift_end:}
 %    \begin{macrocode}
+\bool_new:N \l_@@_baselineshift_bool
+\box_new:N \l_@@_baselineshift_box
 \dim_new:N \l_@@_baselineshift_dim
 \cs_new:Npn \@@_baselineshift_begin:
   {
@@ -1166,17 +1168,27 @@
           { \l_@@_tbaselineshift_tl }
           { \l_@@_ybaselineshift_tl }
       }
-    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+    \bool_set:Nn \l_@@_baselineshift_bool
       {
-        \tex_raise:D \l_@@_baselineshift_dim
-          \tex_hbox:D \c_group_begin_token
+        \xeja_if_tate_text_p: ||
+        ! \dim_compare_p:nNn { \l_@@_baselineshift_dim } = { \c_zero_dim }
+      }
+    \bool_if:NT \l_@@_baselineshift_bool
+      {
+        \tex_hbox:D \c_group_begin_token
       }
   }
 \cs_new:Npn \@@_baselineshift_end:
   {
-    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+    \bool_if:NT \l_@@_baselineshift_bool
       {
         \c_group_end_token
+        \box_set_to_last:N \l_@@_baselineshift_box
+        \box_set_ht:Nn \l_@@_baselineshift_box { 0.5\zw }
+        \box_set_dp:Nn \l_@@_baselineshift_box { 0.5\zw }
+        \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+          { \tex_raise:D \l_@@_baselineshift_dim }
+        \box_use_drop:N \l_@@_baselineshift_box
         \@@_kern:n { \c_zero_dim }
       }
   }
