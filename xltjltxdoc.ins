@@ -1,0 +1,16 @@
+%
+% xltjltxdoc.ins
+%
+
+\input docstrip
+\askforoverwritefalse
+\keepsilent
+
+\generate{
+  \file{xltjltxdoc.cls}{
+    \from{xltjltxdoc.dtx}{class,ltx}}
+  \file{xltjl3doc.cls}{
+    \from{xltjltxdoc.dtx}{class,l3}}
+}
+
+\endbatchfile

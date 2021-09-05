@@ -20,14 +20,16 @@ tdsroot = "xelatex"
 installfiles = {
   "xelatexja.sty",
   "xltjext.sty",
-  "xejajfm-standard.def",
-  "bxjsja-xelatexja.def",
   "*.cls",
   "*.clo",
+  "xejajfm-standard.def",
+  "bxjsja-xelatexja.def",
 }
 sourcefiles = {
   "xelatexja.dtx",
   "xelatexja.ins",
+  "xltjltxdoc.dtx",
+  "xltjltxdoc.ins",
   "xltjclasses.dtx",
   "xltjclasses.ins",
 }
@@ -38,6 +40,7 @@ textfiles = {
 typesetfiles = {
   "xelatexja-doc.tex",
   "xelatexja-code.tex",
+  "xltjltxdoc.dtx",
   "xltjclasses.dtx",
   "example-yoko.tex",
   "example-tate.tex",

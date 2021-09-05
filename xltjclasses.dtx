@@ -148,19 +148,10 @@
 %<10pt|11pt|12pt>  Standard XeLaTeX-ja file (size option)]
 %<*driver>
 ]
-\documentclass{ltxdoc}
+\documentclass{xltjltxdoc}
 \GetFileInfo{xltjclasses.dtx}
-\usepackage{xelatexja}
-\usepackage{indentfirst}
-\setlength{\parindent}{1\zw}
-\setlength{\textwidth}{\numexpr\textwidth/\zw\relax\zw}
 \usepackage[verb]{bxghost}
 \usepackage{bxtexlogo}\bxtexlogoimport{*}
-\providecommand*{\file}[1]{\texttt{#1}}
-\providecommand*{\pstyle}[1]{\textsl{#1}}
-\providecommand*{\Lcount}[1]{\textsl{\small#1}}
-\providecommand*{\Lopt}[1]{\textsf{#1}}
-\providecommand\dst{{\normalfont\scshape docstrip}}
 \title{\XeLaTeX-ja用\texttt{jclasses}互換クラス}
 \author{森見幸正 (h20y6m)}
 \date{作成日：\filedate}

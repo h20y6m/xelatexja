@@ -1,0 +1,97 @@
+% \iffalse meta-comment
+%
+%% File: xltjltxdoc.dtx
+% 
+% Copyright (c) 2021 Yukimasa Morimi (h20y6m)
+%   GitHub:   https://github.com/h20y6m
+%
+% This package is distributed under the MIT License.
+%
+% -----------------------------------------------------------------------
+%
+% \fi
+% \iffalse
+%
+%<class>\NeedsTeXFormat{LaTeX2e}[2021-06-01]
+%<class&ltx>\ProvidesClass{xltjltxdoc}
+%<class&l3>\ProvidesClass{xltjl3doc}
+%<class>  [2021/09/05 v0.2.0 Standard XeLaTeX-ja documentation class]
+%
+%<*driver>
+\documentclass{xltjltxdoc}
+\GetFileInfo{xltjltxdoc.cls}
+\usepackage{bxtexlogo}\bxtexlogoimport{*}
+\usepackage[verb]{bxghost}
+\title{\XeLaTeX-jaドキュメント記述用クラス}
+\author{森見幸正 (h20y6m)}
+\date{\filedate}
+\begin{document}
+  \maketitle
+  \DocInput{xltjltxdoc.dtx}
+\end{document}
+%</driver>
+%
+% \fi
+%
+%
+% \section{実装}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
+%
+% \file{ltxdoc}または\file{l3doc}を読み込む。
+%    \begin{macrocode}
+%<ltx>\DeclareOption*{\PassOptionsToClass{\CurrentOption}{ltxdoc}}
+%<l3>\DeclareOption*{\PassOptionsToClass{\CurrentOption}{l3doc}}
+\ProcessOptions
+%<ltx>\LoadClass{ltxdoc}
+%<l3>\LoadClass{l3doc}
+%    \end{macrocode}
+%
+% \file{xelatexja}を読み込む。
+%    \begin{macrocode}
+\def\Cjascale{0.962216}
+\usepackage[jascale=\Cjascale]{xelatexja}
+%    \end{macrocode}
+%
+% 行間を調整する。
+%    \begin{macrocode}
+\RenewDocumentCommand \normalsize {}
+  {
+    \@setfontsize\normalsize\@xpt{15}%
+    \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+    \abovedisplayshortskip \z@ \@plus3\p@
+    \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+    \belowdisplayskip \abovedisplayskip
+    \let\@listi\@listI
+  }
+\RenewDocumentCommand \large {} {\@setfontsize\large\@xiipt{17}}
+\RenewDocumentCommand \Large {} {\@setfontsize\Large\@xivpt{21}}
+\RenewDocumentCommand \LARGE {} {\@setfontsize\LARGE\@xviipt{25}}
+\RenewDocumentCommand \huge {} {\@setfontsize\huge\@xxpt{28}}
+\RenewDocumentCommand \Huge {} {\@setfontsize\Huge\@xxvpt{33}}
+\normalsize
+%    \end{macrocode}
+%
+% インデントを全角アキにする。
+%    \begin{macrocode}
+\setlength{\parindent}{1\zw}
+%    \end{macrocode}
+%
+% コマンドを定義する。
+%    \begin{macrocode}
+\providecommand*{\file}[1]{\texttt{#1}}
+\providecommand*{\pstyle}[1]{\textsl{#1}}
+\providecommand*{\Lcount}[1]{\textsl{\small#1}}
+\providecommand*{\Lopt}[1]{\textsf{#1}}
+\providecommand\dst{{\normalfont\scshape docstrip}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+% \Finale
+%
+\endinput
