@@ -1,7 +1,5 @@
 %#!xelatex
-\documentclass[a4paper,twocolumn]{article}
-\usepackage[tate]{xelatexja}
-\usepackage{xltjext}
+\documentclass[a4paper,twocolumn,tombow]{xltjtarticle}
 
 \usepackage{amsmath}
 \usepackage{pxrubrica}
@@ -9,39 +7,9 @@
 \usepackage{bxtexlogo}
 \bxtexlogoimport{*}
 
-
-\usepackage{indentfirst}
-
-\RenewDocumentCommand{\normalsize}{}{\fontsize{10pt}{15pt}}
-\normalsize
-\setlength{\parindent}{1\zw}
-\setlength{\topskip}{1\zw}
-\setlength{\parskip}{0pt}
-\setlength{\columnsep}{2\zw}
-
-\ExplSyntaxOn
-\int_set:Nn \l_tmpa_int
-  { \int_div_truncate:nn { \textheight - \columnsep } { 2 * \zw } * 2 }
-\int_set:Nn \l_tmpb_int
-  { \int_div_truncate:nn { \textwidth - \topskip } { \baselineskip } }
-\dim_set:Nn \textwidth
-  { 1\zw * \l_tmpa_int + \columnsep }
-\dim_set:Nn \textheight
-  { \baselineskip * \l_tmpb_int + \topskip }
-\ExplSyntaxOff
-
-\renewcommand{\thesection}{\rensuji{\arabic{section}}}
-
-\xejaTombowSetup{tombow=true}
-\setlength{\pdfpagewidth}{\paperwidth}
-\setlength{\pdfpageheight}{\paperheight}
-\addtolength{\pdfpagewidth}{2in}
-\addtolength{\pdfpageheight}{2in}
-
-
 \title{\XeLaTeX-ja縦組みサンプル}
 \author{森見幸正 (h20y6m)}
-\date{令和三年九月五日}
+\和暦
 
 \begin{document}
 \maketitle

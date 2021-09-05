@@ -22,10 +22,14 @@ installfiles = {
   "xltjext.sty",
   "xejajfm-standard.def",
   "bxjsja-xelatexja.def",
+  "*.cls",
+  "*.clo",
 }
 sourcefiles = {
   "xelatexja.dtx",
   "xelatexja.ins",
+  "xltjclasses.dtx",
+  "xltjclasses.ins",
 }
 textfiles = {
   "README.md",
@@ -34,6 +38,7 @@ textfiles = {
 typesetfiles = {
   "xelatexja-doc.tex",
   "xelatexja-code.tex",
+  "xltjclasses.dtx",
   "example-yoko.tex",
   "example-tate.tex",
   "example-bxjs.tex",

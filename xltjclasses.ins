@@ -1,0 +1,51 @@
+%
+% xltjclasses.ins
+%
+
+\input docstrip
+\askforoverwritefalse
+\keepsilent
+
+\generate{
+  \file{xltjarticle.cls}{
+    \from{xltjclasses.dtx}{article,yoko}}
+  \file{xltjreport.cls}{
+    \from{xltjclasses.dtx}{report,yoko}}
+  \file{xltjbook.cls}{
+    \from{xltjclasses.dtx}{book,yoko}}
+  \file{xltjsize10.clo}{
+    \from{xltjclasses.dtx}{10pt,yoko}}
+  \file{xltjsize11.clo}{
+    \from{xltjclasses.dtx}{11pt,yoko}}
+  \file{xltjsize12.clo}{
+    \from{xltjclasses.dtx}{12pt,yoko}}
+  \file{xltjbk10.clo}{
+    \from{xltjclasses.dtx}{10pt,bk,yoko}}
+  \file{xltjbk11.clo}{
+    \from{xltjclasses.dtx}{11pt,bk,yoko}}
+  \file{xltjbk12.clo}{
+    \from{xltjclasses.dtx}{12pt,bk,yoko}}
+}
+
+\generate{
+  \file{xltjtarticle.cls}{
+    \from{xltjclasses.dtx}{article,tate}}
+  \file{xltjtreport.cls}{
+    \from{xltjclasses.dtx}{report,tate}}
+  \file{xltjtbook.cls}{
+    \from{xltjclasses.dtx}{book,tate}}
+  \file{xltjtsize10.clo}{
+    \from{xltjclasses.dtx}{10pt,tate}}
+  \file{xltjtsize11.clo}{
+    \from{xltjclasses.dtx}{11pt,tate}}
+  \file{xltjtsize12.clo}{
+    \from{xltjclasses.dtx}{12pt,tate}}
+  \file{xltjtbk10.clo}{
+    \from{xltjclasses.dtx}{10pt,bk,tate}}
+  \file{xltjtbk11.clo}{
+    \from{xltjclasses.dtx}{11pt,bk,tate}}
+  \file{xltjtbk12.clo}{
+    \from{xltjclasses.dtx}{12pt,bk,tate}}
+}
+
+\endbatchfile
