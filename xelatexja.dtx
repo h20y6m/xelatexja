@@ -15,9 +15,10 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[2021-06-01]
 \RequirePackage{expl3}[2021-07-12]
 %<package>\ProvidesExplPackage{xelatexja}
+%<xltjext>\ProvidesExplPackage{xltjext}
 %<standard>\ProvidesExplFile{xejajfm-standard.def}
 %<bxjsja>\ProvidesExplFile{bxjsja-xelatexja.def}
-  {2021/08/15}{0.1.0}{Japanese typesetting with XeLaTeX}
+  {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
 %<*driver>
 \fi
 %</driver>
@@ -36,6 +37,7 @@
 \usepackage{indentfirst}
 \setlength{\parindent}{1\zw}
 \setlength{\textwidth}{\numexpr\textwidth/\zw\relax\zw}
+\RenewDocumentCommand\normalsize{}{\fontsize{10pt}{15pt}}
 \EnableCrossrefs
 \CodelineIndex
 \begin{document}
@@ -48,7 +50,7 @@
 %
 % \title{\textsf{\XeLaTeX-ja}パッケージ}
 % \author{森見幸正 (h20y6m)}
-% \date{2021年8月15日}
+% \date{2021年9月5日}
 %
 % \maketitle
 %
@@ -314,15 +316,198 @@
 %
 % \subsection{ボックス}
 %
-% \begin{function}{\xeja_yoko_hbox:n}
+% \begin{function}{\xeja_box_yjabaselineshift:n, \xeja_box_tjabaselineshift:n}
 %   \begin{syntax}
-%     \cs{xeja_yoko_hbox:n} \Arg{contents}
+%     \cs{xeja_box_yjabaselineshift:n} \Arg{box function}
+%   \end{syntax}
+%   ボックスを和文ベースライン補正して挿入する。
+% \end{function}
+%
+% \begin{function}{\xeja_yoko_in_tate_hbox:n}
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_hbox:n} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
-% \begin{function}{\xeja_tate_hbox:n}
+% \begin{function}{\xeja_yoko_in_tate_hbox_to_wd:nn}
 %   \begin{syntax}
-%     \cs{xeja_tate_hbox:n} \Arg{contents}
+%     \cs{xeja_yoko_in_tate_hbox_to_wd:nn} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_yoko_in_tate_hbox_to_zero:n}
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_hbox_to_zero:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xeja_yoko_in_tate_hbox_set:Nn, \xeja_yoko_in_tate_hbox_set:cn,
+%     \xeja_yoko_in_tate_hbox_gset:Nn, \xeja_yoko_in_tate_hbox_gset:cn
+%   }
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_hbox_set:Nn} \meta{box} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xeja_yoko_in_tate_hbox_set_to_wd:Nnn, \xeja_yoko_in_tate_hbox_set_to_wd:cnn,
+%     \xeja_yoko_in_tate_hbox_gset_to_wd:Nnn, \xeja_yoko_in_tate_hbox_gset_to_wd:cnn
+%   }
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_hbox_set_to_wd:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_yoko_in_tate_hbox_overlap_center:n}
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_hbox_overlap_center:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_yoko_in_tate_hbox_overlap_right:n}
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_hbox_overlap_right:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_yoko_in_tate_hbox_overlap_left:n}
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_hbox_overlap_left:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_yoko_in_tate_vbox:n}
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_vbox:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_yoko_in_tate_vbox_to_ht:nn}
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_vbox_to_ht:nn} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_yoko_in_tate_vbox_to_zero:n}
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_vbox_to_zero:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xeja_yoko_in_tate_vbox_set:Nn, \xeja_yoko_in_tate_vbox_set:cn,
+%     \xeja_yoko_in_tate_vbox_gset:Nn, \xeja_yoko_in_tate_vbox_gset:cn
+%   }
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_vbox_set:Nn} \meta{box} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xeja_yoko_in_tate_vbox_set_to_ht:Nnn, \xeja_yoko_in_tate_vbox_set_to_ht:cnn,
+%     \xeja_yoko_in_tate_vbox_gset_to_ht:Nnn, \xeja_yoko_in_tate_vbox_gset_to_ht:cnn
+%   }
+%   \begin{syntax}
+%     \cs{xeja_yoko_in_tate_vbox_set_to_ht:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_in_yoko_hbox:n}
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_hbox:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_in_yoko_hbox_to_wd:nn}
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_hbox_to_wd:nn} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_in_yoko_hbox_to_zero:n}
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_hbox_to_zero:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xeja_tate_in_yoko_hbox_set:Nn, \xeja_tate_in_yoko_hbox_set:cn,
+%     \xeja_tate_in_yoko_hbox_gset:Nn, \xeja_tate_in_yoko_hbox_gset:cn
+%   }
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_hbox_set:Nn} \meta{box} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xeja_tate_in_yoko_hbox_set_to_wd:Nnn, \xeja_tate_in_yoko_hbox_set_to_wd:cnn,
+%     \xeja_tate_in_yoko_hbox_gset_to_wd:Nnn, \xeja_tate_in_yoko_hbox_gset_to_wd:cnn
+%   }
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_hbox_set_to_wd:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_in_yoko_hbox_overlap_center:n}
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_hbox_overlap_center:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_in_yoko_hbox_overlap_right:n}
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_hbox_overlap_right:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_in_yoko_hbox_overlap_left:n}
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_hbox_overlap_left:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_in_yoko_vbox:n}
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_vbox:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_in_yoko_vbox_to_ht:nn}
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_vbox_to_ht:nn} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xeja_tate_in_yoko_vbox_to_zero:n}
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_vbox_to_zero:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xeja_tate_in_yoko_vbox_set:Nn, \xeja_tate_in_yoko_vbox_set:cn,
+%     \xeja_tate_in_yoko_vbox_gset:Nn, \xeja_tate_in_yoko_vbox_gset:cn
+%   }
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_vbox_set:Nn} \meta{box} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xeja_tate_in_yoko_vbox_set_to_ht:Nnn, \xeja_tate_in_yoko_vbox_set_to_ht:cnn,
+%     \xeja_tate_in_yoko_vbox_gset_to_ht:Nnn, \xeja_tate_in_yoko_vbox_gset_to_ht:cnn
+%   }
+%   \begin{syntax}
+%     \cs{xeja_tate_in_yoko_vbox_set_to_ht:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
@@ -330,7 +515,7 @@
 %
 %
 %
-% \section{\pkg{xelatexja}の実装}
+% \section{実装}
 %
 %    \begin{macrocode}
 %<*package>
@@ -403,22 +588,22 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\g_@@_jfm_tl}
+% \begin{macro}{\g_@@_jfm_name_tl}
 %    \begin{macrocode}
-\tl_new:N \g_@@_jfm_tl
+\tl_new:N \g_@@_jfm_name_tl
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\l_@@_ybaselineshift_tl,\l_@@_tbaselineshift_tl}
+% \begin{macro}{\l_@@_yjabaselineshift_tl,\l_@@_tjabaselineshift_tl}
 %   それぞれ横組み・縦組みでの和文ベースラインの補正値。
 %   (u)p\LaTeX とは異なり欧文ではなく和文に対して補正を行う。
 %   正の値が設定されている場合、和文のベースラインを指定値だけ
-%   行送りと逆方向に移動する。
+%   行送り方向に移動する。
 %    \begin{macrocode}
-\tl_new:N \l_@@_ybaselineshift_tl
-\tl_new:N \l_@@_tbaselineshift_tl
-\tl_set:Nn \l_@@_ybaselineshift_tl { 0\zw }
-\tl_set:Nn \l_@@_tbaselineshift_tl { 0.38\zw }
+\tl_new:N \l_@@_yjabaselineshift_tl
+\tl_new:N \l_@@_tjabaselineshift_tl
+\tl_set:Nn \l_@@_yjabaselineshift_tl { 0\zw }
+\tl_set:Nn \l_@@_tjabaselineshift_tl { -0.38\zw }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -449,7 +634,7 @@
   {
     tate .bool_gset:N = \g_@@_tate_document_bool,
     jascale .fp_gset:N = \g_@@_jascale_fp,
-    jfm .tl_gset:N = \g_@@_jfm_tl,
+    jfm .tl_gset:N = \g_@@_jfm_name_tl,
   }
 %    \end{macrocode}
 %
@@ -553,10 +738,11 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \xeja_kanji_family:n #1
+\cs_new:Npn \xeja_set_kanji_family:n #1
   {
     \tl_set:Nx \l_@@_kanji_family_tl {#1}
   }
+\cs_generate_variant:Nn \xeja_set_kanji_family:n { x }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -692,7 +878,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\xeja_kanji_family:n { mc }
+\xeja_set_kanji_family:n { mc }
 %    \end{macrocode}
 %
 % \begin{macro}{\@@_enter_kanji_font:,\@@_leave_kanji_font:}
@@ -912,12 +1098,12 @@
 \cs_new:Npn \@@_interchar_kanji_to_kanji:nn #1#2
   {
     \@@_jfm_use_postcharwd:n {#1}
-    \@@_baselineshift_end:
+    \@@_jabaselineshift_end:
     \@@_jfm_use_postbreakpenalty:n {#1}
     \@@_jfm_use_prebreakpenalty:n {#2}
     \@@_jfm_use_glue_kern_or:nnn {#1} {#2}
       { \@@_glue:n { \l_@@_kanjiskip_tl } }
-    \@@_baselineshift_begin:
+    \@@_jabaselineshift_begin:
     \@@_jfm_use_precharwd:n {#2}
     % \iow_term:n { K2K:~#1->#2 }
     \scan_stop:
@@ -931,7 +1117,7 @@
 \cs_new:Npn \@@_interchar_kanji_to_alpha:nn #1#2
   {
     \@@_jfm_use_postcharwd:n {#1}
-    \@@_baselineshift_end:
+    \@@_jabaselineshift_end:
     \@@_jfm_use_postbreakpenalty:n {#1}
     \@@_jfm_use_glue_kern_or:nnn {#1} { kanji/default }
       {
@@ -957,7 +1143,7 @@
         \@@_jfm_if_xspmode_inhibit:nnF {#1} {#2}
           { \@@_glue:n { \l_@@_xkanjiskip_tl } }
       }
-    \@@_baselineshift_begin:
+    \@@_jabaselineshift_begin:
     \@@_jfm_use_precharwd:n {#2}
     % \iow_term:n { A2K:~#1->#2 }
     \scan_stop:
@@ -971,7 +1157,7 @@
 \cs_new:Npn \@@_interchar_kanji_to_boundary:n #1
   {
     \@@_jfm_use_postcharwd:n {#1}
-    \@@_baselineshift_end:
+    \@@_jabaselineshift_end:
     \@@_jfm_use_postbreakpenalty:n {#1}
     \@@_leave_kanji_font:
     % \iow_term:n { K2B:~#1->boundary }
@@ -1021,7 +1207,7 @@
               { \@@_glue:n { \l_@@_xkanjiskip_tl } }
           }
       }
-    \@@_baselineshift_begin:
+    \@@_jabaselineshift_begin:
     \@@_jfm_use_precharwd:n {#1}
     \@@_lastnode_clear:
     % \iow_term:n { B2K:~boundary->#1 }
@@ -1154,41 +1340,40 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_baselineshift_begin:}
-% \begin{macro}{\@@_baselineshift_end:}
+% \begin{macro}{\@@_jabaselineshift_begin:}
+% \begin{macro}{\@@_jabaselineshift_end:}
 %    \begin{macrocode}
-\bool_new:N \l_@@_baselineshift_bool
-\box_new:N \l_@@_baselineshift_box
-\dim_new:N \l_@@_baselineshift_dim
-\cs_new:Npn \@@_baselineshift_begin:
+\bool_new:N \l_@@_jabaselineshift_bool
+\box_new:N \l_@@_jabaselineshift_box
+\dim_new:N \l_@@_jabaselineshift_dim
+\cs_new:Npn \@@_jabaselineshift_begin:
   {
-    \dim_set:Nn \l_@@_baselineshift_dim
+    \dim_set:Nn \l_@@_jabaselineshift_dim
       {
         \xeja_if_tate_text:TF
-          { \l_@@_tbaselineshift_tl }
-          { \l_@@_ybaselineshift_tl }
+          { \l_@@_tjabaselineshift_tl }
+          { \l_@@_yjabaselineshift_tl }
       }
-    \bool_set:Nn \l_@@_baselineshift_bool
+    \bool_set:Nn \l_@@_jabaselineshift_bool
       {
         \xeja_if_tate_text_p: ||
-        ! \dim_compare_p:nNn { \l_@@_baselineshift_dim } = { \c_zero_dim }
+        ! \dim_compare_p:nNn { \l_@@_jabaselineshift_dim } = { \c_zero_dim }
       }
-    \bool_if:NT \l_@@_baselineshift_bool
+    \bool_if:NT \l_@@_jabaselineshift_bool
       {
         \tex_hbox:D \c_group_begin_token
       }
   }
-\cs_new:Npn \@@_baselineshift_end:
+\cs_new:Npn \@@_jabaselineshift_end:
   {
-    \bool_if:NT \l_@@_baselineshift_bool
+    \bool_if:NT \l_@@_jabaselineshift_bool
       {
         \c_group_end_token
-        \box_set_to_last:N \l_@@_baselineshift_box
-        \box_set_ht:Nn \l_@@_baselineshift_box { 0.5\zw }
-        \box_set_dp:Nn \l_@@_baselineshift_box { 0.5\zw }
-        \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
-          { \tex_raise:D \l_@@_baselineshift_dim }
-        \box_use_drop:N \l_@@_baselineshift_box
+        \box_set_to_last:N \l_@@_jabaselineshift_box
+        \box_set_ht:Nn \l_@@_jabaselineshift_box { 0.5\zw }
+        \box_set_dp:Nn \l_@@_jabaselineshift_box { 0.5\zw }
+        \box_move_down:nn { \l_@@_jabaselineshift_dim }
+          { \box_use_drop:N \l_@@_jabaselineshift_box }
         \@@_kern:n { \c_zero_dim }
       }
   }
@@ -1339,6 +1524,17 @@
   { \tex_vrule:D width \c_zero_dim \scan_stop: }
 %    \end{macrocode}
 % \end{macro}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_vrule:nnn #1#2#3
+  {
+    \tex_vrule:D
+      width  \dim_eval:n {#1}
+      height \dim_eval:n {#2}
+      depth  \dim_eval:n {#3}
+    \scan_stop:
+  }
+%    \end{macrocode}
 %
 % \begin{macro}{\@@_penalty:n}
 %   ペナルティの挿入。
@@ -1564,6 +1760,8 @@
 %
 % \subsection{ボックス}
 %
+% \subsubsection{ボックス回転}
+%
 %    \begin{macrocode}
 \cs_set_eq:NN \@@_special:n \tex_special:D
 \cs_new:Npn \@@_graphics_save:
@@ -1691,175 +1889,332 @@
 % \end{macro}
 %
 %
+% \subsubsection{ボックスのベースライン補正}
+%
+% \begin{macro}{\xeja_box_yjabaselineshift:n, \xeja_box_tjabaselineshift:n}
+%   ボックスを和文ベースライン補正を適用して挿入する。
+%   水平モードでのみ利用できる。
 %    \begin{macrocode}
-\cs_new:Npn \@@_yoko_in_tate_box_set:N #1
+\cs_new:Npn \xeja_box_yjabaselineshift:n #1
+  { \box_move_down:nn { \l_@@_yjabaselineshift_tl } {#1} }
+\cs_new:Npn \xeja_box_tjabaselineshift:n #1
+  { \box_move_down:nn { \l_@@_tjabaselineshift_tl } {#1} }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsubsection{縦組中の横組ボックス}
+%
+% 縦組中に横組ボックスを配置する場合はボックスを反時計回りに90度回転する。
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_yoko_in_tate_box:nnnn #1#2#3#4
   {
-    \@@_rotate_box_yoko_in_tate:N #1
-    \dim_set:Nn \l_@@_baselineshift_dim { \l_@@_tbaselineshift_tl }
-    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+    #1
       {
-        \tex_raise:D \l_@@_baselineshift_dim
-        \tex_box:D #1
+        #2 \l_@@_rotate_box #3
+          { \bool_set_false:N \l_@@_tate_text_bool #4 }
+        \@@_rotate_box_yoko_in_tate:N \l_@@_rotate_box
+        \box_use_drop:N \l_@@_rotate_box
       }
   }
 %    \end{macrocode}
 %
+% \begin{macro}{\xeja_yoko_in_tate_hbox:n}
 %    \begin{macrocode}
-\cs_new:Npn \@@_tate_in_yoko_box_set:N #1
+\cs_new:Npn \xeja_yoko_in_tate_hbox:n #1
   {
-    \@@_rotate_box_tate_in_yoko:N #1
-    \dim_set:Nn \l_@@_baselineshift_dim { \l_@@_ybaselineshift_tl }
-    \dim_compare:nNnF { \l_@@_baselineshift_dim } = { \c_zero_dim }
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox:n } { \hbox_set:Nn } {} {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\xeja_yoko_in_tate_hbox_to_wd:nn}
+% \begin{macro}{\xeja_yoko_in_tate_hbox_to_zero:n}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_in_tate_hbox_to_wd:nn #1#2
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox:n } { \hbox_set_to_wd:Nnn } {{#1}} {#2}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_to_zero:n #1
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox:n } { \hbox_set_to_zero:Nn } {} {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_yoko_in_tate_hbox_set:Nn, \xeja_yoko_in_tate_hbox_set:cn}
+% \begin{macro}{\xeja_yoko_in_tate_hbox_gset:Nn, \xeja_yoko_in_tate_hbox_gset:cn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_in_tate_hbox_set:Nn #1#2
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox_set:Nn #1 } { \hbox_set:Nn } {} {#2}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_gset:Nn #1#2
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox_gset:Nn #1 } { \hbox_set:Nn } {} {#2}
+  }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_set:Nn { c }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_gset:Nn { c }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_yoko_in_tate_hbox_set_to_wd:Nnn, \xeja_yoko_in_tate_hbox_set_to_wd:cnn}
+% \begin{macro}{\xeja_yoko_in_tate_hbox_gset_to_wd:Nnn, \xeja_yoko_in_tate_hbox_gset_to_wd:cnn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_in_tate_hbox_set_to_wd:Nnn #1#2#3
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox_set:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_gset_to_wd:Nnn #1#2#3
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox_gset:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
+  }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_set_to_wd:Nn { c }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_gset_to_wd:Nn { c }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_yoko_in_tate_hbox_overlap_center:n, \xeja_yoko_in_tate_hbox_overlap_right:n, \xeja_yoko_in_tate_hbox_overlap_left:n}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_in_tate_hbox_overlap_center:n #1
+  { \xeja_yoko_in_tate_hbox_to_zero:n { \tex_hss:D #1 \tex_hss:D } }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_overlap_right:n #1
+  { \xeja_yoko_in_tate_hbox_to_zero:n { \tex_hss:D #1 } }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_overlap_left:n #1
+  { \xeja_yoko_in_tate_hbox_to_zero:n { #1 \tex_hss:D } }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\xeja_yoko_in_tate_vbox:n}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_in_tate_vbox:n #1
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox:n } { \vbox_set:Nn } {} {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\xeja_yoko_in_tate_vbox_to_ht:nn, \xeja_yoko_in_tate_vbox_to_zero:n}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_in_tate_vbox_to_ht:nn #1#2
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox:n } { \vbox_set_to_ht:Nnn } {{#1}} {#2}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_vbox_to_zero:n #1
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox:n } { \vbox_set_to_zero:Nn } {} {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\xeja_yoko_in_tate_vbox_set:Nn, \xeja_yoko_in_tate_vbox_set:cn}
+% \begin{macro}{\xeja_yoko_in_tate_vbox_gset:Nn, \xeja_yoko_in_tate_vbox_gset:cn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_in_tate_vbox_set:Nn #1#2
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox_set:Nn #1 } { \vbox_set:Nn } {} {#2}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_vbox_gset:Nn #1#2
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox_gset:Nn #1 } { \vbox_set:Nn } {} {#2}
+  }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_set:Nn { c }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_gset:Nn { c }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_yoko_in_tate_vbox_set_to_ht:Nnn, \xeja_yoko_in_tate_vbox_set_to_ht:cnn}
+% \begin{macro}{\xeja_yoko_in_tate_vbox_gset_to_ht:Nnn, \xeja_yoko_in_tate_vbox_gset_to_ht:cnn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_yoko_in_tate_vbox_set_to_ht:Nnn #1#2#3
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox_set:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_vbox_gset_to_ht:Nnn #1#2#3
+  {
+    \@@_yoko_in_tate_box:nnnn
+      { \hbox_gset:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
+  }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_set_to_ht:Nnn { c }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_gset_to_ht:Nnn { c }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+%
+% \subsubsection{横組中の縦組ボックス}
+%
+% 横組中に縦組ボックスを配置する場合はボックスを時計回りに90度回転する。
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_tate_in_yoko_box:nnnn #1#2#3#4
+  {
+    #1
       {
-        \tex_raise:D \l_@@_baselineshift_dim
-        \tex_box:D #1
+        #2 \l_@@_rotate_box #3
+          { \bool_set_false:N \l_@@_tate_text_bool #4 }
+        \@@_rotate_box_tate_in_yoko:N \l_@@_rotate_box
+        \box_use_drop:N \l_@@_rotate_box
       }
   }
 %    \end{macrocode}
 %
-%
+% \begin{macro}{\xeja_tate_in_yoko_hbox:n}
 %    \begin{macrocode}
-\cs_new:Npn \@@_yoko_in_tate_hbox_set:Nn #1#2
+\cs_new:Npn \xeja_tate_in_yoko_hbox:n #1
   {
-    \hbox_set:Nn #1
-      { \bool_set_false:N \l_@@_tate_text_bool #2 }
-    \@@_yoko_in_tate_box_set:N #1
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox:n } { \hbox_set:Nn } {} {#1}
   }
 %    \end{macrocode}
+% \end{macro}
 %
+% \begin{macro}{\xeja_tate_in_yoko_hbox_to_wd:nn}
+% \begin{macro}{\xeja_tate_in_yoko_hbox_to_zero:n}
 %    \begin{macrocode}
-\cs_new:Npn \@@_yoko_in_tate_vbox_set:Nn #1#2
+\cs_new:Npn \xeja_tate_in_yoko_hbox_to_wd:nn #1#2
   {
-    \vbox_set:Nn #1
-      { \bool_set_false:N \l_@@_tate_text_bool #2 }
-    \@@_yoko_in_tate_box_set:N #1
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox:n } { \hbox_set_to_wd:Nnn } {{#1}} {#2}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_to_zero:n #1
+  {
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox:n } { \hbox_set_to_zero:Nn } {} {#1}
   }
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
 %
+% \begin{macro}{\xeja_tate_in_yoko_hbox_set:Nn, \xeja_tate_in_yoko_hbox_set:cn}
+% \begin{macro}{\xeja_tate_in_yoko_hbox_gset:Nn, \xeja_tate_in_yoko_hbox_gset:cn}
 %    \begin{macrocode}
-\cs_new:Npn \@@_tate_in_yoko_hbox_set:Nn #1#2
+\cs_new:Npn \xeja_tate_in_yoko_hbox_set:Nn #1#2
   {
-    \hbox_set:Nn #1
-      { \bool_set_true:N \l_@@_tate_text_bool #2 }
-    \@@_tate_in_yoko_box_set:N #1
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox_set:Nn #1 } { \hbox_set:Nn } {} {#2}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_gset:Nn #1#2
+  {
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox_gset:Nn #1 } { \hbox_set:Nn } {} {#2}
+  }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_set:Nn { c }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_gset:Nn { c }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_tate_in_yoko_hbox_set_to_wd:Nnn, \xeja_tate_in_yoko_hbox_set_to_wd:cnn}
+% \begin{macro}{\xeja_tate_in_yoko_hbox_gset_to_wd:Nnn, \xeja_tate_in_yoko_hbox_gset_to_wd:cnn}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_tate_in_yoko_hbox_set_to_wd:Nnn #1#2#3
+  {
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox_set:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_gset_to_wd:Nnn #1#2#3
+  {
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox_gset:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
+  }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_set_to_wd:Nn { c }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_gset_to_wd:Nn { c }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\xeja_tate_in_yoko_hbox_overlap_center:n, \xeja_tate_in_yoko_hbox_overlap_right:n, \xeja_tate_in_yoko_hbox_overlap_left:n}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_tate_in_yoko_hbox_overlap_center:n #1
+  { \xeja_tate_in_yoko_hbox_to_zero:n { \tex_hss:D #1 \tex_hss:D } }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_overlap_right:n #1
+  { \xeja_tate_in_yoko_hbox_to_zero:n { \tex_hss:D #1 } }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_overlap_left:n #1
+  { \xeja_tate_in_yoko_hbox_to_zero:n { #1 \tex_hss:D } }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\xeja_tate_in_yoko_vbox:n}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_tate_in_yoko_vbox:n #1
+  {
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox:n } { \vbox_set:Nn } {} {#1}
   }
 %    \end{macrocode}
+% \end{macro}
 %
+% \begin{macro}{\xeja_tate_in_yoko_vbox_to_ht:nn, \xeja_tate_in_yoko_vbox_to_zero:n}
 %    \begin{macrocode}
-\cs_new:Npn \@@_tate_in_yoko_vbox_set:Nn #1#2
+\cs_new:Npn \xeja_tate_in_yoko_vbox_to_ht:nn #1#2
   {
-    \vbox_set:Nn #1
-      { \bool_set_true:N \l_@@_tate_text_bool #2 }
-    \@@_tate_in_yoko_box_set:N #1
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox:n } { \vbox_set_to_ht:Nnn } {{#1}} {#2}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_vbox_to_zero:n #1
+  {
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox:n } { \vbox_set_to_zero:Nn } {} {#1}
   }
 %    \end{macrocode}
+% \end{macro}
 %
-%
+% \begin{macro}{\xeja_tate_in_yoko_vbox_set:Nn, \xeja_tate_in_yoko_vbox_set:cn}
+% \begin{macro}{\xeja_tate_in_yoko_vbox_gset:Nn, \xeja_tate_in_yoko_vbox_gset:cn}
 %    \begin{macrocode}
-\cs_new:Npn \@@_yoko_in_tate_hbox:n #1
+\cs_new:Npn \xeja_tate_in_yoko_vbox_set:Nn #1#2
   {
-    \@@_yoko_in_tate_hbox_set:Nn \l_@@_rotate_box {#1}
-    \box_use_drop:N \l_@@_rotate_box
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox_set:Nn #1 } { \vbox_set:Nn } {} {#2}
   }
+\cs_new:Npn \xeja_tate_in_yoko_vbox_gset:Nn #1#2
+  {
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox_gset:Nn #1 } { \vbox_set:Nn } {} {#2}
+  }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_set:Nn { c }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_gset:Nn { c }
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
 %
+% \begin{macro}{\xeja_tate_in_yoko_vbox_set_to_ht:Nnn, \xeja_tate_in_yoko_vbox_set_to_ht:cnn}
+% \begin{macro}{\xeja_tate_in_yoko_vbox_gset_to_ht:Nnn, \xeja_tate_in_yoko_vbox_gset_to_ht:cnn}
 %    \begin{macrocode}
-\cs_new:Npn \@@_yoko_in_tate_vbox:n #1
+\cs_new:Npn \xeja_tate_in_yoko_vbox_set_to_ht:Nnn #1#2#3
   {
-    \@@_yoko_in_tate_vbox_set:Nn \l_@@_rotate_box {#1}
-    \box_use_drop:N \l_@@_rotate_box
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox_set:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
   }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \@@_tate_in_yoko_hbox:n #1
+\cs_new:Npn \xeja_tate_in_yoko_vbox_gset_to_ht:Nnn #1#2#3
   {
-    \@@_tate_in_yoko_hbox_set:Nn \l_@@_rotate_box {#1}
-    \box_use_drop:N \l_@@_rotate_box
+    \@@_tate_in_yoko_box:nnnn
+      { \hbox_gset:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
   }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_set_to_ht:Nnn { c }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_gset_to_ht:Nnn { c }
 %    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \@@_tate_in_yoko_vbox:n #1
-  {
-    \@@_tate_in_yoko_vbox_set:Nn \l_@@_rotate_box {#1}
-    \box_use_drop:N \l_@@_rotate_box
-  }
-%    \end{macrocode}
-%
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_hbox:n #1
-  {
-    \bool_if:NTF \l_@@_tate_text_bool
-      { \@@_yoko_in_tate_hbox:n {#1} }
-      { \hbox:n {#1} }
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_vbox:n #1
-  {
-    \bool_if:NTF \l_@@_tate_text_bool
-      { \@@_yoko_in_tate_vbox:n {#1} }
-      { \vbox:n {#1} }
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_tate_hbox:n #1
-  {
-    \bool_if:NTF \l_@@_tate_text_bool
-      { \hbox:n {#1} }
-      { \@@_tate_in_yoko_hbox:n {#1} }
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_tate_vbox:n #1
-  {
-    \bool_if:NTF \l_@@_tate_text_bool
-      { \vbox:n {#1} }
-      { \@@_tate_in_yoko_vbox:n {#1} }
-  }
-%    \end{macrocode}
-%
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_hbox_set:Nn #1#2
-  {
-    \bool_if:NTF \l_@@_tate_text_bool
-      { \@@_yoko_in_tate_hbox_set:Nn #1 {#2} }
-      { \hbox_set:Nn #1 {#2} }
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_vbox_set:Nn #1#2
-  {
-    \bool_if:NTF \l_@@_tate_text_bool
-      { \@@_yoko_in_tate_vbox_set:Nn #1 {#2} }
-      { \vbox_set:Nn #1 {#2} }
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_tate_hbox_set:Nn #1#2
-  {
-    \bool_if:NTF \l_@@_tate_text_bool
-      { \hbox_set:n #1 {#2} }
-      { \@@_tate_in_yoko_hbox_set:Nn #1 {#2} }
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \xeja_tate_vbox_set:Nn #1#2
-  {
-    \bool_if:NTF \l_@@_tate_text_bool
-      { \vbox_set:n #1 {#2} }
-      { \@@_tate_in_yoko_vbox_set:Nn #1 {#2} }
-  }
-%    \end{macrocode}
+% \end{macro}
+% \end{macro}
 %
 %
 % \subsection{ページ出力}
@@ -1986,116 +2341,87 @@
 %    \end{macrocode}
 % 左上
 %    \begin{macrocode}
-    \put(\g_@@_tombow_hoffset_dim,
-        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
-      { \line(-1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
-    \put(\g_@@_tombow_hoffset_dim,
-        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
-      { \line(0,1){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim)
-      { \line(-1,0){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim)
-      { \line(0,1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+    \put(0,\g_@@_tombow_bleed_dim)
+      {\line(-1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim}}
+    \put(0,\g_@@_tombow_bleed_dim)
+      {\line(0,1){\g_@@_tombow_length_dim}}
+    \put(-\g_@@_tombow_bleed_dim,0)
+      {\line(-1,0){\g_@@_tombow_length_dim}}
+    \put(-\g_@@_tombow_bleed_dim,0)
+      {\line(0,1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim}}
 %    \end{macrocode}
 % 上
 %    \begin{macrocode}
-    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
-        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
-      { \line(-1,0){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
-        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
-      { \line(0,1){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
-        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
-      { \line(1,0){\g_@@_tombow_length_dim} }
+    \put(0.5\paperwidth,\g_@@_tombow_bleed_dim)
+      {\line(-1,0){\g_@@_tombow_length_dim}}
+    \put(0.5\paperwidth,\g_@@_tombow_bleed_dim)
+      {\line(0,1){\g_@@_tombow_length_dim}}
+    \put(0.5\paperwidth,\g_@@_tombow_bleed_dim)
+      {\line(1,0){\g_@@_tombow_length_dim}}
 %    \end{macrocode}
 % 右上
 %    \begin{macrocode}
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth,
-        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
-      { \line(1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth,
-        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim)
-      { \line(0,1){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim)
-      { \line(1,0){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim)
-      { \line(0,1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+    \put(\paperwidth,\g_@@_tombow_bleed_dim)
+      {\line(1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim}}
+    \put(\paperwidth,\g_@@_tombow_bleed_dim)
+      {\line(0,1){\g_@@_tombow_length_dim}}
+    \put(\paperwidth+\g_@@_tombow_bleed_dim,0)
+      {\line(1,0){\g_@@_tombow_length_dim}}
+    \put(\paperwidth+\g_@@_tombow_bleed_dim,0)
+      {\line(0,1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim}}
 %    \end{macrocode}
 % 左
 %    \begin{macrocode}
-    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-0.5\paperheight)
-      { \line(0,-1){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-0.5\paperheight)
-      { \line(-1,0){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-0.5\paperheight)
-      { \line(0,1){\g_@@_tombow_length_dim} }
+    \put(-\g_@@_tombow_bleed_dim,-0.5\paperheight)
+      {\line(0,-1){\g_@@_tombow_length_dim}}
+    \put(-\g_@@_tombow_bleed_dim,-0.5\paperheight)
+      {\line(-1,0){\g_@@_tombow_length_dim}}
+    \put(-\g_@@_tombow_bleed_dim,-0.5\paperheight)
+      {\line(0,1){\g_@@_tombow_length_dim}}
 %    \end{macrocode}
 % 右
 %    \begin{macrocode}
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-0.5\paperheight)
-      { \line(0,-1){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-0.5\paperheight)
-      { \line(1,0){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-0.5\paperheight)
-      { \line(0,1){\g_@@_tombow_length_dim} }
+    \put(\paperwidth+\g_@@_tombow_bleed_dim,-0.5\paperheight)
+      {\line(0,-1){\g_@@_tombow_length_dim}}
+    \put(\paperwidth+\g_@@_tombow_bleed_dim,-0.5\paperheight)
+      {\line(1,0){\g_@@_tombow_length_dim}}
+    \put(\paperwidth+\g_@@_tombow_bleed_dim,-0.5\paperheight)
+      {\line(0,1){\g_@@_tombow_length_dim}}
 %    \end{macrocode}
 % 左下
 %    \begin{macrocode}
-    \put(\g_@@_tombow_hoffset_dim,
-        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
-      { \line(-1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
-    \put(\g_@@_tombow_hoffset_dim,
-        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
-      { \line(0,-1){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-\paperheight)
-      { \line(-1,0){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim-\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-\paperheight)
-      { \line(0,-1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+    \put(0,-\paperheight-\g_@@_tombow_bleed_dim)
+      {\line(-1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim}}
+    \put(0,-\paperheight-\g_@@_tombow_bleed_dim)
+      {\line(0,-1){\g_@@_tombow_length_dim}}
+    \put(-\g_@@_tombow_bleed_dim,-\paperheight)
+      {\line(-1,0){\g_@@_tombow_length_dim}}
+    \put(-\g_@@_tombow_bleed_dim,-\paperheight)
+      {\line(0,-1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim}}
 %    \end{macrocode}
 % 下
 %    \begin{macrocode}
-    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
-        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
-      { \line(-1,0){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
-        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
-      { \line(0,-1){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+0.5\paperwidth,
-        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
-      { \line(1,0){\g_@@_tombow_length_dim} }
+    \put(0.5\paperwidth,-\paperheight-\g_@@_tombow_bleed_dim)
+      {\line(-1,0){\g_@@_tombow_length_dim}}
+    \put(0.5\paperwidth,-\paperheight-\g_@@_tombow_bleed_dim)
+      {\line(0,-1){\g_@@_tombow_length_dim}}
+    \put(0.5\paperwidth,-\paperheight-\g_@@_tombow_bleed_dim)
+      {\line(1,0){\g_@@_tombow_length_dim}}
 %    \end{macrocode}
 % 右下
 %    \begin{macrocode}
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth,
-        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
-      { \line(1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth,
-        -\g_@@_tombow_voffset_dim-\paperheight-\g_@@_tombow_bleed_dim)
-      { \line(0,-1){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-\paperheight)
-      { \line(1,0){\g_@@_tombow_length_dim} }
-    \put(\g_@@_tombow_hoffset_dim+\paperwidth+\g_@@_tombow_bleed_dim,
-        -\g_@@_tombow_voffset_dim-\paperheight)
-      { \line(0,-1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim} }
+    \put(\paperwidth,-\paperheight-\g_@@_tombow_bleed_dim)
+      {\line(1,0){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim}}
+    \put(\paperwidth,-\paperheight-\g_@@_tombow_bleed_dim)
+      {\line(0,-1){\g_@@_tombow_length_dim}}
+    \put(\paperwidth+\g_@@_tombow_bleed_dim,-\paperheight)
+      {\line(1,0){\g_@@_tombow_length_dim}}
+    \put(\paperwidth+\g_@@_tombow_bleed_dim,-\paperheight)
+      {\line(0,-1){\g_@@_tombow_length_dim+\g_@@_tombow_bleed_dim}}
 %    \end{macrocode}
 % バナー
 %    \begin{macrocode}
-    \put(\g_@@_tombow_hoffset_dim+5mm,
-        -\g_@@_tombow_voffset_dim+\g_@@_tombow_bleed_dim+4pt)
+    \put(5mm,\g_@@_tombow_bleed_dim+4pt)
       { \g_@@_tombow_banner_font_tl \g_@@_tombow_banner_tl }
 %    \end{macrocode}
 %
@@ -2112,19 +2438,107 @@
   }
 %    \end{macrocode}
 %
-%
-% \subsection{\LaTeXe インターフェイス}
-%
 %    \begin{macrocode}
-\cs_new_eq:NN \xejaIfTateDocumentTF \xeja_if_tate_document:TF
-\cs_new_eq:NN \xejaIfTateTextTF \xeja_if_tate_text:TF
+\hook_gput_code:nnn { begindocument } { ./tombow }
+  {
+    \bool_if:NT \g_@@_tombow_bool
+      {
+        \dim_gadd:Nn \tex_hoffset:D { \g_@@_tombow_hoffset_dim }
+        \dim_gadd:Nn \tex_voffset:D { \g_@@_tombow_voffset_dim }
+      }
+  }
 %    \end{macrocode}
 %
 %
-% \subsection{JFMファイル読込}
+% \subsection{ユーティリティ関数}
+%
+%
+% \begin{macro}[rEXP]{\xeja_int_to_kansuji:n}
+%    \begin{macrocode}
+\cs_new:Npn \xeja_int_to_kansuji:n #1
+  {
+    \int_compare:nNnF {#1} < { 0 }
+      {
+        \exp_args:Nf
+        \tl_map_function:nN
+          { \int_eval:n {#1} }
+          \@@_int_to_kansuji_digit:n
+      }
+  }
+\cs_new:Npn \@@_int_to_kansuji_digit:n #1
+  {
+    \int_case:nn {#1}
+      {
+        { 0 } { 〇 }
+        { 1 } { 一 }
+        { 2 } { 二 }
+        { 3 } { 三 }
+        { 4 } { 四 }
+        { 5 } { 五 }
+        { 6 } { 六 }
+        { 7 } { 七 }
+        { 8 } { 八 }
+        { 9 } { 九 }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsection{p\LaTeXe 互換インターフェイス}
 %
 %    \begin{macrocode}
-\input{xejajfm-\g_@@_jfm_tl.def}
+\prg_new_conditional:Npnn \platex_if_direction_yoko: { p, T, F, TF }
+  {
+    \bool_if:NTF \l_@@_tate_text_bool
+      { \prg_return_false: }
+      { \prg_return_true: }
+  }
+\prg_new_conditional:Npnn \platex_if_direction_tate: { p, T, F, TF }
+  {
+    \bool_if:NTF \l_@@_tate_text_bool
+      { \prg_return_true: }
+      { \prg_return_false: }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_eq:NN \IfDirectionYokoT  \platex_if_direction_yoko:T
+\cs_new_eq:NN \IfDirectionYokoF  \platex_if_direction_yoko:F
+\cs_new_eq:NN \IfDirectionYokoTF \platex_if_direction_yoko:TF
+\cs_new_eq:NN \IfDirectionTateT  \platex_if_direction_tate:T
+\cs_new_eq:NN \IfDirectionTateF  \platex_if_direction_tate:F
+\cs_new_eq:NN \IfDirectionTateTF \platex_if_direction_tate:TF
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \mcdefault { mc }
+\cs_new:Npn \gtdefault { gt }
+\cs_new:Npn \kanjifamilydefault { \mcdefault }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\NewDocumentCommand \mcfamily {}
+  { \xeja_set_kanji_family:x { \mcdefault } }
+\NewDocumentCommand \gtfamily {}
+  { \xeja_set_kanji_family:x { \gtdefault } }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\DeclareTextFontCommand{\textmc}{\mcfamily}
+\DeclareTextFontCommand{\textgt}{\gtfamily}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\NewExpandableDocumentCommand \kansuji { m }
+  { \xeja_int_to_kansuji:n {#1} }
+%    \end{macrocode}
+%
+%
+% \subsection{JFMファイルの読み込み}
+%
+%    \begin{macrocode}
+\input{xejajfm-\g_@@_jfm_name_tl.def}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -2132,16 +2546,129 @@
 %    \end{macrocode}
 %
 %
-% \section{JFMファイル}
+%
+% \subsection{xltjextパッケージ}
+%
+%    \begin{macrocode}
+%<*xltjext>
+%    \end{macrocode}
+%
+%
+% \begin{macro}{\rensuji}
+%    \begin{macrocode}
+\newskip\rensujiskip
+\rensujiskip=0.25\zw plus.25\zw minus.25\zw
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\rensuji}
+%    \begin{macrocode}
+\NewDocumentCommand \rensuji { s O{c} m }
+  {
+    \mode_if_vertical:T { \mode_leave_vertical: }
+    \xeja_if_tate_text:TF
+      {
+        \skip_horizontal:n { \rensujiskip }
+        \IfBooleanF {#1}
+          {
+            \xeja_yoko_in_tate_hbox_set:Nn \l_tmpa_box {#3}
+            \dim_set:Nn \l_tmpa_dim
+              { \box_ht:N \l_tmpa_box + \box_dp:N \l_tmpa_box }
+            \hbox_set:Nn \l_tmpa_box
+              {
+                \str_case:nn {#2}
+                  {
+                    { c }
+                    {
+                      \@@_vrule:nnn
+                        { \c_zero_dim }
+                        { 0.5\l_tmpa_dim }
+                        { 0.5\l_tmpa_dim }
+                    }
+                    { r }
+                    {
+                      \@@_vrule:nnn
+                        { \c_zero_dim }
+                        { 0.5\zw }
+                        { \l_tmpa_dim - 0.5\zw }
+                    }
+                    { l }
+                    {
+                      \@@_vrule:nnn
+                        { \c_zero_dim }
+                        { \l_tmpa_dim - 0.5\zw }
+                        { 0.5\zw }
+                    }
+                  }
+              }
+            \xeja_box_tjabaselineshift:n
+              { \box_use_drop:N \l_tmpa_box }
+          }
+        \xeja_box_tjabaselineshift:n
+          {
+            \xeja_yoko_in_tate_hbox_to_wd:nn { 1\zw }
+              {
+                \str_case:nn {#2}
+                  {
+                    { c } { \tex_hss:D #3 \tex_hss:D }
+                    { r } { \tex_hss:D #3 }
+                    { l } { #3 \tex_hss:D }
+                  }
+              }
+          }
+        \skip_horizontal:n { \rensujiskip }
+      }
+      {
+        \hbox:n {#3}
+      }
+  }
+\let\Rensuji\rensuji
+\let\prensuji\rensuji
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Kanji}
+%    \begin{macrocode}
+\NewExpandableDocumentCommand \Kanji { m }
+  {
+    \xeja_int_to_kansuji:n { \use:c { c@#1 } }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\kanji}
+%    \begin{macrocode}
+\NewExpandableDocumentCommand \kanji { m }
+  {
+    \xeja_if_tate_text:TF
+      { \xeja_int_to_kansuji:n {#1} }
+      {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+%</xltjext>
+%    \end{macrocode}
+%
+%
+%
+% \subsection{JFMファイル}
 %
 %    \begin{macrocode}
 %<*jfm>
 %    \end{macrocode}
 %
-% \subsection{standard}
-%
 %    \begin{macrocode}
 %<*standard>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\xeja_set_kanjiskip:n { 0pt plus .4pt minus .5pt }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\xeja_set_xkanjiskip:n { .25\zw plus1pt minus1pt }
 %    \end{macrocode}
 %
 % 文字クラス
@@ -2154,6 +2681,12 @@
 \xeja_class_new_kanji:n { kanji/noprebreak }
 \xeja_class_new_kanji:n { kanji/nopostbreak }
 \xeja_class_new_kanji:n { kanji/smallkana }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\xeja_class_new_alpha:n { alpha/left }
+\xeja_class_new_alpha:n { alpha/right }
+\xeja_class_new_alpha:n { alpha/middle }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -2757,6 +3290,38 @@
   }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "0028 , "005B , "0060
+  }
+  {
+    \xeja_char_set_class:nn {#1} { alpha/left }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "0027 , "0029 , "002C , "002E , "003A , "003B , "005D
+  }
+  {
+    \xeja_char_set_class:nn {#1} { alpha/right }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\clist_map_inline:nn
+  {
+    "0021 , "0022 , "0023 , "0024 , "0025 , "0026 , "002A , "002B ,
+    "002D , "002F , "003C , "003D , "003E , "003F , "0040 , "005C ,
+    "005E , "005F , "007B , "007C , "007D , "007E ,
+  }
+  {
+    \xeja_char_set_class:nn {#1} { alpha/middle }
+  }
+%    \end{macrocode}
+%
 % 和文文字クラス間のグルー・カーン設定
 %    \begin{macrocode}
 \xeja_jfm_set_glue:nnn { kanji/default } { kanji/open }
@@ -2864,6 +3429,12 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+\xeja_jfm_set_xspmode:nn { alpha/left } { preonly }
+\xeja_jfm_set_xspmode:nn { alpha/right } { postonly }
+\xeja_jfm_set_xspmode:nn { alpha/middle } { inhibit }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 %</standard>
 %    \end{macrocode}
 %
@@ -2873,7 +3444,7 @@
 %
 %
 %
-% \section{BXJSドキュメントクラス用和文ドライバファイル}
+% \subsection{BXJSドキュメントクラス用和文ドライバファイル}
 %
 %    \begin{macrocode}
 %<*bxjsja>
@@ -2920,8 +3491,8 @@
 %
 % 和文フォント命令を定義する。
 %    \begin{macrocode}
-\DeclareRobustCommand{\mcfamily}{ \xeja_kanji_family:n { mc } }
-\DeclareRobustCommand{\gtfamily}{ \xeja_kanji_family:n { gt } }
+\DeclareRobustCommand{\mcfamily}{ \xeja_set_kanji_family:n { mc } }
+\DeclareRobustCommand{\gtfamily}{ \xeja_set_kanji_family:n { gt } }
 \DeclareJaTextFontCommand{\textmc}{\mcfamily}
 \DeclareJaTextFontCommand{\textgt}{\gtfamily}
 %    \end{macrocode}

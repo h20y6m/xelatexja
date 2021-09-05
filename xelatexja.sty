@@ -15,7 +15,7 @@
 \NeedsTeXFormat{LaTeX2e}[2021-06-01]
 \RequirePackage{expl3}[2021-07-12]
 \ProvidesExplPackage{xelatexja}
-  {2021/08/15}{0.1.0}{Japanese typesetting with XeLaTeX}
+  {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
 \msg_new:nnn { xelatexja } { needs-xetex }
   { XeLaTeX-ja~needs~XeTeX. }
 \sys_if_engine_xetex:F
@@ -33,19 +33,25 @@
 \tl_set:Nn \l__xeja_kanjiskip_tl { 0\zw plus 0.25\zw }
 \tl_new:N \l__xeja_xkanjiskip_tl
 \tl_set:Nn \l__xeja_xkanjiskip_tl { 0.25\zw plus 0.25\zw minus 0.125\zw }
-\tl_new:N \g__xeja_jfm_tl
-\tl_new:N \l__xeja_ybaselineshift_tl
-\tl_new:N \l__xeja_tbaselineshift_tl
-\tl_set:Nn \l__xeja_ybaselineshift_tl { 0\zw }
-\tl_set:Nn \l__xeja_tbaselineshift_tl { 0.38\zw }
+\tl_new:N \g__xeja_jfm_name_tl
+\tl_new:N \l__xeja_yjabaselineshift_tl
+\tl_new:N \l__xeja_tjabaselineshift_tl
+\tl_set:Nn \l__xeja_yjabaselineshift_tl { 0\zw }
+\tl_set:Nn \l__xeja_tjabaselineshift_tl { -0.38\zw }
 \tl_new:N \l__xeja_tmpa_tl
 \tl_new:N \l__xeja_tmpb_tl
 \dim_new:N \l__xeja_tmpa_dim
+\cs_new:Npn \__xeja_swap_dim:NN #1#2
+  {
+    \dim_set_eq:NN \l__xeja_tmpa_dim #1
+    \dim_set_eq:NN #1 #2
+    \dim_set_eq:NN #2 \l__xeja_tmpa_dim
+  }
 \keys_define:nn { xelatexja }
   {
     tate .bool_gset:N = \g__xeja_tate_document_bool,
     jascale .fp_gset:N = \g__xeja_jascale_fp,
-    jfm .tl_gset:N = \g__xeja_jfm_tl,
+    jfm .tl_gset:N = \g__xeja_jfm_name_tl,
   }
 \keys_set:nn { xelatexja } { jfm = standard }
 \ProcessKeysOptions { xelatexja }
@@ -85,10 +91,11 @@
     \prop_gput:Nnn \g__xeja_kanji_shape_prop { #1 / #2 / #3 } {#4}
   }
 \cs_generate_variant:Nn \xeja_declare_kanji_shape:nnnn { xxxx }
-\cs_new:Npn \xeja_kanji_family:n #1
+\cs_new:Npn \xeja_set_kanji_family:n #1
   {
     \tl_set:Nx \l__xeja_kanji_family_tl {#1}
   }
+\cs_generate_variant:Nn \xeja_set_kanji_family:n { x }
 \cs_new:Npn \__xeja_new_kanji_font:Nnn #1#2#3
   {
     \tex_global:D
@@ -200,7 +207,7 @@
   { [HaranoAjiGothic-Medium.otf]:+fwid }
 \xeja_declare_kanji_shape:nnnn { gt } { bx } { n }
   { [HaranoAjiGothic-Medium.otf]:+fwid }
-\xeja_kanji_family:n { mc }
+\xeja_set_kanji_family:n { mc }
 \cs_new:Npn \__xeja_enter_kanji_font:
   {
     \bool_if:NTF \l__xeja_tate_text_bool
@@ -324,12 +331,12 @@
 \cs_new:Npn \__xeja_interchar_kanji_to_kanji:nn #1#2
   {
     \__xeja_jfm_use_postcharwd:n {#1}
-    \__xeja_baselineshift_end:
+    \__xeja_jabaselineshift_end:
     \__xeja_jfm_use_postbreakpenalty:n {#1}
     \__xeja_jfm_use_prebreakpenalty:n {#2}
     \__xeja_jfm_use_glue_kern_or:nnn {#1} {#2}
       { \__xeja_glue:n { \l__xeja_kanjiskip_tl } }
-    \__xeja_baselineshift_begin:
+    \__xeja_jabaselineshift_begin:
     \__xeja_jfm_use_precharwd:n {#2}
     % \iow_term:n { K2K:~#1->#2 }
     \scan_stop:
@@ -337,7 +344,7 @@
 \cs_new:Npn \__xeja_interchar_kanji_to_alpha:nn #1#2
   {
     \__xeja_jfm_use_postcharwd:n {#1}
-    \__xeja_baselineshift_end:
+    \__xeja_jabaselineshift_end:
     \__xeja_jfm_use_postbreakpenalty:n {#1}
     \__xeja_jfm_use_glue_kern_or:nnn {#1} { kanji/default }
       {
@@ -357,7 +364,7 @@
         \__xeja_jfm_if_xspmode_inhibit:nnF {#1} {#2}
           { \__xeja_glue:n { \l__xeja_xkanjiskip_tl } }
       }
-    \__xeja_baselineshift_begin:
+    \__xeja_jabaselineshift_begin:
     \__xeja_jfm_use_precharwd:n {#2}
     % \iow_term:n { A2K:~#1->#2 }
     \scan_stop:
@@ -365,7 +372,7 @@
 \cs_new:Npn \__xeja_interchar_kanji_to_boundary:n #1
   {
     \__xeja_jfm_use_postcharwd:n {#1}
-    \__xeja_baselineshift_end:
+    \__xeja_jabaselineshift_end:
     \__xeja_jfm_use_postbreakpenalty:n {#1}
     \__xeja_leave_kanji_font:
     % \iow_term:n { K2B:~#1->boundary }
@@ -409,7 +416,7 @@
               { \__xeja_glue:n { \l__xeja_xkanjiskip_tl } }
           }
       }
-    \__xeja_baselineshift_begin:
+    \__xeja_jabaselineshift_begin:
     \__xeja_jfm_use_precharwd:n {#1}
     \__xeja_lastnode_clear:
     % \iow_term:n { B2K:~boundary->#1 }
@@ -505,26 +512,37 @@
         { \g__xeja_lastnode_alpha_bool } {#3}
       }
   }
-\dim_new:N \l__xeja_baselineshift_dim
-\cs_new:Npn \__xeja_baselineshift_begin:
+\bool_new:N \l__xeja_jabaselineshift_bool
+\box_new:N \l__xeja_jabaselineshift_box
+\dim_new:N \l__xeja_jabaselineshift_dim
+\cs_new:Npn \__xeja_jabaselineshift_begin:
   {
-    \dim_set:Nn \l__xeja_baselineshift_dim
+    \dim_set:Nn \l__xeja_jabaselineshift_dim
       {
         \xeja_if_tate_text:TF
-          { \l__xeja_tbaselineshift_tl }
-          { \l__xeja_ybaselineshift_tl }
+          { \l__xeja_tjabaselineshift_tl }
+          { \l__xeja_yjabaselineshift_tl }
       }
-    \dim_compare:nNnF { \l__xeja_baselineshift_dim } = { \c_zero_dim }
+    \bool_set:Nn \l__xeja_jabaselineshift_bool
       {
-        \tex_raise:D \l__xeja_baselineshift_dim
-          \tex_hbox:D \c_group_begin_token
+        \xeja_if_tate_text_p: ||
+        ! \dim_compare_p:nNn { \l__xeja_jabaselineshift_dim } = { \c_zero_dim }
+      }
+    \bool_if:NT \l__xeja_jabaselineshift_bool
+      {
+        \tex_hbox:D \c_group_begin_token
       }
   }
-\cs_new:Npn \__xeja_baselineshift_end:
+\cs_new:Npn \__xeja_jabaselineshift_end:
   {
-    \dim_compare:nNnF { \l__xeja_baselineshift_dim } = { \c_zero_dim }
+    \bool_if:NT \l__xeja_jabaselineshift_bool
       {
         \c_group_end_token
+        \box_set_to_last:N \l__xeja_jabaselineshift_box
+        \box_set_ht:Nn \l__xeja_jabaselineshift_box { 0.5\zw }
+        \box_set_dp:Nn \l__xeja_jabaselineshift_box { 0.5\zw }
+        \box_move_down:nn { \l__xeja_jabaselineshift_dim }
+          { \box_use_drop:N \l__xeja_jabaselineshift_box }
         \__xeja_kern:n { \c_zero_dim }
       }
   }
@@ -606,6 +624,14 @@
   { \tex_kern:D \dim_eval:n {#1} }
 \cs_new:Npn \__xeja_vrule_zero:
   { \tex_vrule:D width \c_zero_dim \scan_stop: }
+\cs_new:Npn \__xeja_vrule:nnn #1#2#3
+  {
+    \tex_vrule:D
+      width  \dim_eval:n {#1}
+      height \dim_eval:n {#2}
+      depth  \dim_eval:n {#3}
+    \scan_stop:
+  }
 \cs_new:Npn \__xeja_penalty:n #1
   { \tex_penalty:D \int_eval:n {#1} \exp_stop_f: }
 \cs_new:Npn \xeja_jfm_set_glue:nnn #1#2#3
@@ -741,7 +767,7 @@
     \hbox_set:Nn \l__xeja_rotate_box
       {
         \tex_kern:D -\l__xeja_rotate_box_wd_dim
-        \box_use:N #1
+        \box_use_drop:N #1
       }
     \hbox_set:Nn \l__xeja_rotate_box
       {
@@ -770,7 +796,7 @@
     \hbox_set:Nn \l__xeja_rotate_box
       {
         \tex_kern:D -0.5\l__xeja_rotate_box_wd_dim
-        \box_use:N #1
+        \box_use_drop:N #1
       }
     \hbox_set:Nn \l__xeja_rotate_box
       {
@@ -792,62 +818,218 @@
       { \l__xeja_rotate_box_ht_dim + \l__xeja_rotate_box_dp_dim }
     \box_set_eq_drop:NN #1 \l__xeja_rotate_box
   }
-\box_new:N \l__xeja_tate_yoko_box
-\cs_new:Npn \__xeja_yoko_in_tate_hbox:n #1
+\cs_new:Npn \xeja_box_yjabaselineshift:n #1
+  { \box_move_down:nn { \l__xeja_yjabaselineshift_tl } {#1} }
+\cs_new:Npn \xeja_box_tjabaselineshift:n #1
+  { \box_move_down:nn { \l__xeja_tjabaselineshift_tl } {#1} }
+\cs_new:Npn \__xeja_yoko_in_tate_box:nnnn #1#2#3#4
   {
-    \hbox_set:Nn \l__xeja_tate_yoko_box
-      { \bool_set_false:N \l__xeja_tate_text_bool #1 }
-    \__xeja_rotate_box_yoko_in_tate:N \l__xeja_tate_yoko_box
-    \dim_set:Nn \l__xeja_baselineshift_dim { \l__xeja_tbaselineshift_tl }
-    \dim_compare:nNnF { \l__xeja_baselineshift_dim } = { \c_zero_dim }
+    #1
       {
-        \tex_raise:D \l__xeja_baselineshift_dim
-        \tex_box:D \l__xeja_tate_yoko_box
+        #2 \l__xeja_rotate_box #3
+          { \bool_set_false:N \l__xeja_tate_text_bool #4 }
+        \__xeja_rotate_box_yoko_in_tate:N \l__xeja_rotate_box
+        \box_use_drop:N \l__xeja_rotate_box
       }
-    \box_use_drop:N \l__xeja_tate_yoko_box
   }
-\cs_new:Npn \__xeja_tate_in_yoko_hbox:n #1
+\cs_new:Npn \xeja_yoko_in_tate_hbox:n #1
   {
-    \hbox_set:Nn \l__xeja_tate_yoko_box
-      { \bool_set_true:N \l__xeja_tate_text_bool #1 }
-    \__xeja_rotate_box_tate_in_yoko:N \l__xeja_tate_yoko_box
-    \dim_set:Nn \l__xeja_baselineshift_dim { \l__xeja_ybaselineshift_tl }
-    \dim_compare:nNnF { \l__xeja_baselineshift_dim } = { \c_zero_dim }
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox:n } { \hbox_set:Nn } {} {#1}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_to_wd:nn #1#2
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox:n } { \hbox_set_to_wd:Nnn } {{#1}} {#2}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_to_zero:n #1
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox:n } { \hbox_set_to_zero:Nn } {} {#1}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_set:Nn #1#2
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox_set:Nn #1 } { \hbox_set:Nn } {} {#2}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_gset:Nn #1#2
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox_gset:Nn #1 } { \hbox_set:Nn } {} {#2}
+  }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_set:Nn { c }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_gset:Nn { c }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_set_to_wd:Nnn #1#2#3
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox_set:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_gset_to_wd:Nnn #1#2#3
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox_gset:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
+  }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_set_to_wd:Nn { c }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_gset_to_wd:Nn { c }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_overlap_center:n #1
+  { \xeja_yoko_in_tate_hbox_to_zero:n { \tex_hss:D #1 \tex_hss:D } }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_overlap_right:n #1
+  { \xeja_yoko_in_tate_hbox_to_zero:n { \tex_hss:D #1 } }
+\cs_new:Npn \xeja_yoko_in_tate_hbox_overlap_left:n #1
+  { \xeja_yoko_in_tate_hbox_to_zero:n { #1 \tex_hss:D } }
+\cs_new:Npn \xeja_yoko_in_tate_vbox:n #1
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox:n } { \vbox_set:Nn } {} {#1}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_vbox_to_ht:nn #1#2
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox:n } { \vbox_set_to_ht:Nnn } {{#1}} {#2}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_vbox_to_zero:n #1
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox:n } { \vbox_set_to_zero:Nn } {} {#1}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_vbox_set:Nn #1#2
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox_set:Nn #1 } { \vbox_set:Nn } {} {#2}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_vbox_gset:Nn #1#2
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox_gset:Nn #1 } { \vbox_set:Nn } {} {#2}
+  }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_set:Nn { c }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_gset:Nn { c }
+\cs_new:Npn \xeja_yoko_in_tate_vbox_set_to_ht:Nnn #1#2#3
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox_set:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
+  }
+\cs_new:Npn \xeja_yoko_in_tate_vbox_gset_to_ht:Nnn #1#2#3
+  {
+    \__xeja_yoko_in_tate_box:nnnn
+      { \hbox_gset:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
+  }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_set_to_ht:Nnn { c }
+\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_gset_to_ht:Nnn { c }
+\cs_new:Npn \__xeja_tate_in_yoko_box:nnnn #1#2#3#4
+  {
+    #1
       {
-        \tex_raise:D \l__xeja_baselineshift_dim
-        \tex_box:D \l__xeja_tate_yoko_box
+        #2 \l__xeja_rotate_box #3
+          { \bool_set_false:N \l__xeja_tate_text_bool #4 }
+        \__xeja_rotate_box_tate_in_yoko:N \l__xeja_rotate_box
+        \box_use_drop:N \l__xeja_rotate_box
       }
-    \box_use_drop:N \l__xeja_tate_yoko_box
   }
-\cs_new:Npn \xeja_yoko_hbox:n #1
+\cs_new:Npn \xeja_tate_in_yoko_hbox:n #1
   {
-    \bool_if:NTF \l__xeja_tate_text_bool
-      { \__xeja_yoko_in_tate_hbox:n {#1} }
-      { \hbox:n {#1} }
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox:n } { \hbox_set:Nn } {} {#1}
   }
-\cs_new:Npn \xeja_tate_hbox:n #1
+\cs_new:Npn \xeja_tate_in_yoko_hbox_to_wd:nn #1#2
   {
-    \bool_if:NTF \l__xeja_tate_text_bool
-      { \hbox:n {#1} }
-      { \__xeja_tate_in_yoko_hbox:n {#1} }
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox:n } { \hbox_set_to_wd:Nnn } {{#1}} {#2}
   }
-\cs_set_eq:NN \__xeja_original_output_page: \@outputpage
-\cs_set:Npn \@outputpage
+\cs_new:Npn \xeja_tate_in_yoko_hbox_to_zero:n #1
   {
-    \bool_if:NTF \g__xeja_tate_document_bool
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox:n } { \hbox_set_to_zero:Nn } {} {#1}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_set:Nn #1#2
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox_set:Nn #1 } { \hbox_set:Nn } {} {#2}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_gset:Nn #1#2
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox_gset:Nn #1 } { \hbox_set:Nn } {} {#2}
+  }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_set:Nn { c }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_gset:Nn { c }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_set_to_wd:Nnn #1#2#3
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox_set:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_gset_to_wd:Nnn #1#2#3
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox_gset:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
+  }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_set_to_wd:Nn { c }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_gset_to_wd:Nn { c }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_overlap_center:n #1
+  { \xeja_tate_in_yoko_hbox_to_zero:n { \tex_hss:D #1 \tex_hss:D } }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_overlap_right:n #1
+  { \xeja_tate_in_yoko_hbox_to_zero:n { \tex_hss:D #1 } }
+\cs_new:Npn \xeja_tate_in_yoko_hbox_overlap_left:n #1
+  { \xeja_tate_in_yoko_hbox_to_zero:n { #1 \tex_hss:D } }
+\cs_new:Npn \xeja_tate_in_yoko_vbox:n #1
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox:n } { \vbox_set:Nn } {} {#1}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_vbox_to_ht:nn #1#2
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox:n } { \vbox_set_to_ht:Nnn } {{#1}} {#2}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_vbox_to_zero:n #1
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox:n } { \vbox_set_to_zero:Nn } {} {#1}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_vbox_set:Nn #1#2
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox_set:Nn #1 } { \vbox_set:Nn } {} {#2}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_vbox_gset:Nn #1#2
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox_gset:Nn #1 } { \vbox_set:Nn } {} {#2}
+  }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_set:Nn { c }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_gset:Nn { c }
+\cs_new:Npn \xeja_tate_in_yoko_vbox_set_to_ht:Nnn #1#2#3
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox_set:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
+  }
+\cs_new:Npn \xeja_tate_in_yoko_vbox_gset_to_ht:Nnn #1#2#3
+  {
+    \__xeja_tate_in_yoko_box:nnnn
+      { \hbox_gset:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
+  }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_set_to_ht:Nnn { c }
+\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_gset_to_ht:Nnn { c }
+\hook_gput_code:nnn { cmd/@outputpage/before } { ./rotate-page }
+  { \__xeja_output_page_before: }
+\hook_gput_code:nnn { cmd/@outputpage/after } { ./rotate-page }
+  { \__xeja_output_page_after: }
+\cs_set:Npn \__xeja_output_page_before:
+  {
+    \bool_if:NT \g__xeja_tate_document_bool
       {
-        \group_begin:
-          \__xeja_rotate_box_tate_in_yoko:N \@outputbox
-          \dim_set_eq:NN \l__xeja_tmpa_dim \textwidth
-          \dim_set_eq:NN \textwidth \textheight
-          \dim_set_eq:NN \textheight \l__xeja_tmpa_dim
-          \bool_set_false:N \l__xeja_tate_text_bool
-          \__xeja_original_output_page:
-        \group_end:
+        \__xeja_rotate_box_tate_in_yoko:N \@outputbox
+        \__xeja_swap_dim:NN \textwidth \textheight
+        \bool_set_false:N \l__xeja_tate_text_bool
+      }
+  }
+\cs_set:Npn \__xeja_output_page_after:
+  {
+    \bool_if:NT \g__xeja_tate_document_bool
+      {
+        \bool_set_true:N \l__xeja_tate_text_bool
+        \__xeja_swap_dim:NN \textwidth \textheight
         \dim_gset_eq:NN \@colht \textheight
-      }
-      {
-        \__xeja_original_output_page:
       }
   }
 \bool_new:N \g__xeja_tombow_bool
@@ -889,92 +1071,63 @@
   {
     \g__xeja_tombow_color_tl
     \linethickness{\g__xeja_tombow_thickness_dim}
-    \put(\g__xeja_tombow_hoffset_dim,
-        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
-      { \line(-1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
-    \put(\g__xeja_tombow_hoffset_dim,
-        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
-      { \line(0,1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim)
-      { \line(-1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim)
-      { \line(0,1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
-        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
-      { \line(-1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
-        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
-      { \line(0,1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
-        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
-      { \line(1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth,
-        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
-      { \line(1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth,
-        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim)
-      { \line(0,1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim)
-      { \line(1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim)
-      { \line(0,1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
-    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
-      { \line(0,-1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
-      { \line(-1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
-      { \line(0,1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
-      { \line(0,-1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
-      { \line(1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-0.5\paperheight)
-      { \line(0,1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim,
-        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
-      { \line(-1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
-    \put(\g__xeja_tombow_hoffset_dim,
-        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
-      { \line(0,-1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-\paperheight)
-      { \line(-1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim-\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-\paperheight)
-      { \line(0,-1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
-        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
-      { \line(-1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
-        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
-      { \line(0,-1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+0.5\paperwidth,
-        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
-      { \line(1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth,
-        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
-      { \line(1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth,
-        -\g__xeja_tombow_voffset_dim-\paperheight-\g__xeja_tombow_bleed_dim)
-      { \line(0,-1){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-\paperheight)
-      { \line(1,0){\g__xeja_tombow_length_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+\paperwidth+\g__xeja_tombow_bleed_dim,
-        -\g__xeja_tombow_voffset_dim-\paperheight)
-      { \line(0,-1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim} }
-    \put(\g__xeja_tombow_hoffset_dim+5mm,
-        -\g__xeja_tombow_voffset_dim+\g__xeja_tombow_bleed_dim+4pt)
+    \put(0,\g__xeja_tombow_bleed_dim)
+      {\line(-1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim}}
+    \put(0,\g__xeja_tombow_bleed_dim)
+      {\line(0,1){\g__xeja_tombow_length_dim}}
+    \put(-\g__xeja_tombow_bleed_dim,0)
+      {\line(-1,0){\g__xeja_tombow_length_dim}}
+    \put(-\g__xeja_tombow_bleed_dim,0)
+      {\line(0,1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim}}
+    \put(0.5\paperwidth,\g__xeja_tombow_bleed_dim)
+      {\line(-1,0){\g__xeja_tombow_length_dim}}
+    \put(0.5\paperwidth,\g__xeja_tombow_bleed_dim)
+      {\line(0,1){\g__xeja_tombow_length_dim}}
+    \put(0.5\paperwidth,\g__xeja_tombow_bleed_dim)
+      {\line(1,0){\g__xeja_tombow_length_dim}}
+    \put(\paperwidth,\g__xeja_tombow_bleed_dim)
+      {\line(1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim}}
+    \put(\paperwidth,\g__xeja_tombow_bleed_dim)
+      {\line(0,1){\g__xeja_tombow_length_dim}}
+    \put(\paperwidth+\g__xeja_tombow_bleed_dim,0)
+      {\line(1,0){\g__xeja_tombow_length_dim}}
+    \put(\paperwidth+\g__xeja_tombow_bleed_dim,0)
+      {\line(0,1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim}}
+    \put(-\g__xeja_tombow_bleed_dim,-0.5\paperheight)
+      {\line(0,-1){\g__xeja_tombow_length_dim}}
+    \put(-\g__xeja_tombow_bleed_dim,-0.5\paperheight)
+      {\line(-1,0){\g__xeja_tombow_length_dim}}
+    \put(-\g__xeja_tombow_bleed_dim,-0.5\paperheight)
+      {\line(0,1){\g__xeja_tombow_length_dim}}
+    \put(\paperwidth+\g__xeja_tombow_bleed_dim,-0.5\paperheight)
+      {\line(0,-1){\g__xeja_tombow_length_dim}}
+    \put(\paperwidth+\g__xeja_tombow_bleed_dim,-0.5\paperheight)
+      {\line(1,0){\g__xeja_tombow_length_dim}}
+    \put(\paperwidth+\g__xeja_tombow_bleed_dim,-0.5\paperheight)
+      {\line(0,1){\g__xeja_tombow_length_dim}}
+    \put(0,-\paperheight-\g__xeja_tombow_bleed_dim)
+      {\line(-1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim}}
+    \put(0,-\paperheight-\g__xeja_tombow_bleed_dim)
+      {\line(0,-1){\g__xeja_tombow_length_dim}}
+    \put(-\g__xeja_tombow_bleed_dim,-\paperheight)
+      {\line(-1,0){\g__xeja_tombow_length_dim}}
+    \put(-\g__xeja_tombow_bleed_dim,-\paperheight)
+      {\line(0,-1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim}}
+    \put(0.5\paperwidth,-\paperheight-\g__xeja_tombow_bleed_dim)
+      {\line(-1,0){\g__xeja_tombow_length_dim}}
+    \put(0.5\paperwidth,-\paperheight-\g__xeja_tombow_bleed_dim)
+      {\line(0,-1){\g__xeja_tombow_length_dim}}
+    \put(0.5\paperwidth,-\paperheight-\g__xeja_tombow_bleed_dim)
+      {\line(1,0){\g__xeja_tombow_length_dim}}
+    \put(\paperwidth,-\paperheight-\g__xeja_tombow_bleed_dim)
+      {\line(1,0){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim}}
+    \put(\paperwidth,-\paperheight-\g__xeja_tombow_bleed_dim)
+      {\line(0,-1){\g__xeja_tombow_length_dim}}
+    \put(\paperwidth+\g__xeja_tombow_bleed_dim,-\paperheight)
+      {\line(1,0){\g__xeja_tombow_length_dim}}
+    \put(\paperwidth+\g__xeja_tombow_bleed_dim,-\paperheight)
+      {\line(0,-1){\g__xeja_tombow_length_dim+\g__xeja_tombow_bleed_dim}}
+    \put(5mm,\g__xeja_tombow_bleed_dim+4pt)
       { \g__xeja_tombow_banner_font_tl \g__xeja_tombow_banner_tl }
   }
 \hook_gput_code:nnn { shipout/background } { ./tombow }
@@ -982,9 +1135,70 @@
     \bool_if:NT \g__xeja_tombow_bool
       { \__xeja_output_tombow: }
   }
-\cs_new_eq:NN \xejaIfTateDocumentTF \xeja_if_tate_document:TF
-\cs_new_eq:NN \xejaIfTateTextTF \xeja_if_tate_text:TF
-\input{xejajfm-\g__xeja_jfm_tl.def}
+\hook_gput_code:nnn { begindocument } { ./tombow }
+  {
+    \bool_if:NT \g__xeja_tombow_bool
+      {
+        \dim_gadd:Nn \tex_hoffset:D { \g__xeja_tombow_hoffset_dim }
+        \dim_gadd:Nn \tex_voffset:D { \g__xeja_tombow_voffset_dim }
+      }
+  }
+\cs_new:Npn \xeja_int_to_kansuji:n #1
+  {
+    \int_compare:nNnF {#1} < { 0 }
+      {
+        \exp_args:Nf
+        \tl_map_function:nN
+          { \int_eval:n {#1} }
+          \__xeja_int_to_kansuji_digit:n
+      }
+  }
+\cs_new:Npn \__xeja_int_to_kansuji_digit:n #1
+  {
+    \int_case:nn {#1}
+      {
+        { 0 } { 〇 }
+        { 1 } { 一 }
+        { 2 } { 二 }
+        { 3 } { 三 }
+        { 4 } { 四 }
+        { 5 } { 五 }
+        { 6 } { 六 }
+        { 7 } { 七 }
+        { 8 } { 八 }
+        { 9 } { 九 }
+      }
+  }
+\prg_new_conditional:Npnn \platex_if_direction_yoko: { p, T, F, TF }
+  {
+    \bool_if:NTF \l__xeja_tate_text_bool
+      { \prg_return_false: }
+      { \prg_return_true: }
+  }
+\prg_new_conditional:Npnn \platex_if_direction_tate: { p, T, F, TF }
+  {
+    \bool_if:NTF \l__xeja_tate_text_bool
+      { \prg_return_true: }
+      { \prg_return_false: }
+  }
+\cs_new_eq:NN \IfDirectionYokoT  \platex_if_direction_yoko:T
+\cs_new_eq:NN \IfDirectionYokoF  \platex_if_direction_yoko:F
+\cs_new_eq:NN \IfDirectionYokoTF \platex_if_direction_yoko:TF
+\cs_new_eq:NN \IfDirectionTateT  \platex_if_direction_tate:T
+\cs_new_eq:NN \IfDirectionTateF  \platex_if_direction_tate:F
+\cs_new_eq:NN \IfDirectionTateTF \platex_if_direction_tate:TF
+\cs_new:Npn \mcdefault { mc }
+\cs_new:Npn \gtdefault { gt }
+\cs_new:Npn \kanjifamilydefault { \mcdefault }
+\NewDocumentCommand \mcfamily {}
+  { \xeja_set_kanji_family:x { \mcdefault } }
+\NewDocumentCommand \gtfamily {}
+  { \xeja_set_kanji_family:x { \gtdefault } }
+\DeclareTextFontCommand{\textmc}{\mcfamily}
+\DeclareTextFontCommand{\textgt}{\gtfamily}
+\NewExpandableDocumentCommand \kansuji { m }
+  { \xeja_int_to_kansuji:n {#1} }
+\input{xejajfm-\g__xeja_jfm_name_tl.def}
 %% 
 %%
 %% End of file `xelatexja.sty'.

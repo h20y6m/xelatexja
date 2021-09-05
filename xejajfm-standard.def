@@ -14,7 +14,9 @@
 %% File: xelatexja.dtx
 \RequirePackage{expl3}[2021-07-12]
 \ProvidesExplFile{xejajfm-standard.def}
-  {2021/08/15}{0.1.0}{Japanese typesetting with XeLaTeX}
+  {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
+\xeja_set_kanjiskip:n { 0pt plus .4pt minus .5pt }
+\xeja_set_xkanjiskip:n { .25\zw plus1pt minus1pt }
 \xeja_class_new_kanji:n { kanji/open }
 \xeja_class_new_kanji:n { kanji/close }
 \xeja_class_new_kanji:n { kanji/middle }
@@ -23,6 +25,9 @@
 \xeja_class_new_kanji:n { kanji/noprebreak }
 \xeja_class_new_kanji:n { kanji/nopostbreak }
 \xeja_class_new_kanji:n { kanji/smallkana }
+\xeja_class_new_alpha:n { alpha/left }
+\xeja_class_new_alpha:n { alpha/right }
+\xeja_class_new_alpha:n { alpha/middle }
 \xeja_class_update:
 \xeja_char_set_class:nn { "00A1 } { kanji/default }
 \xeja_char_set_class:nn { "00A4 } { kanji/default }
@@ -583,6 +588,29 @@
   {
     \xeja_char_set_class:nn {#1} { kanji/smallkana }
   }
+\clist_map_inline:nn
+  {
+    "0028 , "005B , "0060
+  }
+  {
+    \xeja_char_set_class:nn {#1} { alpha/left }
+  }
+\clist_map_inline:nn
+  {
+    "0027 , "0029 , "002C , "002E , "003A , "003B , "005D
+  }
+  {
+    \xeja_char_set_class:nn {#1} { alpha/right }
+  }
+\clist_map_inline:nn
+  {
+    "0021 , "0022 , "0023 , "0024 , "0025 , "0026 , "002A , "002B ,
+    "002D , "002F , "003C , "003D , "003E , "003F , "0040 , "005C ,
+    "005E , "005F , "007B , "007C , "007D , "007E ,
+  }
+  {
+    \xeja_char_set_class:nn {#1} { alpha/middle }
+  }
 \xeja_jfm_set_glue:nnn { kanji/default } { kanji/open }
   { 0.5\zw minus 0.5\zw }
 \xeja_jfm_set_glue:nnn { kanji/default } { kanji/middle }
@@ -673,6 +701,9 @@
 \xeja_jfm_set_xspmode:nn { kanji/nodiv } { inhibit }
 \xeja_jfm_set_xspmode:nn { kanji/nopostbreak } { preonly }
 \xeja_jfm_set_xspmode:nn { kanji/noprebreak } { postonly }
+\xeja_jfm_set_xspmode:nn { alpha/left } { preonly }
+\xeja_jfm_set_xspmode:nn { alpha/right } { postonly }
+\xeja_jfm_set_xspmode:nn { alpha/middle } { inhibit }
 %% 
 %%
 %% End of file `xejajfm-standard.def'.

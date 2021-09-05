@@ -19,6 +19,7 @@ tdsroot = "xelatex"
 -- Files
 installfiles = {
   "xelatexja.sty",
+  "xltjext.sty",
   "xejajfm-standard.def",
   "bxjsja-xelatexja.def",
 }

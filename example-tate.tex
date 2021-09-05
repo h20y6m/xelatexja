@@ -1,43 +1,47 @@
 %#!xelatex
 \documentclass[a4paper,twocolumn]{article}
 \usepackage[tate]{xelatexja}
+\usepackage{xltjext}
 
+\usepackage{amsmath}
+\usepackage{pxrubrica}
 \usepackage{bxjalipsum}
 \usepackage{bxtexlogo}
 \bxtexlogoimport{*}
+
+
 \usepackage{indentfirst}
 
-\renewcommand{\normalsize}{\fontsize{10pt}{15pt}}
-\setlength{\parindent}{10pt}
-\setlength{\topskip}{10pt}
+\RenewDocumentCommand{\normalsize}{}{\fontsize{10pt}{15pt}}
+\normalsize
+\setlength{\parindent}{1\zw}
+\setlength{\topskip}{1\zw}
 \setlength{\parskip}{0pt}
-\setlength{\columnsep}{20pt}
-\raggedbottom
+\setlength{\columnsep}{2\zw}
 
 \ExplSyntaxOn
 \int_set:Nn \l_tmpa_int
-  { \int_div_truncate:nn { \textheight - \columnsep } { 2 * 10 * 65536 } * 2 }
+  { \int_div_truncate:nn { \textheight - \columnsep } { 2 * \zw } * 2 }
 \int_set:Nn \l_tmpb_int
-  { \int_div_truncate:nn { \textwidth - \topskip } { 15 * 65536 } }
+  { \int_div_truncate:nn { \textwidth - \topskip } { \baselineskip } }
 \dim_set:Nn \textwidth
-  { 10pt * \l_tmpa_int + \columnsep }
+  { 1\zw * \l_tmpa_int + \columnsep }
 \dim_set:Nn \textheight
-  { 15pt * \l_tmpb_int + \topskip }
-\NewDocumentCommand \tatechuyoko { m }
-  {
-    \xeja_if_tate_text:TF
-      {
-        \hbox_to_wd:nn { 1\zw }
-          { \hss \xeja_yoko_hbox:n {#1} \hss }
-      }
-      {#1}
-  }
+  { \baselineskip * \l_tmpb_int + \topskip }
 \ExplSyntaxOff
-\renewcommand{\thesection}{\tatechuyoko{\arabic{section}}}
+
+\renewcommand{\thesection}{\rensuji{\arabic{section}}}
+
+\xejaTombowSetup{tombow=true}
+\setlength{\pdfpagewidth}{\paperwidth}
+\setlength{\pdfpageheight}{\paperheight}
+\addtolength{\pdfpagewidth}{2in}
+\addtolength{\pdfpageheight}{2in}
+
 
 \title{\XeLaTeX-ja縦組みサンプル}
 \author{森見幸正 (h20y6m)}
-\date{令和三年八月十五日}
+\date{令和三年九月五日}
 
 \begin{document}
 \maketitle
@@ -47,6 +51,12 @@
 二次方程式$ax^2+bx+c=0$の解は、
 \[ x = \frac{-b\pm\sqrt{b^2+4ac}}{2a} \]
 で与えられる。
+
+\section{ルビ}
+
+\ruby{吾輩}{わが|はい}は\ruby{猫}{ねこ}である。\ruby{名前}{な|まえ}はまだ\ruby{無}{ない}い。
+
+どこで\ruby{生}{うま}れたかとんと\ruby{見当}{けん|とう}がつかぬ。
 
 \section{いろは歌}
 \jalipsum{iroha}

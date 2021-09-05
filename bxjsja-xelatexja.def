@@ -14,7 +14,7 @@
 %% File: xelatexja.dtx
 \RequirePackage{expl3}[2021-07-12]
 \ProvidesExplFile{bxjsja-xelatexja.def}
-  {2021/08/15}{0.1.0}{Japanese typesetting with XeLaTeX}
+  {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
 \input{bxjsja-minimal.def}
 \cs_if_exist:NT \zw
   { \cs_undefine:N \zw }
@@ -34,8 +34,8 @@
   { \xeja_set_xkanjiskip:n {#1} }
 \newcommand*\getxkanjiskip
   { \xeja_get_xkanjiskip: }
-\DeclareRobustCommand{\mcfamily}{ \xeja_kanji_family:n { mc } }
-\DeclareRobustCommand{\gtfamily}{ \xeja_kanji_family:n { gt } }
+\DeclareRobustCommand{\mcfamily}{ \xeja_set_kanji_family:n { mc } }
+\DeclareRobustCommand{\gtfamily}{ \xeja_set_kanji_family:n { gt } }
 \DeclareJaTextFontCommand{\textmc}{\mcfamily}
 \DeclareJaTextFontCommand{\textgt}{\gtfamily}
 \hook_gput_code:nnn { rmfamily } { . }

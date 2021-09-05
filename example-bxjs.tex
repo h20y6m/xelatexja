@@ -2,23 +2,28 @@
 \documentclass[xelatex,ja=xelatexja,a4paper,10pt,twocolumn]{bxjsarticle}
 
 \usepackage{amsmath}
-
+\usepackage{pxrubrica}
 \usepackage{bxjalipsum}
 \usepackage{bxtexlogo}
 \bxtexlogoimport{*}
 
 \title{BXjscls＋\XeLaTeX-jaサンプル}
 \author{森見幸正 (h20y6m)}
-\date{2021年8月15日}
 
 \begin{document}
 \maketitle
 
 \section{数式}
 
-2次方程式$ax^2+bx+c=0$の解は、
+二次方程式$ax^2+bx+c=0$の解は、
 \[ x = \frac{-b\pm\sqrt{b^2+4ac}}{2a} \]
 で与えられる。
+
+\section{ルビ}
+
+\ruby{吾輩}{わが|はい}は\ruby{猫}{ねこ}である。\ruby{名前}{な|まえ}はまだ\ruby{無}{ない}い。
+
+どこで\ruby{生}{うま}れたかとんと\ruby{見当}{けん|とう}がつかぬ。
 
 \section{いろは歌}
 \jalipsum{iroha}

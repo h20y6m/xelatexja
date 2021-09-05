@@ -1,0 +1,93 @@
+%%
+%% This is file `xltjext.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% xelatexja.dtx  (with options: `xltjext')
+%% 
+%% Copyright (c) 2021 Yukimasa Morimi (h20y6m)
+%%   GitHub:   https://github.com/h20y6m
+%% 
+%% This package is distributed under the MIT License.
+%% 
+%% File: xelatexja.dtx
+\RequirePackage{expl3}[2021-07-12]
+\ProvidesExplPackage{xltjext}
+  {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
+\newskip\rensujiskip
+\rensujiskip=0.25\zw plus.25\zw minus.25\zw
+\NewDocumentCommand \rensuji { s O{c} m }
+  {
+    \mode_if_vertical:T { \mode_leave_vertical: }
+    \xeja_if_tate_text:TF
+      {
+        \skip_horizontal:n { \rensujiskip }
+        \IfBooleanF {#1}
+          {
+            \xeja_yoko_in_tate_hbox_set:Nn \l_tmpa_box {#3}
+            \dim_set:Nn \l_tmpa_dim
+              { \box_ht:N \l_tmpa_box + \box_dp:N \l_tmpa_box }
+            \hbox_set:Nn \l_tmpa_box
+              {
+                \str_case:nn {#2}
+                  {
+                    { c }
+                    {
+                      \__xeja_vrule:nnn
+                        { \c_zero_dim }
+                        { 0.5\l_tmpa_dim }
+                        { 0.5\l_tmpa_dim }
+                    }
+                    { r }
+                    {
+                      \__xeja_vrule:nnn
+                        { \c_zero_dim }
+                        { 0.5\zw }
+                        { \l_tmpa_dim - 0.5\zw }
+                    }
+                    { l }
+                    {
+                      \__xeja_vrule:nnn
+                        { \c_zero_dim }
+                        { \l_tmpa_dim - 0.5\zw }
+                        { 0.5\zw }
+                    }
+                  }
+              }
+            \xeja_box_tjabaselineshift:n
+              { \box_use_drop:N \l_tmpa_box }
+          }
+        \xeja_box_tjabaselineshift:n
+          {
+            \xeja_yoko_in_tate_hbox_to_wd:nn { 1\zw }
+              {
+                \str_case:nn {#2}
+                  {
+                    { c } { \tex_hss:D #3 \tex_hss:D }
+                    { r } { \tex_hss:D #3 }
+                    { l } { #3 \tex_hss:D }
+                  }
+              }
+          }
+        \skip_horizontal:n { \rensujiskip }
+      }
+      {
+        \hbox:n {#3}
+      }
+  }
+\let\Rensuji\rensuji
+\let\prensuji\rensuji
+\NewExpandableDocumentCommand \Kanji { m }
+  {
+    \xeja_int_to_kansuji:n { \use:c { c@#1 } }
+  }
+\NewExpandableDocumentCommand \kanji { m }
+  {
+    \xeja_if_tate_text:TF
+      { \xeja_int_to_kansuji:n {#1} }
+      {#1}
+  }
+%% 
+%%
+%% End of file `xltjext.sty'.
