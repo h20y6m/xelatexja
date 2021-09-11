@@ -409,10 +409,10 @@
       }
       {
         \__xeja_jfm_use_glue_kern_or:nnn
-          { kanji/default } { \g__xeja_lastnode_class_tl }
+          { kanji/default } {#1}
           {
             \__xeja_jfm_if_xspmode_inhibit:nnF
-              {#1} { \g__xeja_lastnode_class_tl }
+              { \g__xeja_lastnode_class_tl } {#1}
               { \__xeja_glue:n { \l__xeja_xkanjiskip_tl } }
           }
       }

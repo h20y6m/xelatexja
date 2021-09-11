@@ -1194,10 +1194,10 @@
       }
       {
         \@@_jfm_use_glue_kern_or:nnn
-          { kanji/default } { \g_@@_lastnode_class_tl }
+          { kanji/default } {#1}
           {
             \@@_jfm_if_xspmode_inhibit:nnF
-              {#1} { \g_@@_lastnode_class_tl }
+              { \g_@@_lastnode_class_tl } {#1}
               { \@@_glue:n { \l_@@_xkanjiskip_tl } }
           }
       }
