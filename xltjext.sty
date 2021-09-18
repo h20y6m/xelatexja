@@ -16,7 +16,7 @@
 \ProvidesExplPackage{xltjext}
   {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
 \newskip\rensujiskip
-\rensujiskip=0.25\zw plus.25\zw minus.25\zw
+\rensujiskip=0.25\l_xeja_zw_dim plus.25\l_xeja_zw_dim minus.25\l_xeja_zw_dim
 \NewDocumentCommand \rensuji { s O{c} m }
   {
     \mode_if_vertical:T { \mode_leave_vertical: }
@@ -43,15 +43,15 @@
                     {
                       \__xeja_vrule:nnn
                         { \c_zero_dim }
-                        { 0.5\zw }
-                        { \l_tmpa_dim - 0.5\zw }
+                        { 0.5\l_xeja_zw_dim }
+                        { \l_tmpa_dim - 0.5\l_xeja_zw_dim }
                     }
                     { l }
                     {
                       \__xeja_vrule:nnn
                         { \c_zero_dim }
-                        { \l_tmpa_dim - 0.5\zw }
-                        { 0.5\zw }
+                        { \l_tmpa_dim - 0.5\l_xeja_zw_dim }
+                        { 0.5\l_xeja_zw_dim }
                     }
                   }
               }
@@ -60,7 +60,7 @@
           }
         \xeja_box_tjabaselineshift:n
           {
-            \xeja_yoko_in_tate_hbox_to_wd:nn { 1\zw }
+            \xeja_yoko_in_tate_hbox_to_wd:nn { 1\l_xeja_zw_dim }
               {
                 \str_case:nn {#2}
                   {

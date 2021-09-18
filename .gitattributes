@@ -1,0 +1,8 @@
+* text=auto
+
+*.sty text eol=lf
+*.def text eol=lf
+*.cls text eol=lf
+*.clo text eol=lf
+
+*.pdf -text

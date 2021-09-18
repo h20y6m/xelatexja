@@ -570,7 +570,7 @@
 %   和文文字間に挿入するグルー。
 %    \begin{macrocode}
 \tl_new:N \l_@@_kanjiskip_tl
-\tl_set:Nn \l_@@_kanjiskip_tl { 0\zw plus 0.25\zw }
+\tl_set:Nn \l_@@_kanjiskip_tl { 0.0pt plus 0.4pt minus 0.5pt }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -578,7 +578,7 @@
 %   和欧文間に挿入するグルー。
 %    \begin{macrocode}
 \tl_new:N \l_@@_xkanjiskip_tl
-\tl_set:Nn \l_@@_xkanjiskip_tl { 0.25\zw plus 0.25\zw minus 0.125\zw }
+\tl_set:Nn \l_@@_xkanjiskip_tl { 0.25\l_xeja_zw_dim plus 1.0pt minus 1.0pt }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -596,8 +596,8 @@
 %    \begin{macrocode}
 \tl_new:N \l_@@_yjabaselineshift_tl
 \tl_new:N \l_@@_tjabaselineshift_tl
-\tl_set:Nn \l_@@_yjabaselineshift_tl { 0\zw }
-\tl_set:Nn \l_@@_tjabaselineshift_tl { -0.38\zw }
+\tl_set:Nn \l_@@_yjabaselineshift_tl { 0\l_xeja_zw_dim }
+\tl_set:Nn \l_@@_tjabaselineshift_tl { -0.38\l_xeja_zw_dim }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -607,6 +607,7 @@
 \tl_new:N \l_@@_tmpa_tl
 \tl_new:N \l_@@_tmpb_tl
 \dim_new:N \l_@@_tmpa_dim
+\seq_new:N \l_@@_tmpa_seq
 %    \end{macrocode}
 % \end{macro}
 %
@@ -670,6 +671,25 @@
 %
 % \subsection{フォント}
 %
+%    \begin{macrocode}
+\dim_new:N \l_xeja_em_dim
+\tl_new:N \l_@@_yoko_kanji_font_tl
+\tl_new:N \l_@@_tate_kanji_font_tl
+\tl_new:N \l_@@_alpha_font_tl
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \xeja_set_yoko_kanji_font:n #1
+  { \tl_set:Nn \l_@@_yoko_kanji_font_tl {#1} }
+\cs_new:Npn \xeja_set_tate_kanji_font:n #1
+  { \tl_set:Nn \l_@@_tate_kanji_font_tl {#1} }
+\cs_new:Npn \xeja_set_alpha_font:n #1
+  { \tl_set:Nn \l_@@_alpha_font_tl {#1} }
+\cs_generate_variant:Nn \xeja_set_yoko_kanji_font:n { x }
+\cs_generate_variant:Nn \xeja_set_tate_kanji_font:n { x }
+\cs_generate_variant:Nn \xeja_set_alpha_font:n { x }
+%    \end{macrocode}
+%
 % \begin{macro}{\xeja_get_jascale:}
 %   和文フォントスケール値を取得する。
 %    \begin{macrocode}
@@ -678,26 +698,30 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_update_zw:}
-%   フォントサイズに合わせて|\zw|を更新する。
-%   要求サイズ×和文フォントスケール値
 %    \begin{macrocode}
-\cs_new:Npn \@@_update_zw:
+\hook_gput_code:nnn { selectfont } { . }
   {
     \dim_set:Nn \l_xeja_zw_dim
       { \fp_to_dim:n { \g_@@_jascale_fp * \f@size } }
+    \dim_set:Nn \l_xeja_em_dim { 1em }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+    \xeja_set_yoko_kanji_font:x
+      {
+        \exp_not:N \@@_select_yoko_kanji_font:nnnn
+          { \l_@@_kanji_family_tl }
+          { \f@series } { \f@shape } { \f@size }
+      }
+    \xeja_set_tate_kanji_font:x
+      {
+        \exp_not:N \@@_select_tate_kanji_font:nnnn
+          { \l_@@_kanji_family_tl }
+          { \f@series } { \f@shape } { \f@size }
+      }
+    \xeja_set_alpha_font:x { \tex_the:D \tex_font:D }
   }
 %    \end{macrocode}
-% 現在のフォントで|\zw|を初期化する。
-%    \begin{macrocode}
-\@@_update_zw:
-%    \end{macrocode}
-% フォント変更時に|\zw|を更新する。
-%    \begin{macrocode}
-\hook_gput_code:nnn { selectfont } { . }
-  { \@@_update_zw: }
-%    \end{macrocode}
-% \end{macro}
 %
 % 和文フォントエンコーディング。
 % 横組みはJY4、縦組みはJT4。
@@ -740,66 +764,81 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \@@_new_kanji_font:Nnn #1#2#3
+\cs_new:Npn \@@_select_yoko_kanji_font:nnnn #1#2#3#4
   {
-    \tex_global:D
-    \tex_font:D #1 = "#2" ~ at ~ \fp_to_dim:n { \g_@@_jascale_fp * #3 } ~
+    \@@_select_kanji_font:nnnnnn
+      { \c_xeja_yoko_encoding_str } {#1} {#2} {#3} {#4} {}
+    \xeja_set_yoko_kanji_font:x { \tex_the:D \tex_font:D }
   }
-\cs_generate_variant:Nn \@@_new_kanji_font:Nnn { Nxn, cxn }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\tl_new:N \l_@@_kanji_default_shape_tl
-\tl_new:N \l_@@_kanji_font_shape_tl
-\tl_new:N \l_@@_kanji_font_name_tl
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_new:Npn \@@_select_kanji_font_aux:nnnnnn #1#2#3#4#5#6
+\cs_new:Npn \@@_select_tate_kanji_font:nnnn #1#2#3#4
   {
-    \cs_if_exist:cF
-      { #1 / #2 / #3 / #4 / #5 }
+    \@@_select_kanji_font:nnnnnn
+      { \c_xeja_tate_encoding_str } {#1} {#2} {#3} {#4} { vertical }
+    \xeja_set_tate_kanji_font:x { \tex_the:D \tex_font:D }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_select_kanji_font:nnnnnn #1#2#3#4#5#6
+  {
+    \exp_args:Nc \@@_select_kanji_font:Nnnnnn
+      { #1/#2/#3/#4/#5 } {#2} {#3} {#4} {#5} {#6}
+  }
+\cs_new:Npn \@@_select_kanji_font:Nnnnnn #1#2#3#4#5#6
+  {
+    \cs_if_exist:NF #1
       {
-        \exp_args:Ncx \@@_select_kanji_font_aux_ii:NnnnF
-          { #1 / #2 / #3 / #4 / #5 }
-          { #2 / #3 / #4 }
-          {#5}
-          {#6}
+        \@@_select_kanji_font_new:Nnnnnn
+          #1 {#2} {#3} {#4} {#5} {#6}
+      }
+    #1
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Npn \@@_select_kanji_font_new:Nnnnnn #1#2#3#4#5#6
+  {
+    \dim_set:Nn \l_@@_tmpa_dim
+      { \fp_to_dim:n { #5 * \g_@@_jascale_fp } }
+    \seq_clear:N \l_@@_tmpa_seq
+    \seq_put_right:Nn \l_@@_tmpa_seq { #2/#3/#4 }
+    \tl_if_eq:nnF {#4} { n }
+      { \seq_put_right:Nn \l_@@_tmpa_seq { #2/#3/n } }
+    \tl_if_eq:nnF {#3} { m }
+      { \seq_put_right:Nn \l_@@_tmpa_seq { #2/m/n } }
+    \tl_if_eq:nnF {#2} { mc }
+      { \seq_put_right:Nn \l_@@_tmpa_seq { mc/m/n } }
+    \seq_map_inline:Nn \l_@@_tmpa_seq
+      {
+        \@@_select_kanji_font_new_try:NnnnT #1
+          {##1} { \l_@@_tmpa_dim } {#6}
           {
-            \exp_args:Ncx \@@_select_kanji_font_aux_ii:NnnnTF
-              { #1 / #2 / #3 / #4 / #5 }
-              { #2 / #3 / n }
-              {#5}
-              {#6}
+            \tl_if_eq:nnF { #2/#3/#4 } {##1}
               {
-                \msg_warning:nnxx { xelatexja } { font / instead }
-                  { #2 / #3 / #4 }
-                  { #2 / #3 / n }
+                \msg_warning:nnxx { xelatexja } { kanji-shape-instead }
+                  { #2/#3/#4 } {##1}
               }
-              {
-                \exp_args:Ncx \@@_select_kanji_font_aux_ii:NnnnTF
-                  { #1 / #2 / #3 / #4 / #5 }
-                  { #2 / m / n }
-                  {#5}
-                  {#6}
-                  {
-                    \msg_warning:nnxx { xelatexja } { font / instead }
-                      { #2 / #3 / #4 }
-                      { #2 / m / n }
-                  }
-                  {
-                    \msg_warning:nnx { xelatexja } { font / undefined }
-                      { #2 / #3 / #4 }
-                    \cs_gset_eq:cN { #1 / #2 / #3 / #4 / #5 }
-                      \prg_do_nothing:
-                  }
-              }
+            \seq_map_break:n { \use_none:n }
           }
       }
-    \use:c { #1 / #2 / #3 / #4 / #5 }
+      {
+        \msg_error:nnx { xelatexja } { kanji-shape-undefined }
+          { #2/#3/#4 }
+        \cs_gset_eq:NN #1 \nullfont
+      }
   }
-\prg_new_conditional:Npnn \@@_select_kanji_font_aux_ii:Nnnn #1#2#3#4
-  { T, F, TF }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\msg_new:nnn { xelatexja } { kanji-shape-instead }
+  { Kanji~shape~`#1'~undefined.~using `#2'~instead. }
+\msg_new:nnn { xelatexja } { kanji-shape-undefined }
+  { Kanji~shape~`#1'~undefined. }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\prg_new_conditional:Npnn \@@_select_kanji_font_new_try:Nnnn #1#2#3#4
+  { T }
   {
     \prop_get:NnNTF \g_@@_kanji_shape_prop {#2}
       \l_@@_tmpa_tl
@@ -810,43 +849,23 @@
               { \tl_put_right:Nn \l_@@_tmpa_tl { , #4 } }
               { \tl_put_right:Nn \l_@@_tmpa_tl { : #4 } }
           }
-        \@@_new_kanji_font:Nxn #1
-          { \l_@@_tmpa_tl }
-          {#3}
+        \exp_args:NNV
+          \@@_new_kanji_font:Nnn #1 \l_@@_tmpa_tl {#3}
         \prg_return_true:
       }
       {
         \prg_return_false:
       }
   }
-\msg_new:nnn { xelatexja } { font / instead }
-  { Kanji~shape~`#1'~undefined.~using `#2'~instead. }
-\msg_new:nnn { xelatexja } { font / undefined }
-  { Kanji~shape~`#1'~undefined. }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \@@_select_yoko_kanji_font:
+\cs_new:Npn \@@_new_kanji_font:Nnn #1#2#3
   {
-    \@@_select_kanji_font_aux:nnnnnn
-      { \c_xeja_yoko_encoding_str }
-      { \l_@@_kanji_family_tl }
-      { \f@series }
-      { \f@shape }
-      { \f@size }
-      {}
-  }
-\cs_new:Npn \@@_select_tate_kanji_font:
-  {
-    \@@_select_kanji_font_aux:nnnnnn
-      { \c_xeja_tate_encoding_str }
-      { \l_@@_kanji_family_tl }
-      { \f@series }
-      { \f@shape }
-      { \f@size }
-      { vertical }
+    \tex_global:D \tex_font:D #1 = "#2" ~ at ~ #3 \scan_stop:
   }
 %    \end{macrocode}
+%
 %
 % \subsubsection{フォント設定}
 %
@@ -875,24 +894,6 @@
 \xeja_set_kanji_family:n { mc }
 %    \end{macrocode}
 %
-% \begin{macro}{\@@_enter_kanji_font:,\@@_leave_kanji_font:}
-%   和文フォントと欧文フォントを切り替える。
-%    \begin{macrocode}
-\cs_new:Npn \@@_enter_kanji_font:
-  {
-    \bool_if:NTF \l_@@_tate_text_bool
-      { \@@_select_tate_kanji_font: }
-      { \@@_select_yoko_kanji_font: }
-  }
-%    \end{macrocode}
-%   欧文フォントへの切り替えはとりあえず|\selectfont|を呼ぶだけ。
-%    \begin{macrocode}
-\cs_new:Npn \@@_leave_kanji_font:
-  {
-    \selectfont
-  }
-%    \end{macrocode}
-% \end{macro}
 %
 % \subsection{文字クラス}
 %
@@ -1118,7 +1119,7 @@
         \@@_jfm_if_xspmode_inhibit:nnF {#1} {#2}
           { \@@_glue:n { \l_@@_xkanjiskip_tl } }
       }
-    \@@_leave_kanji_font:
+    \@@_swich_alpha_font:
     % \iow_term:n { K2A:~#1->#2 }
     \scan_stop:
   }
@@ -1130,7 +1131,7 @@
 %    \begin{macrocode}
 \cs_new:Npn \@@_interchar_alpha_to_kanji:nn #1#2
   {
-    \@@_enter_kanji_font:
+    \@@_swich_kanji_font:
     \@@_jfm_use_prebreakpenalty:n {#2}
     \@@_jfm_use_glue_kern_or:nnn { kanji/default } {#2}
       {
@@ -1153,7 +1154,7 @@
     \@@_jfm_use_postcharwd:n {#1}
     \@@_jabaselineshift_end:
     \@@_jfm_use_postbreakpenalty:n {#1}
-    \@@_leave_kanji_font:
+    \@@_swich_alpha_font:
     % \iow_term:n { K2B:~#1->boundary }
     \scan_stop:
     \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
@@ -1177,7 +1178,7 @@
 \cs_new:Npn \@@_interchar_boundary_to_kanji:n #1
   {
     \@@_lastnode_check:
-    \@@_enter_kanji_font:
+    \@@_swich_kanji_font:
     \@@_jfm_use_prebreakpenalty:n {#1}
     \@@_lastnode_switch:nnn
       {
@@ -1248,6 +1249,19 @@
 % \end{macro}
 %
 %    \begin{macrocode}
+\cs_new:Npn \@@_swich_kanji_font:
+  {
+    \xeja_if_tate_text:TF
+      { \l_@@_tate_kanji_font_tl }
+      { \l_@@_yoko_kanji_font_tl }
+  }
+\cs_new:Npn \@@_swich_alpha_font:
+  {
+    \l_@@_alpha_font_tl
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \bool_new:N \l_@@_lastnode_math_bool
 \bool_new:N \g_@@_lastnode_kanji_bool
 \bool_new:N \g_@@_lastnode_alpha_bool
@@ -1287,8 +1301,24 @@
 %     \@@_lastnode_switch:nnn ,
 %   }
 %    \begin{macrocode}
+\bool_new:N \l_@@_lastpenalty_bool
+\int_new:N \l_@@_lastpenalty_int
 \cs_new:Npn \@@_lastnode_check:
   {
+%    \end{macrocode}
+% 直前のnodeがpenalty nodeの時は一旦取り除いてから判定する。
+%    \begin{macrocode}
+    \bool_set_false:N \l_@@_lastpenalty_bool
+    \int_zero:N \l_@@_lastpenalty_int
+    \int_while_do:nNnn { \tex_lastnodetype:D } = { 13 }
+      {
+        \bool_set_true:N \l_@@_lastpenalty_bool
+        \int_add:Nn \l_@@_lastpenalty_int { \tex_lastpenalty:D }
+        \tex_unpenalty:D
+      }
+%    \end{macrocode}
+% 
+%    \begin{macrocode}
     \bool_set_false:N \l_@@_lastnode_math_bool
     \int_case:nn { \tex_lastnodetype:D }
       {
@@ -1321,6 +1351,11 @@
             }
         }
       }
+%    \end{macrocode}
+% 取り除いたpenalry nodeを戻す。
+%    \begin{macrocode}
+    \bool_if:NT \l_@@_lastpenalty_bool
+      { \tex_penalty:D \l_@@_lastpenalty_int \scan_stop: }
   }
 \cs_new:Npn \@@_lastnode_switch:nnn #1#2#3
   {
@@ -1348,11 +1383,11 @@
           { \l_@@_tjabaselineshift_tl }
           { \l_@@_yjabaselineshift_tl }
       }
-    \bool_set:Nn \l_@@_jabaselineshift_bool
-      {
-        \xeja_if_tate_text_p: ||
-        ! \dim_compare_p:nNn { \l_@@_jabaselineshift_dim } = { \c_zero_dim }
-      }
+    \bool_set_false:N \l_@@_jabaselineshift_bool
+    \xeja_if_tate_text:T
+      { \bool_set_true:N \l_@@_jabaselineshift_bool }
+    \dim_compare:nNnF { \l_@@_jabaselineshift_dim } = { \c_zero_dim }
+      { \bool_set_true:N \l_@@_jabaselineshift_bool }
     \bool_if:NT \l_@@_jabaselineshift_bool
       {
         \tex_hbox:D \c_group_begin_token
@@ -1364,8 +1399,8 @@
       {
         \c_group_end_token
         \box_set_to_last:N \l_@@_jabaselineshift_box
-        \box_set_ht:Nn \l_@@_jabaselineshift_box { 0.5\zw }
-        \box_set_dp:Nn \l_@@_jabaselineshift_box { 0.5\zw }
+        \box_set_ht:Nn \l_@@_jabaselineshift_box { 0.5\l_xeja_zw_dim }
+        \box_set_dp:Nn \l_@@_jabaselineshift_box { 0.5\l_xeja_zw_dim }
         \box_move_down:nn { \l_@@_jabaselineshift_dim }
           { \box_use_drop:N \l_@@_jabaselineshift_box }
         \@@_kern:n { \c_zero_dim }
@@ -1381,6 +1416,10 @@
 %    \begin{macrocode}
 \cs_new:Npn \xeja_set_kanjiskip:n #1
   {
+    \tl_set:Nx \l_@@_kanjiskip_tl { \dim_eval:n {#1} }
+  }
+\cs_new:Npn \xeja_set_kanjiskip_lazy:n #1
+  {
     \tl_set:Nn \l_@@_kanjiskip_tl {#1}
   }
 %    \end{macrocode}
@@ -1390,7 +1429,7 @@
 %    \begin{macrocode}
 \cs_new:Npn \xeja_get_kanjiskip:
   {
-    \l_@@_kanjiskip_tl
+    \skip_eval:n { \l_@@_kanjiskip_tl }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -1398,6 +1437,10 @@
 % \begin{macro}{\xeja_set_xkanjiskip:n}
 %    \begin{macrocode}
 \cs_new:Npn \xeja_set_xkanjiskip:n #1
+  {
+    \tl_set:Nx \l_@@_xkanjiskip_tl { \dim_eval:n {#1} }
+  }
+\cs_new:Npn \xeja_set_xkanjiskip_lazy:n #1
   {
     \tl_set:Nn \l_@@_xkanjiskip_tl {#1}
   }
@@ -1408,7 +1451,7 @@
 %    \begin{macrocode}
 \cs_new:Npn \xeja_get_xkanjiskip:
   {
-    \l_@@_xkanjiskip_tl
+    \skip_eval:n { \l_@@_xkanjiskip_tl }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -1569,10 +1612,23 @@
 %    \begin{macrocode}
 \cs_new:Npn \@@_jfm_use_glue_kern_or:nnn #1#2#3
   {
-    \@@_jfm_if_exist_use_param:nnnTF { glue_kern } {#1} {#2} {} {#3}
+    \bool_if:NF \l_@@_inhibitglue_bool
+      {
+        \@@_jfm_if_exist_use_param:nnnTF { glue_kern } {#1} {#2} {} {#3}
+      }
+    \bool_set_false:N \l_@@_inhibitglue_bool
   }
 %    \end{macrocode}
 % \end{macro}
+%
+% \begin{macro}{\xeja_inhibitglue:}
+%    \begin{macrocode}
+\bool_new:N \l_@@_inhibitglue_bool
+\cs_new:Npn \xeja_inhibitglue:
+  { \bool_set_true:N \l_@@_inhibitglue_bool }
+%    \end{macrocode}
+% \end{macro}
+%
 %
 % \subsubsection{文字幅調整}
 %
@@ -2506,6 +2562,17 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+\NewDocumentCommand \setkanjiskip { m }
+  { \xeja_set_kanjiskip:n {#1} }
+\NewDocumentCommand \setxkanjiskip { m }
+  { \xeja_set_xkanjiskip:n {#1} }
+\NewExpandableDocumentCommand \getkanjiskip {}
+  { \xeja_get_kanjiskip: }
+\NewExpandableDocumentCommand \getxkanjiskip {}
+  { \xeja_get_xkanjiskip: }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_new:Npn \mcdefault { mc }
 \cs_new:Npn \gtdefault { gt }
 \cs_new:Npn \kanjifamilydefault { \mcdefault }
@@ -2524,7 +2591,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\NewExpandableDocumentCommand \kansuji { m }
+\NewExpandableDocumentCommand \tokansuji { m }
   { \xeja_int_to_kansuji:n {#1} }
 %    \end{macrocode}
 %
@@ -2551,7 +2618,7 @@
 % \begin{macro}{\rensuji}
 %    \begin{macrocode}
 \newskip\rensujiskip
-\rensujiskip=0.25\zw plus.25\zw minus.25\zw
+\rensujiskip=0.25\l_xeja_zw_dim plus.25\l_xeja_zw_dim minus.25\l_xeja_zw_dim
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2583,15 +2650,15 @@
                     {
                       \@@_vrule:nnn
                         { \c_zero_dim }
-                        { 0.5\zw }
-                        { \l_tmpa_dim - 0.5\zw }
+                        { 0.5\l_xeja_zw_dim }
+                        { \l_tmpa_dim - 0.5\l_xeja_zw_dim }
                     }
                     { l }
                     {
                       \@@_vrule:nnn
                         { \c_zero_dim }
-                        { \l_tmpa_dim - 0.5\zw }
-                        { 0.5\zw }
+                        { \l_tmpa_dim - 0.5\l_xeja_zw_dim }
+                        { 0.5\l_xeja_zw_dim }
                     }
                   }
               }
@@ -2600,7 +2667,7 @@
           }
         \xeja_box_tjabaselineshift:n
           {
-            \xeja_yoko_in_tate_hbox_to_wd:nn { 1\zw }
+            \xeja_yoko_in_tate_hbox_to_wd:nn { 1\l_xeja_zw_dim }
               {
                 \str_case:nn {#2}
                   {
@@ -2658,11 +2725,11 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\xeja_set_kanjiskip:n { 0pt plus .4pt minus .5pt }
+\xeja_set_kanjiskip_lazy:n { 0pt plus .4pt minus .5pt }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\xeja_set_xkanjiskip:n { .25\zw plus1pt minus1pt }
+\xeja_set_xkanjiskip_lazy:n { .25\l_xeja_zw_dim plus1pt minus1pt }
 %    \end{macrocode}
 %
 % 文字クラス
@@ -3319,84 +3386,84 @@
 % 和文文字クラス間のグルー・カーン設定
 %    \begin{macrocode}
 \xeja_jfm_set_glue:nnn { kanji/default } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/default } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/open } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/default }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/nodiv }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/noprebreak }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/nopostbreak }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/smallkana }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/default }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/open }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/close }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/middle }
-  { 0.5\zw minus 0.25\zw }
+  { 0.5\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/fullstop }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nodiv }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/noprebreak }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nopostbreak }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/smallkana }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/default }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/open }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/middle }
-  { 0.75\zw minus 0.25\zw }
+  { 0.75\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nodiv }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/noprebreak }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nopostbreak }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/smallkana }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_kern:nnn { kanji/nodiv } { kanji/nodiv }
   { \c_zero_dim }
 \xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/smallkana } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/smallkana } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 %    \end{macrocode}
 %
 % 和文文字の文字幅調整設定
 %    \begin{macrocode}
-\xeja_jfm_set_precharwd:nn { kanji/open } { -0.5\zw }
-\xeja_jfm_set_postcharwd:nn { kanji/close } { -0.5\zw }
-\xeja_jfm_set_precharwd:nn { kanji/middle } { -0.25\zw }
-\xeja_jfm_set_postcharwd:nn { kanji/middle } { -0.25\zw }
-\xeja_jfm_set_postcharwd:nn { kanji/fullstop } { -0.5\zw }
+\xeja_jfm_set_precharwd:nn { kanji/open } { -0.5\l_xeja_zw_dim }
+\xeja_jfm_set_postcharwd:nn { kanji/close } { -0.5\l_xeja_zw_dim }
+\xeja_jfm_set_precharwd:nn { kanji/middle } { -0.25\l_xeja_zw_dim }
+\xeja_jfm_set_postcharwd:nn { kanji/middle } { -0.25\l_xeja_zw_dim }
+\xeja_jfm_set_postcharwd:nn { kanji/fullstop } { -0.5\l_xeja_zw_dim }
 %    \end{macrocode}
 %
 % 和文文字の禁則設定
@@ -3471,22 +3538,8 @@
   { \fp_to_dim:n  { \dim_eval:n { 1truept } / \xeja_get_jascale: } }
 %    \end{macrocode}
 %
-% (x)kanjiskipを設定・取得する命令を定義する。
-%    \begin{macrocode}
-\newcommand*\setkanjiskip[1]
-  { \xeja_set_kanjiskip:n {#1} }
-\newcommand*\getkanjiskip
-  { \xeja_get_kanjiskip: }
-\newcommand*\setxkanjiskip[1]
-  { \xeja_set_xkanjiskip:n {#1} }
-\newcommand*\getxkanjiskip
-  { \xeja_get_xkanjiskip: }
-%    \end{macrocode}
-%
 % 和文フォント命令を定義する。
 %    \begin{macrocode}
-\DeclareRobustCommand{\mcfamily}{ \xeja_set_kanji_family:n { mc } }
-\DeclareRobustCommand{\gtfamily}{ \xeja_set_kanji_family:n { gt } }
 \DeclareJaTextFontCommand{\textmc}{\mcfamily}
 \DeclareJaTextFontCommand{\textgt}{\gtfamily}
 %    \end{macrocode}
@@ -3504,8 +3557,10 @@
 % (x)kanjiskipの初期値を設定する。
 %    \begin{macrocode}
 \setkanjiskip{0pt plus.1\zw minus.01\zw}
-\ifx\jsDocClass\jsSlide \setxkanjiskip{0.1em}
-\else \setxkanjiskip{0.25em plus 0.15em minus 0.06em}
+\ifx\jsDocClass\jsSlide
+  \setxkanjiskip{0.1em}
+\else
+  \setxkanjiskip{0.25em plus 0.15em minus 0.06em}
 \fi
 %    \end{macrocode}
 %

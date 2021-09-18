@@ -806,7 +806,7 @@
 \def\pltx@today@year@#1{%
   \ifnum\numexpr\year-#1=1 元\else
     \ifnum1=\IfDirectionTateTF{1}{0}%
-      \kansuji{\year-#1}%
+      \tokansuji{\year-#1}%
     \else
       \number\numexpr\year-#1\relax\nobreak
     \fi
@@ -822,14 +822,14 @@
   \fi\fi}
 \def\today{{%
   \if西暦
-    \ifnum1=\IfDirectionTateTF{1}{0}\kansuji{\year}%
+    \ifnum1=\IfDirectionTateTF{1}{0}\tokansuji{\year}%
     \else\number\year\nobreak\fi 年
   \else
     \pltx@today@year
   \fi
   \ifnum1=\IfDirectionTateTF{1}{0}%
-    \kansuji{\month}月
-    \kansuji{\day}日
+    \tokansuji{\month}月
+    \tokansuji{\day}日
   \else
     \number\month\nobreak 月
     \number\day\nobreak 日

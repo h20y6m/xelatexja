@@ -30,17 +30,18 @@
 \dim_new:N \l_xeja_zw_dim
 \cs_new_eq:NN \zw \l_xeja_zw_dim
 \tl_new:N \l__xeja_kanjiskip_tl
-\tl_set:Nn \l__xeja_kanjiskip_tl { 0\zw plus 0.25\zw }
+\tl_set:Nn \l__xeja_kanjiskip_tl { 0.0pt plus 0.4pt minus 0.5pt }
 \tl_new:N \l__xeja_xkanjiskip_tl
-\tl_set:Nn \l__xeja_xkanjiskip_tl { 0.25\zw plus 0.25\zw minus 0.125\zw }
+\tl_set:Nn \l__xeja_xkanjiskip_tl { 0.25\l_xeja_zw_dim plus 1.0pt minus 1.0pt }
 \tl_new:N \g__xeja_jfm_name_tl
 \tl_new:N \l__xeja_yjabaselineshift_tl
 \tl_new:N \l__xeja_tjabaselineshift_tl
-\tl_set:Nn \l__xeja_yjabaselineshift_tl { 0\zw }
-\tl_set:Nn \l__xeja_tjabaselineshift_tl { -0.38\zw }
+\tl_set:Nn \l__xeja_yjabaselineshift_tl { 0\l_xeja_zw_dim }
+\tl_set:Nn \l__xeja_tjabaselineshift_tl { -0.38\l_xeja_zw_dim }
 \tl_new:N \l__xeja_tmpa_tl
 \tl_new:N \l__xeja_tmpb_tl
 \dim_new:N \l__xeja_tmpa_dim
+\seq_new:N \l__xeja_tmpa_seq
 \cs_new:Npn \__xeja_swap_dim:NN #1#2
   {
     \dim_set_eq:NN \l__xeja_tmpa_dim #1
@@ -66,16 +67,40 @@
     \bool_if:NTF \l__xeja_tate_text_bool
       { \prg_return_true: } { \prg_return_false: }
   }
+\dim_new:N \l_xeja_em_dim
+\tl_new:N \l__xeja_yoko_kanji_font_tl
+\tl_new:N \l__xeja_tate_kanji_font_tl
+\tl_new:N \l__xeja_alpha_font_tl
+\cs_new:Npn \xeja_set_yoko_kanji_font:n #1
+  { \tl_set:Nn \l__xeja_yoko_kanji_font_tl {#1} }
+\cs_new:Npn \xeja_set_tate_kanji_font:n #1
+  { \tl_set:Nn \l__xeja_tate_kanji_font_tl {#1} }
+\cs_new:Npn \xeja_set_alpha_font:n #1
+  { \tl_set:Nn \l__xeja_alpha_font_tl {#1} }
+\cs_generate_variant:Nn \xeja_set_yoko_kanji_font:n { x }
+\cs_generate_variant:Nn \xeja_set_tate_kanji_font:n { x }
+\cs_generate_variant:Nn \xeja_set_alpha_font:n { x }
 \cs_new:Npn \xeja_get_jascale:
   { \fp_use:N \g__xeja_jascale_fp }
-\cs_new:Npn \__xeja_update_zw:
+\hook_gput_code:nnn { selectfont } { . }
   {
     \dim_set:Nn \l_xeja_zw_dim
       { \fp_to_dim:n { \g__xeja_jascale_fp * \f@size } }
+    \dim_set:Nn \l_xeja_em_dim { 1em }
+    \xeja_set_yoko_kanji_font:x
+      {
+        \exp_not:N \__xeja_select_yoko_kanji_font:nnnn
+          { \l__xeja_kanji_family_tl }
+          { \f@series } { \f@shape } { \f@size }
+      }
+    \xeja_set_tate_kanji_font:x
+      {
+        \exp_not:N \__xeja_select_tate_kanji_font:nnnn
+          { \l__xeja_kanji_family_tl }
+          { \f@series } { \f@shape } { \f@size }
+      }
+    \xeja_set_alpha_font:x { \tex_the:D \tex_font:D }
   }
-\__xeja_update_zw:
-\hook_gput_code:nnn { selectfont } { . }
-  { \__xeja_update_zw: }
 \str_const:Nn \c_xeja_yoko_encoding_str { JY4 }
 \str_const:Nn \c_xeja_tate_encoding_str { JT4 }
 \prop_new:N \g__xeja_kanji_family_prop
@@ -96,60 +121,69 @@
     \tl_set:Nx \l__xeja_kanji_family_tl {#1}
   }
 \cs_generate_variant:Nn \xeja_set_kanji_family:n { x }
-\cs_new:Npn \__xeja_new_kanji_font:Nnn #1#2#3
+\cs_new:Npn \__xeja_select_yoko_kanji_font:nnnn #1#2#3#4
   {
-    \tex_global:D
-    \tex_font:D #1 = "#2" ~ at ~ \fp_to_dim:n { \g__xeja_jascale_fp * #3 } ~
+    \__xeja_select_kanji_font:nnnnnn
+      { \c_xeja_yoko_encoding_str } {#1} {#2} {#3} {#4} {}
+    \xeja_set_yoko_kanji_font:x { \tex_the:D \tex_font:D }
   }
-\cs_generate_variant:Nn \__xeja_new_kanji_font:Nnn { Nxn, cxn }
-\tl_new:N \l__xeja_kanji_default_shape_tl
-\tl_new:N \l__xeja_kanji_font_shape_tl
-\tl_new:N \l__xeja_kanji_font_name_tl
-\cs_new:Npn \__xeja_select_kanji_font_aux:nnnnnn #1#2#3#4#5#6
+\cs_new:Npn \__xeja_select_tate_kanji_font:nnnn #1#2#3#4
   {
-    \cs_if_exist:cF
-      { #1 / #2 / #3 / #4 / #5 }
+    \__xeja_select_kanji_font:nnnnnn
+      { \c_xeja_tate_encoding_str } {#1} {#2} {#3} {#4} { vertical }
+    \xeja_set_tate_kanji_font:x { \tex_the:D \tex_font:D }
+  }
+\cs_new:Npn \__xeja_select_kanji_font:nnnnnn #1#2#3#4#5#6
+  {
+    \exp_args:Nc \__xeja_select_kanji_font:Nnnnnn
+      { #1/#2/#3/#4/#5 } {#2} {#3} {#4} {#5} {#6}
+  }
+\cs_new:Npn \__xeja_select_kanji_font:Nnnnnn #1#2#3#4#5#6
+  {
+    \cs_if_exist:NF #1
       {
-        \exp_args:Ncx \__xeja_select_kanji_font_aux_ii:NnnnF
-          { #1 / #2 / #3 / #4 / #5 }
-          { #2 / #3 / #4 }
-          {#5}
-          {#6}
+        \__xeja_select_kanji_font_new:Nnnnnn
+          #1 {#2} {#3} {#4} {#5} {#6}
+      }
+    #1
+  }
+\cs_new:Npn \__xeja_select_kanji_font_new:Nnnnnn #1#2#3#4#5#6
+  {
+    \dim_set:Nn \l__xeja_tmpa_dim
+      { \fp_to_dim:n { #5 * \g__xeja_jascale_fp } }
+    \seq_clear:N \l__xeja_tmpa_seq
+    \seq_put_right:Nn \l__xeja_tmpa_seq { #2/#3/#4 }
+    \tl_if_eq:nnF {#4} { n }
+      { \seq_put_right:Nn \l__xeja_tmpa_seq { #2/#3/n } }
+    \tl_if_eq:nnF {#3} { m }
+      { \seq_put_right:Nn \l__xeja_tmpa_seq { #2/m/n } }
+    \tl_if_eq:nnF {#2} { mc }
+      { \seq_put_right:Nn \l__xeja_tmpa_seq { mc/m/n } }
+    \seq_map_inline:Nn \l__xeja_tmpa_seq
+      {
+        \__xeja_select_kanji_font_new_try:NnnnT #1
+          {##1} { \l__xeja_tmpa_dim } {#6}
           {
-            \exp_args:Ncx \__xeja_select_kanji_font_aux_ii:NnnnTF
-              { #1 / #2 / #3 / #4 / #5 }
-              { #2 / #3 / n }
-              {#5}
-              {#6}
+            \tl_if_eq:nnF { #2/#3/#4 } {##1}
               {
-                \msg_warning:nnxx { xelatexja } { font / instead }
-                  { #2 / #3 / #4 }
-                  { #2 / #3 / n }
+                \msg_warning:nnxx { xelatexja } { kanji-shape-instead }
+                  { #2/#3/#4 } {##1}
               }
-              {
-                \exp_args:Ncx \__xeja_select_kanji_font_aux_ii:NnnnTF
-                  { #1 / #2 / #3 / #4 / #5 }
-                  { #2 / m / n }
-                  {#5}
-                  {#6}
-                  {
-                    \msg_warning:nnxx { xelatexja } { font / instead }
-                      { #2 / #3 / #4 }
-                      { #2 / m / n }
-                  }
-                  {
-                    \msg_warning:nnx { xelatexja } { font / undefined }
-                      { #2 / #3 / #4 }
-                    \cs_gset_eq:cN { #1 / #2 / #3 / #4 / #5 }
-                      \prg_do_nothing:
-                  }
-              }
+            \seq_map_break:n { \use_none:n }
           }
       }
-    \use:c { #1 / #2 / #3 / #4 / #5 }
+      {
+        \msg_error:nnx { xelatexja } { kanji-shape-undefined }
+          { #2/#3/#4 }
+        \cs_gset_eq:NN #1 \nullfont
+      }
   }
-\prg_new_conditional:Npnn \__xeja_select_kanji_font_aux_ii:Nnnn #1#2#3#4
-  { T, F, TF }
+\msg_new:nnn { xelatexja } { kanji-shape-instead }
+  { Kanji~shape~`#1'~undefined.~using `#2'~instead. }
+\msg_new:nnn { xelatexja } { kanji-shape-undefined }
+  { Kanji~shape~`#1'~undefined. }
+\prg_new_conditional:Npnn \__xeja_select_kanji_font_new_try:Nnnn #1#2#3#4
+  { T }
   {
     \prop_get:NnNTF \g__xeja_kanji_shape_prop {#2}
       \l__xeja_tmpa_tl
@@ -160,38 +194,17 @@
               { \tl_put_right:Nn \l__xeja_tmpa_tl { , #4 } }
               { \tl_put_right:Nn \l__xeja_tmpa_tl { : #4 } }
           }
-        \__xeja_new_kanji_font:Nxn #1
-          { \l__xeja_tmpa_tl }
-          {#3}
+        \exp_args:NNV
+          \__xeja_new_kanji_font:Nnn #1 \l__xeja_tmpa_tl {#3}
         \prg_return_true:
       }
       {
         \prg_return_false:
       }
   }
-\msg_new:nnn { xelatexja } { font / instead }
-  { Kanji~shape~`#1'~undefined.~using `#2'~instead. }
-\msg_new:nnn { xelatexja } { font / undefined }
-  { Kanji~shape~`#1'~undefined. }
-\cs_new:Npn \__xeja_select_yoko_kanji_font:
+\cs_new:Npn \__xeja_new_kanji_font:Nnn #1#2#3
   {
-    \__xeja_select_kanji_font_aux:nnnnnn
-      { \c_xeja_yoko_encoding_str }
-      { \l__xeja_kanji_family_tl }
-      { \f@series }
-      { \f@shape }
-      { \f@size }
-      {}
-  }
-\cs_new:Npn \__xeja_select_tate_kanji_font:
-  {
-    \__xeja_select_kanji_font_aux:nnnnnn
-      { \c_xeja_tate_encoding_str }
-      { \l__xeja_kanji_family_tl }
-      { \f@series }
-      { \f@shape }
-      { \f@size }
-      { vertical }
+    \tex_global:D \tex_font:D #1 = "#2" ~ at ~ #3 \scan_stop:
   }
 \xeja_declare_kanji_family:nn { mc } {}
 \xeja_declare_kanji_family:nn { gt } {}
@@ -208,16 +221,6 @@
 \xeja_declare_kanji_shape:nnnn { gt } { bx } { n }
   { [HaranoAjiGothic-Medium.otf]:+fwid }
 \xeja_set_kanji_family:n { mc }
-\cs_new:Npn \__xeja_enter_kanji_font:
-  {
-    \bool_if:NTF \l__xeja_tate_text_bool
-      { \__xeja_select_tate_kanji_font: }
-      { \__xeja_select_yoko_kanji_font: }
-  }
-\cs_new:Npn \__xeja_leave_kanji_font:
-  {
-    \selectfont
-  }
 \tex_XeTeXinterchartokenstate:D = 1 ~
 \seq_new:N \g__xeja_class_seq
 \msg_new:nnnn { xelatexja } { class-exists }
@@ -351,13 +354,13 @@
         \__xeja_jfm_if_xspmode_inhibit:nnF {#1} {#2}
           { \__xeja_glue:n { \l__xeja_xkanjiskip_tl } }
       }
-    \__xeja_leave_kanji_font:
+    \__xeja_swich_alpha_font:
     % \iow_term:n { K2A:~#1->#2 }
     \scan_stop:
   }
 \cs_new:Npn \__xeja_interchar_alpha_to_kanji:nn #1#2
   {
-    \__xeja_enter_kanji_font:
+    \__xeja_swich_kanji_font:
     \__xeja_jfm_use_prebreakpenalty:n {#2}
     \__xeja_jfm_use_glue_kern_or:nnn { kanji/default } {#2}
       {
@@ -374,7 +377,7 @@
     \__xeja_jfm_use_postcharwd:n {#1}
     \__xeja_jabaselineshift_end:
     \__xeja_jfm_use_postbreakpenalty:n {#1}
-    \__xeja_leave_kanji_font:
+    \__xeja_swich_alpha_font:
     % \iow_term:n { K2B:~#1->boundary }
     \scan_stop:
     \peek_catcode_ignore_spaces:NTF \c_math_toggle_token
@@ -392,7 +395,7 @@
 \cs_new:Npn \__xeja_interchar_boundary_to_kanji:n #1
   {
     \__xeja_lastnode_check:
-    \__xeja_enter_kanji_font:
+    \__xeja_swich_kanji_font:
     \__xeja_jfm_use_prebreakpenalty:n {#1}
     \__xeja_lastnode_switch:nnn
       {
@@ -447,6 +450,16 @@
     % \iow_term:n { B2A:~boundary->#1 }
     \scan_stop:
   }
+\cs_new:Npn \__xeja_swich_kanji_font:
+  {
+    \xeja_if_tate_text:TF
+      { \l__xeja_tate_kanji_font_tl }
+      { \l__xeja_yoko_kanji_font_tl }
+  }
+\cs_new:Npn \__xeja_swich_alpha_font:
+  {
+    \l__xeja_alpha_font_tl
+  }
 \bool_new:N \l__xeja_lastnode_math_bool
 \bool_new:N \g__xeja_lastnode_kanji_bool
 \bool_new:N \g__xeja_lastnode_alpha_bool
@@ -468,8 +481,18 @@
     \bool_gset_false:N \g__xeja_lastnode_kanji_bool
     \bool_gset_false:N \g__xeja_lastnode_alpha_bool
   }
+\bool_new:N \l__xeja_lastpenalty_bool
+\int_new:N \l__xeja_lastpenalty_int
 \cs_new:Npn \__xeja_lastnode_check:
   {
+    \bool_set_false:N \l__xeja_lastpenalty_bool
+    \int_zero:N \l__xeja_lastpenalty_int
+    \int_while_do:nNnn { \tex_lastnodetype:D } = { 13 }
+      {
+        \bool_set_true:N \l__xeja_lastpenalty_bool
+        \int_add:Nn \l__xeja_lastpenalty_int { \tex_lastpenalty:D }
+        \tex_unpenalty:D
+      }
     \bool_set_false:N \l__xeja_lastnode_math_bool
     \int_case:nn { \tex_lastnodetype:D }
       {
@@ -502,6 +525,8 @@
             }
         }
       }
+    \bool_if:NT \l__xeja_lastpenalty_bool
+      { \tex_penalty:D \l__xeja_lastpenalty_int \scan_stop: }
   }
 \cs_new:Npn \__xeja_lastnode_switch:nnn #1#2#3
   {
@@ -523,11 +548,11 @@
           { \l__xeja_tjabaselineshift_tl }
           { \l__xeja_yjabaselineshift_tl }
       }
-    \bool_set:Nn \l__xeja_jabaselineshift_bool
-      {
-        \xeja_if_tate_text_p: ||
-        ! \dim_compare_p:nNn { \l__xeja_jabaselineshift_dim } = { \c_zero_dim }
-      }
+    \bool_set_false:N \l__xeja_jabaselineshift_bool
+    \xeja_if_tate_text:T
+      { \bool_set_true:N \l__xeja_jabaselineshift_bool }
+    \dim_compare:nNnF { \l__xeja_jabaselineshift_dim } = { \c_zero_dim }
+      { \bool_set_true:N \l__xeja_jabaselineshift_bool }
     \bool_if:NT \l__xeja_jabaselineshift_bool
       {
         \tex_hbox:D \c_group_begin_token
@@ -539,8 +564,8 @@
       {
         \c_group_end_token
         \box_set_to_last:N \l__xeja_jabaselineshift_box
-        \box_set_ht:Nn \l__xeja_jabaselineshift_box { 0.5\zw }
-        \box_set_dp:Nn \l__xeja_jabaselineshift_box { 0.5\zw }
+        \box_set_ht:Nn \l__xeja_jabaselineshift_box { 0.5\l_xeja_zw_dim }
+        \box_set_dp:Nn \l__xeja_jabaselineshift_box { 0.5\l_xeja_zw_dim }
         \box_move_down:nn { \l__xeja_jabaselineshift_dim }
           { \box_use_drop:N \l__xeja_jabaselineshift_box }
         \__xeja_kern:n { \c_zero_dim }
@@ -548,19 +573,27 @@
   }
 \cs_new:Npn \xeja_set_kanjiskip:n #1
   {
+    \tl_set:Nx \l__xeja_kanjiskip_tl { \dim_eval:n {#1} }
+  }
+\cs_new:Npn \xeja_set_kanjiskip_lazy:n #1
+  {
     \tl_set:Nn \l__xeja_kanjiskip_tl {#1}
   }
 \cs_new:Npn \xeja_get_kanjiskip:
   {
-    \l__xeja_kanjiskip_tl
+    \skip_eval:n { \l__xeja_kanjiskip_tl }
   }
 \cs_new:Npn \xeja_set_xkanjiskip:n #1
+  {
+    \tl_set:Nx \l__xeja_xkanjiskip_tl { \dim_eval:n {#1} }
+  }
+\cs_new:Npn \xeja_set_xkanjiskip_lazy:n #1
   {
     \tl_set:Nn \l__xeja_xkanjiskip_tl {#1}
   }
 \cs_new:Npn \xeja_get_xkanjiskip:
   {
-    \l__xeja_xkanjiskip_tl
+    \skip_eval:n { \l__xeja_xkanjiskip_tl }
   }
 \cs_new:Npn \__xeja_jfm_exp_args_param:Nnn #1#2#3
   {
@@ -650,8 +683,15 @@
   }
 \cs_new:Npn \__xeja_jfm_use_glue_kern_or:nnn #1#2#3
   {
-    \__xeja_jfm_if_exist_use_param:nnnTF { glue_kern } {#1} {#2} {} {#3}
+    \bool_if:NF \l__xeja_inhibitglue_bool
+      {
+        \__xeja_jfm_if_exist_use_param:nnnTF { glue_kern } {#1} {#2} {} {#3}
+      }
+    \bool_set_false:N \l__xeja_inhibitglue_bool
   }
+\bool_new:N \l__xeja_inhibitglue_bool
+\cs_new:Npn \xeja_inhibitglue:
+  { \bool_set_true:N \l__xeja_inhibitglue_bool }
 \cs_new:Npn \__xeja_jfm_precharwd:n #1
   { \__xeja_vrule_zero: \__xeja_kern:n {#1} }
 \cs_new:Npn \__xeja_jfm_postcharwd:n #1
@@ -1187,6 +1227,14 @@
 \cs_new_eq:NN \IfDirectionTateT  \platex_if_direction_tate:T
 \cs_new_eq:NN \IfDirectionTateF  \platex_if_direction_tate:F
 \cs_new_eq:NN \IfDirectionTateTF \platex_if_direction_tate:TF
+\NewDocumentCommand \setkanjiskip { m }
+  { \xeja_set_kanjiskip:n {#1} }
+\NewDocumentCommand \setxkanjiskip { m }
+  { \xeja_set_xkanjiskip:n {#1} }
+\NewExpandableDocumentCommand \getkanjiskip {}
+  { \xeja_get_kanjiskip: }
+\NewExpandableDocumentCommand \getxkanjiskip {}
+  { \xeja_get_xkanjiskip: }
 \cs_new:Npn \mcdefault { mc }
 \cs_new:Npn \gtdefault { gt }
 \cs_new:Npn \kanjifamilydefault { \mcdefault }
@@ -1196,7 +1244,7 @@
   { \xeja_set_kanji_family:x { \gtdefault } }
 \DeclareTextFontCommand{\textmc}{\mcfamily}
 \DeclareTextFontCommand{\textgt}{\gtfamily}
-\NewExpandableDocumentCommand \kansuji { m }
+\NewExpandableDocumentCommand \tokansuji { m }
   { \xeja_int_to_kansuji:n {#1} }
 \input{xejajfm-\g__xeja_jfm_name_tl.def}
 %% 

@@ -15,8 +15,8 @@
 \RequirePackage{expl3}[2021-07-12]
 \ProvidesExplFile{xejajfm-standard.def}
   {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
-\xeja_set_kanjiskip:n { 0pt plus .4pt minus .5pt }
-\xeja_set_xkanjiskip:n { .25\zw plus1pt minus1pt }
+\xeja_set_kanjiskip_lazy:n { 0pt plus .4pt minus .5pt }
+\xeja_set_xkanjiskip_lazy:n { .25\l_xeja_zw_dim plus1pt minus1pt }
 \xeja_class_new_kanji:n { kanji/open }
 \xeja_class_new_kanji:n { kanji/close }
 \xeja_class_new_kanji:n { kanji/middle }
@@ -612,80 +612,80 @@
     \xeja_char_set_class:nn {#1} { alpha/middle }
   }
 \xeja_jfm_set_glue:nnn { kanji/default } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/default } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/open } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/default }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/nodiv }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/noprebreak }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/nopostbreak }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/close } { kanji/smallkana }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/default }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/open }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/close }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/middle }
-  { 0.5\zw minus 0.25\zw }
+  { 0.5\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/fullstop }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nodiv }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/noprebreak }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nopostbreak }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/middle } { kanji/smallkana }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/default }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/open }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/middle }
-  { 0.75\zw minus 0.25\zw }
+  { 0.75\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nodiv }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/noprebreak }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nopostbreak }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/smallkana }
-  { 0.5\zw }
+  { 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_kern:nnn { kanji/nodiv } { kanji/nodiv }
   { \c_zero_dim }
 \xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/smallkana } { kanji/open }
-  { 0.5\zw minus 0.5\zw }
+  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
 \xeja_jfm_set_glue:nnn { kanji/smallkana } { kanji/middle }
-  { 0.25\zw minus 0.25\zw }
-\xeja_jfm_set_precharwd:nn { kanji/open } { -0.5\zw }
-\xeja_jfm_set_postcharwd:nn { kanji/close } { -0.5\zw }
-\xeja_jfm_set_precharwd:nn { kanji/middle } { -0.25\zw }
-\xeja_jfm_set_postcharwd:nn { kanji/middle } { -0.25\zw }
-\xeja_jfm_set_postcharwd:nn { kanji/fullstop } { -0.5\zw }
+  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
+\xeja_jfm_set_precharwd:nn { kanji/open } { -0.5\l_xeja_zw_dim }
+\xeja_jfm_set_postcharwd:nn { kanji/close } { -0.5\l_xeja_zw_dim }
+\xeja_jfm_set_precharwd:nn { kanji/middle } { -0.25\l_xeja_zw_dim }
+\xeja_jfm_set_postcharwd:nn { kanji/middle } { -0.25\l_xeja_zw_dim }
+\xeja_jfm_set_postcharwd:nn { kanji/fullstop } { -0.5\l_xeja_zw_dim }
 \xeja_jfm_set_postbreakpenalty:nn { kanji/open } { 10000 }
 \xeja_jfm_set_prebreakpenalty:nn { kanji/close } { 10000 }
 \xeja_jfm_set_prebreakpenalty:nn { kanji/fullstop } { 10000 }
