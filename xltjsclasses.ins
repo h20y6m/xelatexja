@@ -1,0 +1,22 @@
+%
+% xltjclasses.ins
+%
+
+\input docstrip
+\askforoverwritefalse
+\keepsilent
+
+\generate{
+  \file{xltjsarticle.cls}{
+    \from{xltjsclasses.dtx}{class,article}}
+  \file{xltjsbook.cls}{
+    \from{xltjsclasses.dtx}{class,book}}
+  \file{xltjsreport.cls}{
+    \from{xltjsclasses.dtx}{class,report}}
+  \file{xltjspf.cls}{
+    \from{xltjsclasses.dtx}{class,jspf}}
+  \file{xltjskiyou.cls}{
+    \from{xltjsclasses.dtx}{class,kiyou}}
+}
+
+\endbatchfile

@@ -32,6 +32,8 @@ sourcefiles = {
   "xltjltxdoc.ins",
   "xltjclasses.dtx",
   "xltjclasses.ins",
+  "xltjsclasses.dtx",
+  "xltjsclasses.ins",
 }
 textfiles = {
   "README.md",
@@ -44,6 +46,7 @@ typesetfiles = {
   "xltjclasses.dtx",
   "example-yoko.tex",
   "example-tate.tex",
+  "example-js.tex",
   "example-bxjs.tex",
 }
 
