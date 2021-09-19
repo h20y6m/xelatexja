@@ -12,9 +12,9 @@
 %% This package is distributed under the MIT License.
 %% 
 %% File: xelatexja.dtx
-\RequirePackage{expl3}[2021-07-12]
+\RequirePackage{expl3}[2021-08-27]
 \ProvidesExplFile{xltjfm-standard.def}
-  {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
+  {2021/09/19}{0.3.0}{Japanese typesetting with XeLaTeX}
 \xltj_set_kanjiskip_lazy:n { 0pt plus .4pt minus .5pt }
 \xltj_set_xkanjiskip_lazy:n { .25\l_xltj_zw_dim plus1pt minus1pt }
 \xltj_class_new_kanji:n { kanji/open }

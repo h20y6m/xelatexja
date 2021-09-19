@@ -44,6 +44,7 @@ typesetfiles = {
   "xelatexja-code.tex",
   "xltjltxdoc.dtx",
   "xltjclasses.dtx",
+  "xltjsclasses.dtx",
   "example-yoko.tex",
   "example-tate.tex",
   "example-js.tex",

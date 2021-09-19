@@ -23,7 +23,7 @@
 %% File: xltjclasses.dtx
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{xltjtreport}
-  [2021/09/05 v1.8f+xltj
+  [2021/09/19 v1.8f+xltj
  Standard XeLaTeX-ja class]
 \newcounter{@paper}
 \newif\if@landscape \@landscapefalse

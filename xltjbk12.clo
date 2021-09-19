@@ -23,7 +23,7 @@
 %% File: xltjclasses.dtx
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{xltjbk12.clo}
-  [2021/09/05 v1.8f+xltj
+  [2021/09/19 v1.8f+xltj
   Standard XeLaTeX-ja file (size option)]
 \renewcommand{\normalsize}{%
     \@setfontsize\normalsize\@xiipt{16.5}%

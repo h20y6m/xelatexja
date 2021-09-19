@@ -23,7 +23,7 @@
 %% File: xltjltxdoc.dtx
 \NeedsTeXFormat{LaTeX2e}[2021-06-01]
 \ProvidesClass{xltjl3doc}
-  [2021/09/05 v0.2.0 Standard XeLaTeX-ja documentation class]
+  [2021/09/19 v0.3.0 Standard XeLaTeX-ja documentation class]
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{l3doc}}
 \ProcessOptions
 \LoadClass{l3doc}
