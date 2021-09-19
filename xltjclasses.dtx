@@ -553,12 +553,12 @@
 \ExplSyntaxOn
 \cs_new:Npn \xltjc@yoko@hbox #1
   {
-    \xeja_if_tate_text:TF
+    \xltj_if_tate_text:TF
       {
         \mode_if_vertical:TF
           { \use:n }
-          { \xeja_box_tjabaselineshift:n }
-        { \xeja_yoko_in_tate_hbox:n {#1} }
+          { \xltj_box_tjabaselineshift:n }
+        { \xltj_yoko_in_tate_hbox:n {#1} }
       }
       {
         \hbox:n {#1}
@@ -566,15 +566,15 @@
   }
 \cs_new:Npn \xltjc@tate@vbox@to@ht #1#2
   {
-    \xeja_if_tate_text:TF
+    \xltj_if_tate_text:TF
       {
         \vbox_to_ht:nn {#1} {#2}
       }
       {
         \mode_if_vertical:TF
           { \use:n }
-          { \xeja_box_yjabaselineshift:n }
-        { \xeja_tate_in_yoko_vbox_to_ht:nn {#1} {#2} }
+          { \xltj_box_yjabaselineshift:n }
+        { \xltj_tate_in_yoko_vbox_to_ht:nn {#1} {#2} }
       }
   }
 \ExplSyntaxOff
@@ -583,7 +583,7 @@
 % [\XeLaTeX-ja] トンボの設定をします。
 %    \begin{macrocode}
 \iftombow
-\xejaTombowSetup{
+\xltjTombowSetup{
     tombow=true,
     banner={\the\@bannertoken},
     thickness=\@tombowwidth,

@@ -16,16 +16,16 @@
 \ProvidesExplPackage{xltjext}
   {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
 \newskip\rensujiskip
-\rensujiskip=0.25\l_xeja_zw_dim plus.25\l_xeja_zw_dim minus.25\l_xeja_zw_dim
+\rensujiskip=0.25\l_xltj_zw_dim plus.25\l_xltj_zw_dim minus.25\l_xltj_zw_dim
 \NewDocumentCommand \rensuji { s O{c} m }
   {
     \mode_if_vertical:T { \mode_leave_vertical: }
-    \xeja_if_tate_text:TF
+    \xltj_if_tate_text:TF
       {
         \skip_horizontal:n { \rensujiskip }
         \IfBooleanF {#1}
           {
-            \xeja_yoko_in_tate_hbox_set:Nn \l_tmpa_box {#3}
+            \xltj_yoko_in_tate_hbox_set:Nn \l_tmpa_box {#3}
             \dim_set:Nn \l_tmpa_dim
               { \box_ht:N \l_tmpa_box + \box_dp:N \l_tmpa_box }
             \hbox_set:Nn \l_tmpa_box
@@ -34,33 +34,33 @@
                   {
                     { c }
                     {
-                      \__xeja_vrule:nnn
+                      \__xltj_vrule:nnn
                         { \c_zero_dim }
                         { 0.5\l_tmpa_dim }
                         { 0.5\l_tmpa_dim }
                     }
                     { r }
                     {
-                      \__xeja_vrule:nnn
+                      \__xltj_vrule:nnn
                         { \c_zero_dim }
-                        { 0.5\l_xeja_zw_dim }
-                        { \l_tmpa_dim - 0.5\l_xeja_zw_dim }
+                        { 0.5\l_xltj_zw_dim }
+                        { \l_tmpa_dim - 0.5\l_xltj_zw_dim }
                     }
                     { l }
                     {
-                      \__xeja_vrule:nnn
+                      \__xltj_vrule:nnn
                         { \c_zero_dim }
-                        { \l_tmpa_dim - 0.5\l_xeja_zw_dim }
-                        { 0.5\l_xeja_zw_dim }
+                        { \l_tmpa_dim - 0.5\l_xltj_zw_dim }
+                        { 0.5\l_xltj_zw_dim }
                     }
                   }
               }
-            \xeja_box_tjabaselineshift:n
+            \xltj_box_tjabaselineshift:n
               { \box_use_drop:N \l_tmpa_box }
           }
-        \xeja_box_tjabaselineshift:n
+        \xltj_box_tjabaselineshift:n
           {
-            \xeja_yoko_in_tate_hbox_to_wd:nn { 1\l_xeja_zw_dim }
+            \xltj_yoko_in_tate_hbox_to_wd:nn { 1\l_xltj_zw_dim }
               {
                 \str_case:nn {#2}
                   {
@@ -80,12 +80,12 @@
 \let\prensuji\rensuji
 \NewExpandableDocumentCommand \Kanji { m }
   {
-    \xeja_int_to_kansuji:n { \use:c { c@#1 } }
+    \xltj_int_to_kansuji:n { \use:c { c@#1 } }
   }
 \NewExpandableDocumentCommand \kanji { m }
   {
-    \xeja_if_tate_text:TF
-      { \xeja_int_to_kansuji:n {#1} }
+    \xltj_if_tate_text:TF
+      { \xltj_int_to_kansuji:n {#1} }
       {#1}
   }
 %% 

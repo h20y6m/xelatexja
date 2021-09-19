@@ -22,7 +22,7 @@ installfiles = {
   "xltjext.sty",
   "*.cls",
   "*.clo",
-  "xejajfm-standard.def",
+  "xltjfm-standard.def",
   "bxjsja-xelatexja.def",
 }
 sourcefiles = {

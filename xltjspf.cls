@@ -199,7 +199,7 @@
 \def\Cjascale{0.903375}
 \RequirePackage[jascale=\Cjascale]{xelatexja}
 \iftombow
-  \xejaTombowSetup{%
+  \xltjTombowSetup{%
     tombow=true,%
     banner={\iftombowdate\the\@bannertoken\fi},%
     thickness=\@tombowwidth}

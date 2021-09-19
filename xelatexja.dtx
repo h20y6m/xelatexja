@@ -16,7 +16,7 @@
 \RequirePackage{expl3}[2021-07-12]
 %<package>\ProvidesExplPackage{xelatexja}
 %<xltjext>\ProvidesExplPackage{xltjext}
-%<standard>\ProvidesExplFile{xejajfm-standard.def}
+%<standard>\ProvidesExplFile{xltjfm-standard.def}
 %<bxjsja>\ProvidesExplFile{bxjsja-xelatexja.def}
   {2021/09/05}{0.2.0}{Japanese typesetting with XeLaTeX}
 %<*driver>
@@ -82,60 +82,60 @@
 %
 % \subsection{組方向}
 %
-% \begin{function}[pTF]{\xeja_if_tate_document:}
+% \begin{function}[pTF]{\xltj_if_tate_document:}
 %   \begin{syntax}
-%     \cs{xeja_if_tate_document:TF} \Arg{true code} \Arg{false code}
+%     \cs{xltj_if_tate_document:TF} \Arg{true code} \Arg{false code}
 %   \end{syntax}
 %   文書全体が縦組かどうかの条件式。
 % \end{function}
 %
-% \begin{function}[pTF]{\xeja_if_tate_text:}
+% \begin{function}[pTF]{\xltj_if_tate_text:}
 %   \begin{syntax}
-%     \cs{xeja_if_tate_text:TF} \Arg{true code} \Arg{false code}
+%     \cs{xltj_if_tate_text:TF} \Arg{true code} \Arg{false code}
 %   \end{syntax}
 %   現在の組方向が縦組かどうかの条件式。
 % \end{function}
 %
 % \subsection{フォント}
 %
-% \begin{function}[EXP]{\xeja_get_jascale:}
+% \begin{function}[EXP]{\xltj_get_jascale:}
 %   \begin{syntax}
-%     \cs{xeja_get_jascale:}
+%     \cs{xltj_get_jascale:}
 %   \end{syntax}
 %   和文フォントスケール値を取得する。
 % \end{function}
 %
-% \begin{variable}{\l_xeja_zw_dim,\zw}
+% \begin{variable}{\l_xltj_zw_dim,\zw}
 %   和文文字サイズ。
 % \end{variable}
 %
 % \subsection{文字クラス}
 %
-% \begin{function}{\xeja_class_new_kanji:n}
+% \begin{function}{\xltj_class_new_kanji:n}
 %   \begin{syntax}
-%     \cs{xeja_class_new_kanji:n} \Arg{class}
+%     \cs{xltj_class_new_kanji:n} \Arg{class}
 %   \end{syntax}
 %   和文文字クラスを新規に作成する。
 % \end{function}
 %
-% \begin{function}{\xeja_class_new_alpha:n}
+% \begin{function}{\xltj_class_new_alpha:n}
 %   \begin{syntax}
-%     \cs{xeja_class_new_alpha:n} \Arg{class}
+%     \cs{xltj_class_new_alpha:n} \Arg{class}
 %   \end{syntax}
 %   欧文文字クラスを新規に作成する。
 % \end{function}
 %
-% \begin{function}{\xeja_class_new_kanji:nn}
+% \begin{function}{\xltj_class_new_kanji:nn}
 %   \begin{syntax}
-%     \cs{xeja_class_new_kanji:nn} \Arg{class} \Arg{integer}
+%     \cs{xltj_class_new_kanji:nn} \Arg{class} \Arg{integer}
 %   \end{syntax}
 %   |\newXeTeXintercharclass|で作成した文字クラスを
 %   和文文字クラスとして定義する。
 % \end{function}
 %
-% \begin{function}{\xeja_class_new_alpha:nn}
+% \begin{function}{\xltj_class_new_alpha:nn}
 %   \begin{syntax}
-%     \cs{xeja_class_new_alpha:nn} \Arg{class} \Arg{integer}
+%     \cs{xltj_class_new_alpha:nn} \Arg{class} \Arg{integer}
 %   \end{syntax}
 %   |\newXeTeXintercharclass|で作成した文字クラスを
 %   欧文文字クラスとして定義する。
@@ -155,53 +155,53 @@
 %   \end{description}
 % \end{variable}
 %
-% \begin{function}{\xeja_char_set_class:nn}
+% \begin{function}{\xltj_char_set_class:nn}
 %   \begin{syntax}
-%     \cs{xeja_char_set_class:nn} \Arg{charcode} \Arg{class}
+%     \cs{xltj_char_set_class:nn} \Arg{charcode} \Arg{class}
 %   \end{syntax}
 %   文字コードが\meta{charcode}の文字の文字クラスを\meta{class}に設定する。
 % \end{function}
 %
-% \begin{function}{\xeja_char_set_class_range:nnn}
+% \begin{function}{\xltj_char_set_class_range:nnn}
 %   \begin{syntax}
-%     \cs{xeja_char_set_class_range:nnn} \Arg{charcode_1} \Arg{charcode_2} \Arg{class}
+%     \cs{xltj_char_set_class_range:nnn} \Arg{charcode_1} \Arg{charcode_2} \Arg{class}
 %   \end{syntax}
 %   文字コードが\meta{charcode_1}から\meta{charcode_2}の文字の文字クラスを\meta{class}に設定する。
 % \end{function}
 %
-% \begin{function}{\xeja_class_update:}
+% \begin{function}{\xltj_class_update:}
 %   \begin{syntax}
-%     \cs{xeja_class_update:}
+%     \cs{xltj_class_update:}
 %   \end{syntax}
 %   文字クラス設定を更新する。
 % \end{function}
 %
 % \subsection{組版パラメーター}
 %
-% \begin{function}{\xeja_set_kanjiskip:n}
+% \begin{function}{\xltj_set_kanjiskip:n}
 %   \begin{syntax}
-%     \cs{xeja_set_kanjiskip:n} \Arg{tl}
+%     \cs{xltj_set_kanjiskip:n} \Arg{tl}
 %   \end{syntax}
 %   和文間空白（kanjiskip）を\meta{tl}に設定する。
 % \end{function}
 %
-% \begin{function}[EXP]{\xeja_get_kanjiskip:}
+% \begin{function}[EXP]{\xltj_get_kanjiskip:}
 %   \begin{syntax}
-%     \cs{xeja_get_kanjiskip:}
+%     \cs{xltj_get_kanjiskip:}
 %   \end{syntax}
 %   kanjiskipを取得する。
 % \end{function}
 %
-% \begin{function}{\xeja_set_xkanjiskip:n}
+% \begin{function}{\xltj_set_xkanjiskip:n}
 %   \begin{syntax}
-%     \cs{xeja_set_xkanjiskip:n} \Arg{tl}
+%     \cs{xltj_set_xkanjiskip:n} \Arg{tl}
 %   \end{syntax}
 %   和欧文間空白（xkanjiskip）を\meta{tl}に設定する。
 % \end{function}
 %
-% \begin{function}[EXP]{\xeja_get_xkanjiskip:}
+% \begin{function}[EXP]{\xltj_get_xkanjiskip:}
 %   \begin{syntax}
-%     \cs{xeja_get_xkanjiskip:}
+%     \cs{xltj_get_xkanjiskip:}
 %   \end{syntax}
 %   xkanjiskipを取得する。
 % \end{function}
@@ -211,21 +211,21 @@
 %
 % \begin{function}
 %   {
-%     \xeja_jfm_set_glue:nnn ,
-%     \xeja_jfm_set_kern:nnn ,
+%     \xltj_jfm_set_glue:nnn ,
+%     \xltj_jfm_set_kern:nnn ,
 %   }
 %   \begin{syntax}
-%     \cs{xeja_jfm_set_glue:nnn} \Arg{class_1} \Arg{class_2} \Arg{glue}
-%     \cs{xeja_jfm_set_kern:nnn} \Arg{class_1} \Arg{class_2} \Arg{kern}
+%     \cs{xltj_jfm_set_glue:nnn} \Arg{class_1} \Arg{class_2} \Arg{glue}
+%     \cs{xltj_jfm_set_kern:nnn} \Arg{class_1} \Arg{class_2} \Arg{kern}
 %   \end{syntax}
 %   和文文字クラス間に挿入するグルー・カーンを設定する。
 %   \meta{glue}および\meta{kern}は挿入時に評価される。
 %   グルーとカーンを同時に設定することはできず、後から設定した方で上書きされる。
 % \end{function}
 %
-% \begin{function}{\xeja_jfm_clear_glue_kern:nn}
+% \begin{function}{\xltj_jfm_clear_glue_kern:nn}
 %   \begin{syntax}
-%     \cs{xeja_jfm_clear_glue_kern:nn} \Arg{class_1} \Arg{class_2}
+%     \cs{xltj_jfm_clear_glue_kern:nn} \Arg{class_1} \Arg{class_2}
 %   \end{syntax}
 %   和文文字クラス間に挿入するグルー・カーンを削除する。
 % \end{function}
@@ -235,12 +235,12 @@
 %
 % \begin{function}
 %   {
-%     \xeja_jfm_set_precharwd:nn ,
-%     \xeja_jfm_set_postcharwd:nn ,
+%     \xltj_jfm_set_precharwd:nn ,
+%     \xltj_jfm_set_postcharwd:nn ,
 %   }
 %   \begin{syntax}
-%     \cs{xeja_jfm_set_precharwd:nn} \Arg{class} \Arg{width}
-%     \cs{xeja_jfm_set_postcharwd:nn} \Arg{class} \Arg{width}
+%     \cs{xltj_jfm_set_precharwd:nn} \Arg{class} \Arg{width}
+%     \cs{xltj_jfm_set_postcharwd:nn} \Arg{class} \Arg{width}
 %   \end{syntax}
 %   和文文字クラスの文字幅調整を設定する。
 %   例えば全角の括弧類・句読点類を半角で組むために|-0.5\zw|を設定する。
@@ -248,12 +248,12 @@
 %
 % \begin{function}
 %   {
-%     \xeja_jfm_clear_precharwd:n ,
-%     \xeja_jfm_clear_postcharwd:n ,
+%     \xltj_jfm_clear_precharwd:n ,
+%     \xltj_jfm_clear_postcharwd:n ,
 %   }
 %   \begin{syntax}
-%     \cs{xeja_jfm_clear_precharwd:n} \Arg{class}
-%     \cs{xeja_jfm_clear_postcharwd:n} \Arg{class}
+%     \cs{xltj_jfm_clear_precharwd:n} \Arg{class}
+%     \cs{xltj_jfm_clear_postcharwd:n} \Arg{class}
 %   \end{syntax}
 %   和文文字クラスの文字幅調整を削除する。
 % \end{function}
@@ -263,12 +263,12 @@
 %
 % \begin{function}
 %   {
-%     \xeja_jfm_set_prebreakpenalty:nn ,
-%     \xeja_jfm_set_postbreakpenalty:nn ,
+%     \xltj_jfm_set_prebreakpenalty:nn ,
+%     \xltj_jfm_set_postbreakpenalty:nn ,
 %   }
 %   \begin{syntax}
-%     \cs{xeja_jfm_set_prebreakpenalty:nn} \Arg{class} \Arg{intexpr}
-%     \cs{xeja_jfm_set_postbreakpenalty:nn} \Arg{class} \Arg{intexpr}
+%     \cs{xltj_jfm_set_prebreakpenalty:nn} \Arg{class} \Arg{intexpr}
+%     \cs{xltj_jfm_set_postbreakpenalty:nn} \Arg{class} \Arg{intexpr}
 %   \end{syntax}
 %   和文文字クラス\meta{class}の行頭・行末禁則ペナルティーを\meta{intexpr}に設定する。
 % \end{function}
@@ -276,12 +276,12 @@
 %
 % \begin{function}
 %   {
-%     \xeja_jfm_clear_prebreakpenalty:n ,
-%     \xeja_jfm_clear_postbreakpenalty:n ,
+%     \xltj_jfm_clear_prebreakpenalty:n ,
+%     \xltj_jfm_clear_postbreakpenalty:n ,
 %   }
 %   \begin{syntax}
-%     \cs{xeja_jfm_clear_prebreakpenalty:n} \Arg{class}
-%     \cs{xeja_jfm_clear_postbreakpenalty:n} \Arg{class}
+%     \cs{xltj_jfm_clear_prebreakpenalty:n} \Arg{class}
+%     \cs{xltj_jfm_clear_postbreakpenalty:n} \Arg{class}
 %   \end{syntax}
 %   和文文字クラス\meta{class}の行頭・行末禁則ペナルティー削除する。
 % \end{function}
@@ -289,9 +289,9 @@
 %
 % \subsubsection{和欧文間空白挿入設定}
 %
-% \begin{function}{\xeja_jfm_set_xspmode:nn}
+% \begin{function}{\xltj_jfm_set_xspmode:nn}
 %   \begin{syntax}
-%     \cs{xeja_jfm_set_xspmode:nn} \Arg{class} \Arg{xspmode}
+%     \cs{xltj_jfm_set_xspmode:nn} \Arg{class} \Arg{xspmode}
 %   \end{syntax}
 %   文字クラス\meta{class}の前後に和欧文間空白の挿入を許可するかどうかを設定する。
 %   \meta{xspmode}に指定できる値は以下の
@@ -310,198 +310,198 @@
 %
 % \subsection{ボックス}
 %
-% \begin{function}{\xeja_box_yjabaselineshift:n, \xeja_box_tjabaselineshift:n}
+% \begin{function}{\xltj_box_yjabaselineshift:n, \xltj_box_tjabaselineshift:n}
 %   \begin{syntax}
-%     \cs{xeja_box_yjabaselineshift:n} \Arg{box function}
+%     \cs{xltj_box_yjabaselineshift:n} \Arg{box function}
 %   \end{syntax}
 %   ボックスを和文ベースライン補正して挿入する。
 % \end{function}
 %
-% \begin{function}{\xeja_yoko_in_tate_hbox:n}
+% \begin{function}{\xltj_yoko_in_tate_hbox:n}
 %   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_hbox:n} \Arg{contents}
+%     \cs{xltj_yoko_in_tate_hbox:n} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
-% \begin{function}{\xeja_yoko_in_tate_hbox_to_wd:nn}
+% \begin{function}{\xltj_yoko_in_tate_hbox_to_wd:nn}
 %   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_hbox_to_wd:nn} \Arg{dimexpr} \Arg{contents}
+%     \cs{xltj_yoko_in_tate_hbox_to_wd:nn} \Arg{dimexpr} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
-% \begin{function}{\xeja_yoko_in_tate_hbox_to_zero:n}
+% \begin{function}{\xltj_yoko_in_tate_hbox_to_zero:n}
 %   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_hbox_to_zero:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}
-%   {
-%     \xeja_yoko_in_tate_hbox_set:Nn, \xeja_yoko_in_tate_hbox_set:cn,
-%     \xeja_yoko_in_tate_hbox_gset:Nn, \xeja_yoko_in_tate_hbox_gset:cn
-%   }
-%   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_hbox_set:Nn} \meta{box} \Arg{contents}
+%     \cs{xltj_yoko_in_tate_hbox_to_zero:n} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
 % \begin{function}
 %   {
-%     \xeja_yoko_in_tate_hbox_set_to_wd:Nnn, \xeja_yoko_in_tate_hbox_set_to_wd:cnn,
-%     \xeja_yoko_in_tate_hbox_gset_to_wd:Nnn, \xeja_yoko_in_tate_hbox_gset_to_wd:cnn
+%     \xltj_yoko_in_tate_hbox_set:Nn, \xltj_yoko_in_tate_hbox_set:cn,
+%     \xltj_yoko_in_tate_hbox_gset:Nn, \xltj_yoko_in_tate_hbox_gset:cn
 %   }
 %   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_hbox_set_to_wd:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_yoko_in_tate_hbox_overlap_center:n}
-%   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_hbox_overlap_center:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_yoko_in_tate_hbox_overlap_right:n}
-%   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_hbox_overlap_right:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_yoko_in_tate_hbox_overlap_left:n}
-%   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_hbox_overlap_left:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_yoko_in_tate_vbox:n}
-%   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_vbox:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_yoko_in_tate_vbox_to_ht:nn}
-%   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_vbox_to_ht:nn} \Arg{dimexpr} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_yoko_in_tate_vbox_to_zero:n}
-%   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_vbox_to_zero:n} \Arg{contents}
+%     \cs{xltj_yoko_in_tate_hbox_set:Nn} \meta{box} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
 % \begin{function}
 %   {
-%     \xeja_yoko_in_tate_vbox_set:Nn, \xeja_yoko_in_tate_vbox_set:cn,
-%     \xeja_yoko_in_tate_vbox_gset:Nn, \xeja_yoko_in_tate_vbox_gset:cn
+%     \xltj_yoko_in_tate_hbox_set_to_wd:Nnn, \xltj_yoko_in_tate_hbox_set_to_wd:cnn,
+%     \xltj_yoko_in_tate_hbox_gset_to_wd:Nnn, \xltj_yoko_in_tate_hbox_gset_to_wd:cnn
 %   }
 %   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_vbox_set:Nn} \meta{box} \Arg{contents}
+%     \cs{xltj_yoko_in_tate_hbox_set_to_wd:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_yoko_in_tate_hbox_overlap_center:n}
+%   \begin{syntax}
+%     \cs{xltj_yoko_in_tate_hbox_overlap_center:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_yoko_in_tate_hbox_overlap_right:n}
+%   \begin{syntax}
+%     \cs{xltj_yoko_in_tate_hbox_overlap_right:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_yoko_in_tate_hbox_overlap_left:n}
+%   \begin{syntax}
+%     \cs{xltj_yoko_in_tate_hbox_overlap_left:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_yoko_in_tate_vbox:n}
+%   \begin{syntax}
+%     \cs{xltj_yoko_in_tate_vbox:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_yoko_in_tate_vbox_to_ht:nn}
+%   \begin{syntax}
+%     \cs{xltj_yoko_in_tate_vbox_to_ht:nn} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_yoko_in_tate_vbox_to_zero:n}
+%   \begin{syntax}
+%     \cs{xltj_yoko_in_tate_vbox_to_zero:n} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
 % \begin{function}
 %   {
-%     \xeja_yoko_in_tate_vbox_set_to_ht:Nnn, \xeja_yoko_in_tate_vbox_set_to_ht:cnn,
-%     \xeja_yoko_in_tate_vbox_gset_to_ht:Nnn, \xeja_yoko_in_tate_vbox_gset_to_ht:cnn
+%     \xltj_yoko_in_tate_vbox_set:Nn, \xltj_yoko_in_tate_vbox_set:cn,
+%     \xltj_yoko_in_tate_vbox_gset:Nn, \xltj_yoko_in_tate_vbox_gset:cn
 %   }
 %   \begin{syntax}
-%     \cs{xeja_yoko_in_tate_vbox_set_to_ht:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_tate_in_yoko_hbox:n}
-%   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_hbox:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_tate_in_yoko_hbox_to_wd:nn}
-%   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_hbox_to_wd:nn} \Arg{dimexpr} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_tate_in_yoko_hbox_to_zero:n}
-%   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_hbox_to_zero:n} \Arg{contents}
+%     \cs{xltj_yoko_in_tate_vbox_set:Nn} \meta{box} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
 % \begin{function}
 %   {
-%     \xeja_tate_in_yoko_hbox_set:Nn, \xeja_tate_in_yoko_hbox_set:cn,
-%     \xeja_tate_in_yoko_hbox_gset:Nn, \xeja_tate_in_yoko_hbox_gset:cn
+%     \xltj_yoko_in_tate_vbox_set_to_ht:Nnn, \xltj_yoko_in_tate_vbox_set_to_ht:cnn,
+%     \xltj_yoko_in_tate_vbox_gset_to_ht:Nnn, \xltj_yoko_in_tate_vbox_gset_to_ht:cnn
 %   }
 %   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_hbox_set:Nn} \meta{box} \Arg{contents}
+%     \cs{xltj_yoko_in_tate_vbox_set_to_ht:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_tate_in_yoko_hbox:n}
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_hbox:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_tate_in_yoko_hbox_to_wd:nn}
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_hbox_to_wd:nn} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_tate_in_yoko_hbox_to_zero:n}
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_hbox_to_zero:n} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
 % \begin{function}
 %   {
-%     \xeja_tate_in_yoko_hbox_set_to_wd:Nnn, \xeja_tate_in_yoko_hbox_set_to_wd:cnn,
-%     \xeja_tate_in_yoko_hbox_gset_to_wd:Nnn, \xeja_tate_in_yoko_hbox_gset_to_wd:cnn
+%     \xltj_tate_in_yoko_hbox_set:Nn, \xltj_tate_in_yoko_hbox_set:cn,
+%     \xltj_tate_in_yoko_hbox_gset:Nn, \xltj_tate_in_yoko_hbox_gset:cn
 %   }
 %   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_hbox_set_to_wd:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_tate_in_yoko_hbox_overlap_center:n}
-%   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_hbox_overlap_center:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_tate_in_yoko_hbox_overlap_right:n}
-%   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_hbox_overlap_right:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_tate_in_yoko_hbox_overlap_left:n}
-%   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_hbox_overlap_left:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_tate_in_yoko_vbox:n}
-%   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_vbox:n} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_tate_in_yoko_vbox_to_ht:nn}
-%   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_vbox_to_ht:nn} \Arg{dimexpr} \Arg{contents}
-%   \end{syntax}
-% \end{function}
-%
-% \begin{function}{\xeja_tate_in_yoko_vbox_to_zero:n}
-%   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_vbox_to_zero:n} \Arg{contents}
+%     \cs{xltj_tate_in_yoko_hbox_set:Nn} \meta{box} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
 % \begin{function}
 %   {
-%     \xeja_tate_in_yoko_vbox_set:Nn, \xeja_tate_in_yoko_vbox_set:cn,
-%     \xeja_tate_in_yoko_vbox_gset:Nn, \xeja_tate_in_yoko_vbox_gset:cn
+%     \xltj_tate_in_yoko_hbox_set_to_wd:Nnn, \xltj_tate_in_yoko_hbox_set_to_wd:cnn,
+%     \xltj_tate_in_yoko_hbox_gset_to_wd:Nnn, \xltj_tate_in_yoko_hbox_gset_to_wd:cnn
 %   }
 %   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_vbox_set:Nn} \meta{box} \Arg{contents}
+%     \cs{xltj_tate_in_yoko_hbox_set_to_wd:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_tate_in_yoko_hbox_overlap_center:n}
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_hbox_overlap_center:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_tate_in_yoko_hbox_overlap_right:n}
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_hbox_overlap_right:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_tate_in_yoko_hbox_overlap_left:n}
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_hbox_overlap_left:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_tate_in_yoko_vbox:n}
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_vbox:n} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_tate_in_yoko_vbox_to_ht:nn}
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_vbox_to_ht:nn} \Arg{dimexpr} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}{\xltj_tate_in_yoko_vbox_to_zero:n}
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_vbox_to_zero:n} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
 % \begin{function}
 %   {
-%     \xeja_tate_in_yoko_vbox_set_to_ht:Nnn, \xeja_tate_in_yoko_vbox_set_to_ht:cnn,
-%     \xeja_tate_in_yoko_vbox_gset_to_ht:Nnn, \xeja_tate_in_yoko_vbox_gset_to_ht:cnn
+%     \xltj_tate_in_yoko_vbox_set:Nn, \xltj_tate_in_yoko_vbox_set:cn,
+%     \xltj_tate_in_yoko_vbox_gset:Nn, \xltj_tate_in_yoko_vbox_gset:cn
 %   }
 %   \begin{syntax}
-%     \cs{xeja_tate_in_yoko_vbox_set_to_ht:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
+%     \cs{xltj_tate_in_yoko_vbox_set:Nn} \meta{box} \Arg{contents}
+%   \end{syntax}
+% \end{function}
+%
+% \begin{function}
+%   {
+%     \xltj_tate_in_yoko_vbox_set_to_ht:Nnn, \xltj_tate_in_yoko_vbox_set_to_ht:cnn,
+%     \xltj_tate_in_yoko_vbox_gset_to_ht:Nnn, \xltj_tate_in_yoko_vbox_gset_to_ht:cnn
+%   }
+%   \begin{syntax}
+%     \cs{xltj_tate_in_yoko_vbox_set_to_ht:Nnn} \meta{box} \Arg{dimexpr} \Arg{contents}
 %   \end{syntax}
 % \end{function}
 %
@@ -516,7 +516,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%<@@=xeja>
+%<@@=xltj>
 %    \end{macrocode}
 %
 % \XeTeX が必要。
@@ -558,11 +558,11 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\l_xeja_zw_dim,\zw}
+% \begin{macro}{\l_xltj_zw_dim,\zw}
 % 和文フォント全角寸法。
 %    \begin{macrocode}
-\dim_new:N \l_xeja_zw_dim
-\cs_new_eq:NN \zw \l_xeja_zw_dim
+\dim_new:N \l_xltj_zw_dim
+\cs_new_eq:NN \zw \l_xltj_zw_dim
 %    \end{macrocode}
 % \end{macro}
 %
@@ -578,7 +578,7 @@
 %   和欧文間に挿入するグルー。
 %    \begin{macrocode}
 \tl_new:N \l_@@_xkanjiskip_tl
-\tl_set:Nn \l_@@_xkanjiskip_tl { 0.25\l_xeja_zw_dim plus 1.0pt minus 1.0pt }
+\tl_set:Nn \l_@@_xkanjiskip_tl { 0.25\l_xltj_zw_dim plus 1.0pt minus 1.0pt }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -596,8 +596,8 @@
 %    \begin{macrocode}
 \tl_new:N \l_@@_yjabaselineshift_tl
 \tl_new:N \l_@@_tjabaselineshift_tl
-\tl_set:Nn \l_@@_yjabaselineshift_tl { 0\l_xeja_zw_dim }
-\tl_set:Nn \l_@@_tjabaselineshift_tl { -0.38\l_xeja_zw_dim }
+\tl_set:Nn \l_@@_yjabaselineshift_tl { 0\l_xltj_zw_dim }
+\tl_set:Nn \l_@@_tjabaselineshift_tl { -0.38\l_xltj_zw_dim }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -647,10 +647,10 @@
 \bool_set_eq:NN \l_@@_tate_text_bool \g_@@_tate_document_bool
 %    \end{macrocode}
 %
-% \begin{macro}[pTF]{\xeja_if_tate_document:}
+% \begin{macro}[pTF]{\xltj_if_tate_document:}
 %   文書全体が縦組かどうかの条件式。
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \xeja_if_tate_document: { p, T, F, TF }
+\prg_new_conditional:Npnn \xltj_if_tate_document: { p, T, F, TF }
   {
     \bool_if:NTF \g_@@_tate_document_bool
       { \prg_return_true: } { \prg_return_false: }
@@ -658,10 +658,10 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}[pTF]{\xeja_if_tate_text:}
+% \begin{macro}[pTF]{\xltj_if_tate_text:}
 %   現在の組方向が縦組かどうかの条件式。
 %    \begin{macrocode}
-\prg_new_conditional:Npnn \xeja_if_tate_text: { p, T, F, TF }
+\prg_new_conditional:Npnn \xltj_if_tate_text: { p, T, F, TF }
   {
     \bool_if:NTF \l_@@_tate_text_bool
       { \prg_return_true: } { \prg_return_false: }
@@ -672,28 +672,28 @@
 % \subsection{フォント}
 %
 %    \begin{macrocode}
-\dim_new:N \l_xeja_em_dim
+\dim_new:N \l_xltj_em_dim
 \tl_new:N \l_@@_yoko_kanji_font_tl
 \tl_new:N \l_@@_tate_kanji_font_tl
 \tl_new:N \l_@@_alpha_font_tl
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \xeja_set_yoko_kanji_font:n #1
+\cs_new:Npn \xltj_set_yoko_kanji_font:n #1
   { \tl_set:Nn \l_@@_yoko_kanji_font_tl {#1} }
-\cs_new:Npn \xeja_set_tate_kanji_font:n #1
+\cs_new:Npn \xltj_set_tate_kanji_font:n #1
   { \tl_set:Nn \l_@@_tate_kanji_font_tl {#1} }
-\cs_new:Npn \xeja_set_alpha_font:n #1
+\cs_new:Npn \xltj_set_alpha_font:n #1
   { \tl_set:Nn \l_@@_alpha_font_tl {#1} }
-\cs_generate_variant:Nn \xeja_set_yoko_kanji_font:n { x }
-\cs_generate_variant:Nn \xeja_set_tate_kanji_font:n { x }
-\cs_generate_variant:Nn \xeja_set_alpha_font:n { x }
+\cs_generate_variant:Nn \xltj_set_yoko_kanji_font:n { x }
+\cs_generate_variant:Nn \xltj_set_tate_kanji_font:n { x }
+\cs_generate_variant:Nn \xltj_set_alpha_font:n { x }
 %    \end{macrocode}
 %
-% \begin{macro}{\xeja_get_jascale:}
+% \begin{macro}{\xltj_get_jascale:}
 %   和文フォントスケール値を取得する。
 %    \begin{macrocode}
-\cs_new:Npn \xeja_get_jascale:
+\cs_new:Npn \xltj_get_jascale:
   { \fp_use:N \g_@@_jascale_fp }
 %    \end{macrocode}
 % \end{macro}
@@ -701,33 +701,33 @@
 %    \begin{macrocode}
 \hook_gput_code:nnn { selectfont } { . }
   {
-    \dim_set:Nn \l_xeja_zw_dim
+    \dim_set:Nn \l_xltj_zw_dim
       { \fp_to_dim:n { \g_@@_jascale_fp * \f@size } }
-    \dim_set:Nn \l_xeja_em_dim { 1em }
+    \dim_set:Nn \l_xltj_em_dim { 1em }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-    \xeja_set_yoko_kanji_font:x
+    \xltj_set_yoko_kanji_font:x
       {
         \exp_not:N \@@_select_yoko_kanji_font:nnnn
           { \l_@@_kanji_family_tl }
           { \f@series } { \f@shape } { \f@size }
       }
-    \xeja_set_tate_kanji_font:x
+    \xltj_set_tate_kanji_font:x
       {
         \exp_not:N \@@_select_tate_kanji_font:nnnn
           { \l_@@_kanji_family_tl }
           { \f@series } { \f@shape } { \f@size }
       }
-    \xeja_set_alpha_font:x { \tex_the:D \tex_font:D }
+    \xltj_set_alpha_font:x { \tex_the:D \tex_font:D }
   }
 %    \end{macrocode}
 %
 % 和文フォントエンコーディング。
 % 横組みはJY4、縦組みはJT4。
 %    \begin{macrocode}
-\str_const:Nn \c_xeja_yoko_encoding_str { JY4 }
-\str_const:Nn \c_xeja_tate_encoding_str { JT4 }
+\str_const:Nn \c_xltj_yoko_encoding_str { JY4 }
+\str_const:Nn \c_xltj_tate_encoding_str { JT4 }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -740,41 +740,41 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \xeja_declare_kanji_family:nn #1#2
+\cs_new:Npn \xltj_declare_kanji_family:nn #1#2
   {
     \prop_gput:Nnn \g_@@_kanji_family_prop {#1} {#2}
   }
-\cs_generate_variant:Nn \xeja_declare_kanji_family:nn { xn }
+\cs_generate_variant:Nn \xltj_declare_kanji_family:nn { xn }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \xeja_declare_kanji_shape:nnnn #1#2#3#4
+\cs_new:Npn \xltj_declare_kanji_shape:nnnn #1#2#3#4
   {
     \prop_gput:Nnn \g_@@_kanji_shape_prop { #1 / #2 / #3 } {#4}
   }
-\cs_generate_variant:Nn \xeja_declare_kanji_shape:nnnn { xxxx }
+\cs_generate_variant:Nn \xltj_declare_kanji_shape:nnnn { xxxx }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new:Npn \xeja_set_kanji_family:n #1
+\cs_new:Npn \xltj_set_kanji_family:n #1
   {
     \tl_set:Nx \l_@@_kanji_family_tl {#1}
   }
-\cs_generate_variant:Nn \xeja_set_kanji_family:n { x }
+\cs_generate_variant:Nn \xltj_set_kanji_family:n { x }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \cs_new:Npn \@@_select_yoko_kanji_font:nnnn #1#2#3#4
   {
     \@@_select_kanji_font:nnnnnn
-      { \c_xeja_yoko_encoding_str } {#1} {#2} {#3} {#4} {}
-    \xeja_set_yoko_kanji_font:x { \tex_the:D \tex_font:D }
+      { \c_xltj_yoko_encoding_str } {#1} {#2} {#3} {#4} {}
+    \xltj_set_yoko_kanji_font:x { \tex_the:D \tex_font:D }
   }
 \cs_new:Npn \@@_select_tate_kanji_font:nnnn #1#2#3#4
   {
     \@@_select_kanji_font:nnnnnn
-      { \c_xeja_tate_encoding_str } {#1} {#2} {#3} {#4} { vertical }
-    \xeja_set_tate_kanji_font:x { \tex_the:D \tex_font:D }
+      { \c_xltj_tate_encoding_str } {#1} {#2} {#3} {#4} { vertical }
+    \xltj_set_tate_kanji_font:x { \tex_the:D \tex_font:D }
   }
 %    \end{macrocode}
 %
@@ -871,27 +871,27 @@
 %
 % 明朝（mc）とゴシック（gt）ファミリーを定義する。
 %    \begin{macrocode}
-\xeja_declare_kanji_family:nn { mc } {}
-\xeja_declare_kanji_family:nn { gt } {}
+\xltj_declare_kanji_family:nn { mc } {}
+\xltj_declare_kanji_family:nn { gt } {}
 %    \end{macrocode}
 % 
 %    \begin{macrocode}
-\xeja_declare_kanji_shape:nnnn { mc } { m } { n }
+\xltj_declare_kanji_shape:nnnn { mc } { m } { n }
   { [HaranoAjiMincho-Regular.otf]:+fwid }
-\xeja_declare_kanji_shape:nnnn { gt } { m } { n }
+\xltj_declare_kanji_shape:nnnn { gt } { m } { n }
   { [HaranoAjiGothic-Medium.otf]:+fwid }
-\xeja_declare_kanji_shape:nnnn { mc } { b } { n }
+\xltj_declare_kanji_shape:nnnn { mc } { b } { n }
   { [HaranoAjiGothic-Medium.otf]:+fwid }
-\xeja_declare_kanji_shape:nnnn { gt } { b } { n }
+\xltj_declare_kanji_shape:nnnn { gt } { b } { n }
   { [HaranoAjiGothic-Medium.otf]:+fwid }
-\xeja_declare_kanji_shape:nnnn { mc } { bx } { n }
+\xltj_declare_kanji_shape:nnnn { mc } { bx } { n }
   { [HaranoAjiGothic-Medium.otf]:+fwid }
-\xeja_declare_kanji_shape:nnnn { gt } { bx } { n }
+\xltj_declare_kanji_shape:nnnn { gt } { bx } { n }
   { [HaranoAjiGothic-Medium.otf]:+fwid }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\xeja_set_kanji_family:n { mc }
+\xltj_set_kanji_family:n { mc }
 %    \end{macrocode}
 %
 %
@@ -976,16 +976,16 @@
 % \end{macro}
 %
 %
-% \begin{macro}{\xeja_class_new_kanji:n}
-% \begin{macro}{\xeja_class_new_alpha:n}
+% \begin{macro}{\xltj_class_new_kanji:n}
+% \begin{macro}{\xltj_class_new_alpha:n}
 %   和文・欧文文字クラスを新規に作成する。
 %    \begin{macrocode}
-\cs_new:Npn \xeja_class_new_kanji:n #1
+\cs_new:Npn \xltj_class_new_kanji:n #1
   {
     \@@_class_new:n {#1}
     \seq_gput_right:Nn \g_@@_class_kanji_seq {#1}
   }
-\cs_new:Npn \xeja_class_new_alpha:n #1
+\cs_new:Npn \xltj_class_new_alpha:n #1
   {
     \@@_class_new:n {#1}
     \seq_gput_right:Nn \g_@@_class_alpha_seq {#1}
@@ -994,15 +994,15 @@
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_class_new_kanji:nn}
-% \begin{macro}{\xeja_class_new_alpha:nn}
+% \begin{macro}{\xltj_class_new_kanji:nn}
+% \begin{macro}{\xltj_class_new_alpha:nn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_class_new_kanji:nn #1#2
+\cs_new:Npn \xltj_class_new_kanji:nn #1#2
   {
     \@@_class_new:nn {#1} {#2}
     \seq_gput_right:Nn \g_@@_class_kanji_seq {#1}
   }
-\cs_new:Npn \xeja_class_new_alpha:nn #1#2
+\cs_new:Npn \xltj_class_new_alpha:nn #1#2
   {
     \@@_class_new:nn {#1} {#2}
     \seq_gput_right:Nn \g_@@_class_alpha_seq {#1}
@@ -1013,38 +1013,38 @@
 %
 % \begin{macro}{kanji/default,alpha/default,boundary,ignored}
 %    \begin{macrocode}
-\xeja_class_new_kanji:n { kanji/default }
-\xeja_class_new_alpha:nn { alpha/default } { 0 }
+\xltj_class_new_kanji:n { kanji/default }
+\xltj_class_new_alpha:nn { alpha/default } { 0 }
 \@@_class_new:nn { boundary } { 4095 }
 \@@_class_new:nn { ignored } { 4096 }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_char_set_class:nn}
+% \begin{macro}{\xltj_char_set_class:nn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_char_set_class:nn #1#2
+\cs_new:Npn \xltj_char_set_class:nn #1#2
   {
     \tex_XeTeXcharclass:D \int_eval:n {#1} = \@@_class_use:n {#2} ~
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_char_set_class_range:nnn}
+% \begin{macro}{\xltj_char_set_class_range:nnn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_char_set_class_range:nnn #1#2#3
+\cs_new:Npn \xltj_char_set_class_range:nnn #1#2#3
   {
     \int_step_inline:nnn {#1} {#2}
       {
-        \xeja_char_set_class:nn {##1} {#3}
+        \xltj_char_set_class:nn {##1} {#3}
       }
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_class_update:}
+% \begin{macro}{\xltj_class_update:}
 %   文字クラス設定を更新する。
 %    \begin{macrocode}
-\cs_new:Npn \xeja_class_update:
+\cs_new:Npn \xltj_class_update:
   {
     \seq_map_inline:Nn \g_@@_class_kanji_seq
       {
@@ -1251,7 +1251,7 @@
 %    \begin{macrocode}
 \cs_new:Npn \@@_swich_kanji_font:
   {
-    \xeja_if_tate_text:TF
+    \xltj_if_tate_text:TF
       { \l_@@_tate_kanji_font_tl }
       { \l_@@_yoko_kanji_font_tl }
   }
@@ -1379,12 +1379,12 @@
   {
     \dim_set:Nn \l_@@_jabaselineshift_dim
       {
-        \xeja_if_tate_text:TF
+        \xltj_if_tate_text:TF
           { \l_@@_tjabaselineshift_tl }
           { \l_@@_yjabaselineshift_tl }
       }
     \bool_set_false:N \l_@@_jabaselineshift_bool
-    \xeja_if_tate_text:T
+    \xltj_if_tate_text:T
       { \bool_set_true:N \l_@@_jabaselineshift_bool }
     \dim_compare:nNnF { \l_@@_jabaselineshift_dim } = { \c_zero_dim }
       { \bool_set_true:N \l_@@_jabaselineshift_bool }
@@ -1399,8 +1399,8 @@
       {
         \c_group_end_token
         \box_set_to_last:N \l_@@_jabaselineshift_box
-        \box_set_ht:Nn \l_@@_jabaselineshift_box { 0.5\l_xeja_zw_dim }
-        \box_set_dp:Nn \l_@@_jabaselineshift_box { 0.5\l_xeja_zw_dim }
+        \box_set_ht:Nn \l_@@_jabaselineshift_box { 0.5\l_xltj_zw_dim }
+        \box_set_dp:Nn \l_@@_jabaselineshift_box { 0.5\l_xltj_zw_dim }
         \box_move_down:nn { \l_@@_jabaselineshift_dim }
           { \box_use_drop:N \l_@@_jabaselineshift_box }
         \@@_kern:n { \c_zero_dim }
@@ -1412,44 +1412,44 @@
 %
 % \subsubsection{JFMパラメータ}
 %
-% \begin{macro}{\xeja_set_kanjiskip:n}
+% \begin{macro}{\xltj_set_kanjiskip:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_set_kanjiskip:n #1
+\cs_new:Npn \xltj_set_kanjiskip:n #1
   {
     \tl_set:Nx \l_@@_kanjiskip_tl { \dim_eval:n {#1} }
   }
-\cs_new:Npn \xeja_set_kanjiskip_lazy:n #1
+\cs_new:Npn \xltj_set_kanjiskip_lazy:n #1
   {
     \tl_set:Nn \l_@@_kanjiskip_tl {#1}
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_get_kanjiskip:}
+% \begin{macro}{\xltj_get_kanjiskip:}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_get_kanjiskip:
+\cs_new:Npn \xltj_get_kanjiskip:
   {
     \skip_eval:n { \l_@@_kanjiskip_tl }
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_set_xkanjiskip:n}
+% \begin{macro}{\xltj_set_xkanjiskip:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_set_xkanjiskip:n #1
+\cs_new:Npn \xltj_set_xkanjiskip:n #1
   {
     \tl_set:Nx \l_@@_xkanjiskip_tl { \dim_eval:n {#1} }
   }
-\cs_new:Npn \xeja_set_xkanjiskip_lazy:n #1
+\cs_new:Npn \xltj_set_xkanjiskip_lazy:n #1
   {
     \tl_set:Nn \l_@@_xkanjiskip_tl {#1}
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_get_xkanjiskip:}
+% \begin{macro}{\xltj_get_xkanjiskip:}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_get_xkanjiskip:
+\cs_new:Npn \xltj_get_xkanjiskip:
   {
     \skip_eval:n { \l_@@_xkanjiskip_tl }
   }
@@ -1583,15 +1583,15 @@
 %
 % \subsubsection{グルー・カーン}
 %
-% \begin{macro}{\xeja_jfm_set_glue:nnn}
-% \begin{macro}{\xeja_jfm_set_kern:nnn}
+% \begin{macro}{\xltj_jfm_set_glue:nnn}
+% \begin{macro}{\xltj_jfm_set_kern:nnn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_jfm_set_glue:nnn #1#2#3
+\cs_new:Npn \xltj_jfm_set_glue:nnn #1#2#3
   {
     \@@_jfm_set_param:nnnn { glue_kern } {#1} {#2}
       { \@@_glue:n {#3} }
   }
-\cs_new:Npn \xeja_jfm_set_kern:nnn #1#2#3
+\cs_new:Npn \xltj_jfm_set_kern:nnn #1#2#3
   {
     \@@_jfm_set_param:nnnn { glue_kern } {#1} {#2}
       { \@@_kern:n {#3} }
@@ -1600,9 +1600,9 @@
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_jfm_clear_glue_kern:nn}
+% \begin{macro}{\xltj_jfm_clear_glue_kern:nn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_jfm_clear_glue_kern:nn #1#2
+\cs_new:Npn \xltj_jfm_clear_glue_kern:nn #1#2
   {
     \@@_jfm_clear_param:nnn { glue_kern } {#1} {#2}
   }
@@ -1621,10 +1621,10 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_inhibitglue:}
+% \begin{macro}{\xltj_inhibitglue:}
 %    \begin{macrocode}
 \bool_new:N \l_@@_inhibitglue_bool
-\cs_new:Npn \xeja_inhibitglue:
+\cs_new:Npn \xltj_inhibitglue:
   { \bool_set_true:N \l_@@_inhibitglue_bool }
 %    \end{macrocode}
 % \end{macro}
@@ -1644,16 +1644,16 @@
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_jfm_set_precharwd:nn}
-% \begin{macro}{\xeja_jfm_set_postcharwd:nn}
+% \begin{macro}{\xltj_jfm_set_precharwd:nn}
+% \begin{macro}{\xltj_jfm_set_postcharwd:nn}
 %   文字幅調整を設定する。
 %    \begin{macrocode}
-\cs_new:Npn \xeja_jfm_set_precharwd:nn #1#2
+\cs_new:Npn \xltj_jfm_set_precharwd:nn #1#2
   {
     \@@_jfm_set_param:nnn { precharwd } {#1}
       { \@@_jfm_precharwd:n {#2} }
   }
-\cs_new:Npn \xeja_jfm_set_postcharwd:nn #1#2
+\cs_new:Npn \xltj_jfm_set_postcharwd:nn #1#2
   {
     \@@_jfm_set_param:nnn { postcharwd } {#1}
       { \@@_jfm_postcharwd:n {#2} }
@@ -1662,15 +1662,15 @@
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_jfm_clear_precharwd:n}
-% \begin{macro}{\xeja_jfm_clear_postcharwd:n}
+% \begin{macro}{\xltj_jfm_clear_precharwd:n}
+% \begin{macro}{\xltj_jfm_clear_postcharwd:n}
 %   文字幅調整の設定をクリアする。
 %    \begin{macrocode}
-\cs_new:Npn \xeja_jfm_clear_precharwd:n #1
+\cs_new:Npn \xltj_jfm_clear_precharwd:n #1
   {
     \@@_jfm_clear_param:nn { precharwd } {#1}
   }
-\cs_new:Npn \xeja_jfm_clear_postcharwd:n #1
+\cs_new:Npn \xltj_jfm_clear_postcharwd:n #1
   {
     \@@_jfm_clear_param:nn { postcharwd } {#1}
   }
@@ -1693,16 +1693,16 @@
 %
 % \subsubsection{禁則ペナルティ}
 %
-% \begin{macro}{\xeja_jfm_set_prebreakpenalty:nn}
-% \begin{macro}{\xeja_jfm_set_postbreakpenalty:nn}
+% \begin{macro}{\xltj_jfm_set_prebreakpenalty:nn}
+% \begin{macro}{\xltj_jfm_set_postbreakpenalty:nn}
 %   禁則ペナルティを設定する。
 %    \begin{macrocode}
-\cs_new:Npn \xeja_jfm_set_prebreakpenalty:nn #1#2
+\cs_new:Npn \xltj_jfm_set_prebreakpenalty:nn #1#2
   {
     \@@_jfm_set_param:nnn { prebreakpenalty } {#1}
       { \@@_penalty:n {#2} }
   }
-\cs_new:Npn \xeja_jfm_set_postbreakpenalty:nn #1#2
+\cs_new:Npn \xltj_jfm_set_postbreakpenalty:nn #1#2
   {
     \@@_jfm_set_param:nnn { postbreakpenalty } {#1}
       { \@@_penalty:n {#2} }
@@ -1711,15 +1711,15 @@
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_jfm_clear_prebreakpenalty:n}
-% \begin{macro}{\xeja_jfm_clear_postbreakpenalty:n}
+% \begin{macro}{\xltj_jfm_clear_prebreakpenalty:n}
+% \begin{macro}{\xltj_jfm_clear_postbreakpenalty:n}
 %   禁則をクリアする。
 %    \begin{macrocode}
-\cs_new:Npn \xeja_jfm_clear_prebreakpenalty:n #1
+\cs_new:Npn \xltj_jfm_clear_prebreakpenalty:n #1
   {
     \@@_jfm_clear_param:nn { prebreakpenalty } {#1}
   }
-\cs_new:Npn \xeja_jfm_clear_postbreakpenalty:n #1
+\cs_new:Npn \xltj_jfm_clear_postbreakpenalty:n #1
   {
     \@@_jfm_clear_param:nn { postbreakpenalty } {#1}
   }
@@ -1741,9 +1741,9 @@
 %
 % \subsubsection{和欧文間空白挿入設定}
 %
-% \begin{macro}{\xeja_jfm_set_xspmode:nn}
+% \begin{macro}{\xltj_jfm_set_xspmode:nn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_jfm_set_xspmode:nn #1#2
+\cs_new:Npn \xltj_jfm_set_xspmode:nn #1#2
   {
     \str_case:nnF {#2}
       {
@@ -1941,13 +1941,13 @@
 %
 % \subsubsection{ボックスのベースライン補正}
 %
-% \begin{macro}{\xeja_box_yjabaselineshift:n, \xeja_box_tjabaselineshift:n}
+% \begin{macro}{\xltj_box_yjabaselineshift:n, \xltj_box_tjabaselineshift:n}
 %   ボックスを和文ベースライン補正を適用して挿入する。
 %   水平モードでのみ利用できる。
 %    \begin{macrocode}
-\cs_new:Npn \xeja_box_yjabaselineshift:n #1
+\cs_new:Npn \xltj_box_yjabaselineshift:n #1
   { \box_move_down:nn { \l_@@_yjabaselineshift_tl } {#1} }
-\cs_new:Npn \xeja_box_tjabaselineshift:n #1
+\cs_new:Npn \xltj_box_tjabaselineshift:n #1
   { \box_move_down:nn { \l_@@_tjabaselineshift_tl } {#1} }
 %    \end{macrocode}
 % \end{macro}
@@ -1970,9 +1970,9 @@
   }
 %    \end{macrocode}
 %
-% \begin{macro}{\xeja_yoko_in_tate_hbox:n}
+% \begin{macro}{\xltj_yoko_in_tate_hbox:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_in_tate_hbox:n #1
+\cs_new:Npn \xltj_yoko_in_tate_hbox:n #1
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox:n } { \hbox_set:Nn } {} {#1}
@@ -1980,15 +1980,15 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_yoko_in_tate_hbox_to_wd:nn}
-% \begin{macro}{\xeja_yoko_in_tate_hbox_to_zero:n}
+% \begin{macro}{\xltj_yoko_in_tate_hbox_to_wd:nn}
+% \begin{macro}{\xltj_yoko_in_tate_hbox_to_zero:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_in_tate_hbox_to_wd:nn #1#2
+\cs_new:Npn \xltj_yoko_in_tate_hbox_to_wd:nn #1#2
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox:n } { \hbox_set_to_wd:Nnn } {{#1}} {#2}
   }
-\cs_new:Npn \xeja_yoko_in_tate_hbox_to_zero:n #1
+\cs_new:Npn \xltj_yoko_in_tate_hbox_to_zero:n #1
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox:n } { \hbox_set_to_zero:Nn } {} {#1}
@@ -1997,58 +1997,58 @@
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_yoko_in_tate_hbox_set:Nn, \xeja_yoko_in_tate_hbox_set:cn}
-% \begin{macro}{\xeja_yoko_in_tate_hbox_gset:Nn, \xeja_yoko_in_tate_hbox_gset:cn}
+% \begin{macro}{\xltj_yoko_in_tate_hbox_set:Nn, \xltj_yoko_in_tate_hbox_set:cn}
+% \begin{macro}{\xltj_yoko_in_tate_hbox_gset:Nn, \xltj_yoko_in_tate_hbox_gset:cn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_in_tate_hbox_set:Nn #1#2
+\cs_new:Npn \xltj_yoko_in_tate_hbox_set:Nn #1#2
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox_set:Nn #1 } { \hbox_set:Nn } {} {#2}
   }
-\cs_new:Npn \xeja_yoko_in_tate_hbox_gset:Nn #1#2
+\cs_new:Npn \xltj_yoko_in_tate_hbox_gset:Nn #1#2
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox_gset:Nn #1 } { \hbox_set:Nn } {} {#2}
   }
-\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_set:Nn { c }
-\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_gset:Nn { c }
+\cs_generate_variant:Nn \xltj_yoko_in_tate_hbox_set:Nn { c }
+\cs_generate_variant:Nn \xltj_yoko_in_tate_hbox_gset:Nn { c }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_yoko_in_tate_hbox_set_to_wd:Nnn, \xeja_yoko_in_tate_hbox_set_to_wd:cnn}
-% \begin{macro}{\xeja_yoko_in_tate_hbox_gset_to_wd:Nnn, \xeja_yoko_in_tate_hbox_gset_to_wd:cnn}
+% \begin{macro}{\xltj_yoko_in_tate_hbox_set_to_wd:Nnn, \xltj_yoko_in_tate_hbox_set_to_wd:cnn}
+% \begin{macro}{\xltj_yoko_in_tate_hbox_gset_to_wd:Nnn, \xltj_yoko_in_tate_hbox_gset_to_wd:cnn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_in_tate_hbox_set_to_wd:Nnn #1#2#3
+\cs_new:Npn \xltj_yoko_in_tate_hbox_set_to_wd:Nnn #1#2#3
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox_set:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
   }
-\cs_new:Npn \xeja_yoko_in_tate_hbox_gset_to_wd:Nnn #1#2#3
+\cs_new:Npn \xltj_yoko_in_tate_hbox_gset_to_wd:Nnn #1#2#3
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox_gset:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
   }
-\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_set_to_wd:Nn { c }
-\cs_generate_variant:Nn \xeja_yoko_in_tate_hbox_gset_to_wd:Nn { c }
+\cs_generate_variant:Nn \xltj_yoko_in_tate_hbox_set_to_wd:Nn { c }
+\cs_generate_variant:Nn \xltj_yoko_in_tate_hbox_gset_to_wd:Nn { c }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_yoko_in_tate_hbox_overlap_center:n, \xeja_yoko_in_tate_hbox_overlap_right:n, \xeja_yoko_in_tate_hbox_overlap_left:n}
+% \begin{macro}{\xltj_yoko_in_tate_hbox_overlap_center:n, \xltj_yoko_in_tate_hbox_overlap_right:n, \xltj_yoko_in_tate_hbox_overlap_left:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_in_tate_hbox_overlap_center:n #1
-  { \xeja_yoko_in_tate_hbox_to_zero:n { \tex_hss:D #1 \tex_hss:D } }
-\cs_new:Npn \xeja_yoko_in_tate_hbox_overlap_right:n #1
-  { \xeja_yoko_in_tate_hbox_to_zero:n { \tex_hss:D #1 } }
-\cs_new:Npn \xeja_yoko_in_tate_hbox_overlap_left:n #1
-  { \xeja_yoko_in_tate_hbox_to_zero:n { #1 \tex_hss:D } }
+\cs_new:Npn \xltj_yoko_in_tate_hbox_overlap_center:n #1
+  { \xltj_yoko_in_tate_hbox_to_zero:n { \tex_hss:D #1 \tex_hss:D } }
+\cs_new:Npn \xltj_yoko_in_tate_hbox_overlap_right:n #1
+  { \xltj_yoko_in_tate_hbox_to_zero:n { \tex_hss:D #1 } }
+\cs_new:Npn \xltj_yoko_in_tate_hbox_overlap_left:n #1
+  { \xltj_yoko_in_tate_hbox_to_zero:n { #1 \tex_hss:D } }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_yoko_in_tate_vbox:n}
+% \begin{macro}{\xltj_yoko_in_tate_vbox:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_in_tate_vbox:n #1
+\cs_new:Npn \xltj_yoko_in_tate_vbox:n #1
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox:n } { \vbox_set:Nn } {} {#1}
@@ -2056,14 +2056,14 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_yoko_in_tate_vbox_to_ht:nn, \xeja_yoko_in_tate_vbox_to_zero:n}
+% \begin{macro}{\xltj_yoko_in_tate_vbox_to_ht:nn, \xltj_yoko_in_tate_vbox_to_zero:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_in_tate_vbox_to_ht:nn #1#2
+\cs_new:Npn \xltj_yoko_in_tate_vbox_to_ht:nn #1#2
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox:n } { \vbox_set_to_ht:Nnn } {{#1}} {#2}
   }
-\cs_new:Npn \xeja_yoko_in_tate_vbox_to_zero:n #1
+\cs_new:Npn \xltj_yoko_in_tate_vbox_to_zero:n #1
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox:n } { \vbox_set_to_zero:Nn } {} {#1}
@@ -2071,40 +2071,40 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_yoko_in_tate_vbox_set:Nn, \xeja_yoko_in_tate_vbox_set:cn}
-% \begin{macro}{\xeja_yoko_in_tate_vbox_gset:Nn, \xeja_yoko_in_tate_vbox_gset:cn}
+% \begin{macro}{\xltj_yoko_in_tate_vbox_set:Nn, \xltj_yoko_in_tate_vbox_set:cn}
+% \begin{macro}{\xltj_yoko_in_tate_vbox_gset:Nn, \xltj_yoko_in_tate_vbox_gset:cn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_in_tate_vbox_set:Nn #1#2
+\cs_new:Npn \xltj_yoko_in_tate_vbox_set:Nn #1#2
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox_set:Nn #1 } { \vbox_set:Nn } {} {#2}
   }
-\cs_new:Npn \xeja_yoko_in_tate_vbox_gset:Nn #1#2
+\cs_new:Npn \xltj_yoko_in_tate_vbox_gset:Nn #1#2
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox_gset:Nn #1 } { \vbox_set:Nn } {} {#2}
   }
-\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_set:Nn { c }
-\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_gset:Nn { c }
+\cs_generate_variant:Nn \xltj_yoko_in_tate_vbox_set:Nn { c }
+\cs_generate_variant:Nn \xltj_yoko_in_tate_vbox_gset:Nn { c }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_yoko_in_tate_vbox_set_to_ht:Nnn, \xeja_yoko_in_tate_vbox_set_to_ht:cnn}
-% \begin{macro}{\xeja_yoko_in_tate_vbox_gset_to_ht:Nnn, \xeja_yoko_in_tate_vbox_gset_to_ht:cnn}
+% \begin{macro}{\xltj_yoko_in_tate_vbox_set_to_ht:Nnn, \xltj_yoko_in_tate_vbox_set_to_ht:cnn}
+% \begin{macro}{\xltj_yoko_in_tate_vbox_gset_to_ht:Nnn, \xltj_yoko_in_tate_vbox_gset_to_ht:cnn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_yoko_in_tate_vbox_set_to_ht:Nnn #1#2#3
+\cs_new:Npn \xltj_yoko_in_tate_vbox_set_to_ht:Nnn #1#2#3
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox_set:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
   }
-\cs_new:Npn \xeja_yoko_in_tate_vbox_gset_to_ht:Nnn #1#2#3
+\cs_new:Npn \xltj_yoko_in_tate_vbox_gset_to_ht:Nnn #1#2#3
   {
     \@@_yoko_in_tate_box:nnnn
       { \hbox_gset:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
   }
-\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_set_to_ht:Nnn { c }
-\cs_generate_variant:Nn \xeja_yoko_in_tate_vbox_gset_to_ht:Nnn { c }
+\cs_generate_variant:Nn \xltj_yoko_in_tate_vbox_set_to_ht:Nnn { c }
+\cs_generate_variant:Nn \xltj_yoko_in_tate_vbox_gset_to_ht:Nnn { c }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -2127,9 +2127,9 @@
   }
 %    \end{macrocode}
 %
-% \begin{macro}{\xeja_tate_in_yoko_hbox:n}
+% \begin{macro}{\xltj_tate_in_yoko_hbox:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_tate_in_yoko_hbox:n #1
+\cs_new:Npn \xltj_tate_in_yoko_hbox:n #1
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox:n } { \hbox_set:Nn } {} {#1}
@@ -2137,15 +2137,15 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_tate_in_yoko_hbox_to_wd:nn}
-% \begin{macro}{\xeja_tate_in_yoko_hbox_to_zero:n}
+% \begin{macro}{\xltj_tate_in_yoko_hbox_to_wd:nn}
+% \begin{macro}{\xltj_tate_in_yoko_hbox_to_zero:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_tate_in_yoko_hbox_to_wd:nn #1#2
+\cs_new:Npn \xltj_tate_in_yoko_hbox_to_wd:nn #1#2
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox:n } { \hbox_set_to_wd:Nnn } {{#1}} {#2}
   }
-\cs_new:Npn \xeja_tate_in_yoko_hbox_to_zero:n #1
+\cs_new:Npn \xltj_tate_in_yoko_hbox_to_zero:n #1
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox:n } { \hbox_set_to_zero:Nn } {} {#1}
@@ -2154,58 +2154,58 @@
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_tate_in_yoko_hbox_set:Nn, \xeja_tate_in_yoko_hbox_set:cn}
-% \begin{macro}{\xeja_tate_in_yoko_hbox_gset:Nn, \xeja_tate_in_yoko_hbox_gset:cn}
+% \begin{macro}{\xltj_tate_in_yoko_hbox_set:Nn, \xltj_tate_in_yoko_hbox_set:cn}
+% \begin{macro}{\xltj_tate_in_yoko_hbox_gset:Nn, \xltj_tate_in_yoko_hbox_gset:cn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_tate_in_yoko_hbox_set:Nn #1#2
+\cs_new:Npn \xltj_tate_in_yoko_hbox_set:Nn #1#2
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox_set:Nn #1 } { \hbox_set:Nn } {} {#2}
   }
-\cs_new:Npn \xeja_tate_in_yoko_hbox_gset:Nn #1#2
+\cs_new:Npn \xltj_tate_in_yoko_hbox_gset:Nn #1#2
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox_gset:Nn #1 } { \hbox_set:Nn } {} {#2}
   }
-\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_set:Nn { c }
-\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_gset:Nn { c }
+\cs_generate_variant:Nn \xltj_tate_in_yoko_hbox_set:Nn { c }
+\cs_generate_variant:Nn \xltj_tate_in_yoko_hbox_gset:Nn { c }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_tate_in_yoko_hbox_set_to_wd:Nnn, \xeja_tate_in_yoko_hbox_set_to_wd:cnn}
-% \begin{macro}{\xeja_tate_in_yoko_hbox_gset_to_wd:Nnn, \xeja_tate_in_yoko_hbox_gset_to_wd:cnn}
+% \begin{macro}{\xltj_tate_in_yoko_hbox_set_to_wd:Nnn, \xltj_tate_in_yoko_hbox_set_to_wd:cnn}
+% \begin{macro}{\xltj_tate_in_yoko_hbox_gset_to_wd:Nnn, \xltj_tate_in_yoko_hbox_gset_to_wd:cnn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_tate_in_yoko_hbox_set_to_wd:Nnn #1#2#3
+\cs_new:Npn \xltj_tate_in_yoko_hbox_set_to_wd:Nnn #1#2#3
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox_set:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
   }
-\cs_new:Npn \xeja_tate_in_yoko_hbox_gset_to_wd:Nnn #1#2#3
+\cs_new:Npn \xltj_tate_in_yoko_hbox_gset_to_wd:Nnn #1#2#3
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox_gset:Nn #1 } { \hbox_set_to_wd:Nnn } {{#2}} {#3}
   }
-\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_set_to_wd:Nn { c }
-\cs_generate_variant:Nn \xeja_tate_in_yoko_hbox_gset_to_wd:Nn { c }
+\cs_generate_variant:Nn \xltj_tate_in_yoko_hbox_set_to_wd:Nn { c }
+\cs_generate_variant:Nn \xltj_tate_in_yoko_hbox_gset_to_wd:Nn { c }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_tate_in_yoko_hbox_overlap_center:n, \xeja_tate_in_yoko_hbox_overlap_right:n, \xeja_tate_in_yoko_hbox_overlap_left:n}
+% \begin{macro}{\xltj_tate_in_yoko_hbox_overlap_center:n, \xltj_tate_in_yoko_hbox_overlap_right:n, \xltj_tate_in_yoko_hbox_overlap_left:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_tate_in_yoko_hbox_overlap_center:n #1
-  { \xeja_tate_in_yoko_hbox_to_zero:n { \tex_hss:D #1 \tex_hss:D } }
-\cs_new:Npn \xeja_tate_in_yoko_hbox_overlap_right:n #1
-  { \xeja_tate_in_yoko_hbox_to_zero:n { \tex_hss:D #1 } }
-\cs_new:Npn \xeja_tate_in_yoko_hbox_overlap_left:n #1
-  { \xeja_tate_in_yoko_hbox_to_zero:n { #1 \tex_hss:D } }
+\cs_new:Npn \xltj_tate_in_yoko_hbox_overlap_center:n #1
+  { \xltj_tate_in_yoko_hbox_to_zero:n { \tex_hss:D #1 \tex_hss:D } }
+\cs_new:Npn \xltj_tate_in_yoko_hbox_overlap_right:n #1
+  { \xltj_tate_in_yoko_hbox_to_zero:n { \tex_hss:D #1 } }
+\cs_new:Npn \xltj_tate_in_yoko_hbox_overlap_left:n #1
+  { \xltj_tate_in_yoko_hbox_to_zero:n { #1 \tex_hss:D } }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_tate_in_yoko_vbox:n}
+% \begin{macro}{\xltj_tate_in_yoko_vbox:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_tate_in_yoko_vbox:n #1
+\cs_new:Npn \xltj_tate_in_yoko_vbox:n #1
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox:n } { \vbox_set:Nn } {} {#1}
@@ -2213,14 +2213,14 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_tate_in_yoko_vbox_to_ht:nn, \xeja_tate_in_yoko_vbox_to_zero:n}
+% \begin{macro}{\xltj_tate_in_yoko_vbox_to_ht:nn, \xltj_tate_in_yoko_vbox_to_zero:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_tate_in_yoko_vbox_to_ht:nn #1#2
+\cs_new:Npn \xltj_tate_in_yoko_vbox_to_ht:nn #1#2
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox:n } { \vbox_set_to_ht:Nnn } {{#1}} {#2}
   }
-\cs_new:Npn \xeja_tate_in_yoko_vbox_to_zero:n #1
+\cs_new:Npn \xltj_tate_in_yoko_vbox_to_zero:n #1
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox:n } { \vbox_set_to_zero:Nn } {} {#1}
@@ -2228,40 +2228,40 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\xeja_tate_in_yoko_vbox_set:Nn, \xeja_tate_in_yoko_vbox_set:cn}
-% \begin{macro}{\xeja_tate_in_yoko_vbox_gset:Nn, \xeja_tate_in_yoko_vbox_gset:cn}
+% \begin{macro}{\xltj_tate_in_yoko_vbox_set:Nn, \xltj_tate_in_yoko_vbox_set:cn}
+% \begin{macro}{\xltj_tate_in_yoko_vbox_gset:Nn, \xltj_tate_in_yoko_vbox_gset:cn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_tate_in_yoko_vbox_set:Nn #1#2
+\cs_new:Npn \xltj_tate_in_yoko_vbox_set:Nn #1#2
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox_set:Nn #1 } { \vbox_set:Nn } {} {#2}
   }
-\cs_new:Npn \xeja_tate_in_yoko_vbox_gset:Nn #1#2
+\cs_new:Npn \xltj_tate_in_yoko_vbox_gset:Nn #1#2
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox_gset:Nn #1 } { \vbox_set:Nn } {} {#2}
   }
-\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_set:Nn { c }
-\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_gset:Nn { c }
+\cs_generate_variant:Nn \xltj_tate_in_yoko_vbox_set:Nn { c }
+\cs_generate_variant:Nn \xltj_tate_in_yoko_vbox_gset:Nn { c }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\xeja_tate_in_yoko_vbox_set_to_ht:Nnn, \xeja_tate_in_yoko_vbox_set_to_ht:cnn}
-% \begin{macro}{\xeja_tate_in_yoko_vbox_gset_to_ht:Nnn, \xeja_tate_in_yoko_vbox_gset_to_ht:cnn}
+% \begin{macro}{\xltj_tate_in_yoko_vbox_set_to_ht:Nnn, \xltj_tate_in_yoko_vbox_set_to_ht:cnn}
+% \begin{macro}{\xltj_tate_in_yoko_vbox_gset_to_ht:Nnn, \xltj_tate_in_yoko_vbox_gset_to_ht:cnn}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_tate_in_yoko_vbox_set_to_ht:Nnn #1#2#3
+\cs_new:Npn \xltj_tate_in_yoko_vbox_set_to_ht:Nnn #1#2#3
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox_set:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
   }
-\cs_new:Npn \xeja_tate_in_yoko_vbox_gset_to_ht:Nnn #1#2#3
+\cs_new:Npn \xltj_tate_in_yoko_vbox_gset_to_ht:Nnn #1#2#3
   {
     \@@_tate_in_yoko_box:nnnn
       { \hbox_gset:Nn #1 } { \vbox_set_to_ht:Nnn } {{#2}} {#3}
   }
-\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_set_to_ht:Nnn { c }
-\cs_generate_variant:Nn \xeja_tate_in_yoko_vbox_gset_to_ht:Nnn { c }
+\cs_generate_variant:Nn \xltj_tate_in_yoko_vbox_set_to_ht:Nnn { c }
+\cs_generate_variant:Nn \xltj_tate_in_yoko_vbox_gset_to_ht:Nnn { c }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -2372,7 +2372,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\NewDocumentCommand \xejaTombowSetup { m }
+\NewDocumentCommand \xltjTombowSetup { m }
   { \keys_set:nn { xelatexja / tombow } {#1} }
 %    \end{macrocode}
 %
@@ -2503,9 +2503,9 @@
 % \subsection{ユーティリティ関数}
 %
 %
-% \begin{macro}[rEXP]{\xeja_int_to_kansuji:n}
+% \begin{macro}[rEXP]{\xltj_int_to_kansuji:n}
 %    \begin{macrocode}
-\cs_new:Npn \xeja_int_to_kansuji:n #1
+\cs_new:Npn \xltj_int_to_kansuji:n #1
   {
     \int_compare:nNnF {#1} < { 0 }
       {
@@ -2562,14 +2562,10 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\NewDocumentCommand \setkanjiskip { m }
-  { \xeja_set_kanjiskip:n {#1} }
-\NewDocumentCommand \setxkanjiskip { m }
-  { \xeja_set_xkanjiskip:n {#1} }
-\NewExpandableDocumentCommand \getkanjiskip {}
-  { \xeja_get_kanjiskip: }
-\NewExpandableDocumentCommand \getxkanjiskip {}
-  { \xeja_get_xkanjiskip: }
+\cs_new_eq:NN \setkanjiskip \xltj_set_kanjiskip:n
+\cs_new_eq:NN \getkanjiskip \xltj_get_kanjiskip:
+\cs_new_eq:NN \setxkanjiskip \xltj_set_xkanjiskip:n
+\cs_new_eq:NN \getxkanjiskip \xltj_get_xkanjiskip:
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -2580,9 +2576,9 @@
 %
 %    \begin{macrocode}
 \NewDocumentCommand \mcfamily {}
-  { \xeja_set_kanji_family:x { \mcdefault } }
+  { \xltj_set_kanji_family:x { \mcdefault } }
 \NewDocumentCommand \gtfamily {}
-  { \xeja_set_kanji_family:x { \gtdefault } }
+  { \xltj_set_kanji_family:x { \gtdefault } }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -2591,15 +2587,14 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\NewExpandableDocumentCommand \tokansuji { m }
-  { \xeja_int_to_kansuji:n {#1} }
+\cs_new_eq:NN \tokansuji \xltj_int_to_kansuji:n
 %    \end{macrocode}
 %
 %
 % \subsection{JFMファイルの読み込み}
 %
 %    \begin{macrocode}
-\input{xejajfm-\g_@@_jfm_name_tl.def}
+\input{xltjfm-\g_@@_jfm_name_tl.def}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -2618,7 +2613,7 @@
 % \begin{macro}{\rensuji}
 %    \begin{macrocode}
 \newskip\rensujiskip
-\rensujiskip=0.25\l_xeja_zw_dim plus.25\l_xeja_zw_dim minus.25\l_xeja_zw_dim
+\rensujiskip=0.25\l_xltj_zw_dim plus.25\l_xltj_zw_dim minus.25\l_xltj_zw_dim
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2627,12 +2622,12 @@
 \NewDocumentCommand \rensuji { s O{c} m }
   {
     \mode_if_vertical:T { \mode_leave_vertical: }
-    \xeja_if_tate_text:TF
+    \xltj_if_tate_text:TF
       {
         \skip_horizontal:n { \rensujiskip }
         \IfBooleanF {#1}
           {
-            \xeja_yoko_in_tate_hbox_set:Nn \l_tmpa_box {#3}
+            \xltj_yoko_in_tate_hbox_set:Nn \l_tmpa_box {#3}
             \dim_set:Nn \l_tmpa_dim
               { \box_ht:N \l_tmpa_box + \box_dp:N \l_tmpa_box }
             \hbox_set:Nn \l_tmpa_box
@@ -2650,24 +2645,24 @@
                     {
                       \@@_vrule:nnn
                         { \c_zero_dim }
-                        { 0.5\l_xeja_zw_dim }
-                        { \l_tmpa_dim - 0.5\l_xeja_zw_dim }
+                        { 0.5\l_xltj_zw_dim }
+                        { \l_tmpa_dim - 0.5\l_xltj_zw_dim }
                     }
                     { l }
                     {
                       \@@_vrule:nnn
                         { \c_zero_dim }
-                        { \l_tmpa_dim - 0.5\l_xeja_zw_dim }
-                        { 0.5\l_xeja_zw_dim }
+                        { \l_tmpa_dim - 0.5\l_xltj_zw_dim }
+                        { 0.5\l_xltj_zw_dim }
                     }
                   }
               }
-            \xeja_box_tjabaselineshift:n
+            \xltj_box_tjabaselineshift:n
               { \box_use_drop:N \l_tmpa_box }
           }
-        \xeja_box_tjabaselineshift:n
+        \xltj_box_tjabaselineshift:n
           {
-            \xeja_yoko_in_tate_hbox_to_wd:nn { 1\l_xeja_zw_dim }
+            \xltj_yoko_in_tate_hbox_to_wd:nn { 1\l_xltj_zw_dim }
               {
                 \str_case:nn {#2}
                   {
@@ -2692,7 +2687,7 @@
 %    \begin{macrocode}
 \NewExpandableDocumentCommand \Kanji { m }
   {
-    \xeja_int_to_kansuji:n { \use:c { c@#1 } }
+    \xltj_int_to_kansuji:n { \use:c { c@#1 } }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -2701,8 +2696,8 @@
 %    \begin{macrocode}
 \NewExpandableDocumentCommand \kanji { m }
   {
-    \xeja_if_tate_text:TF
-      { \xeja_int_to_kansuji:n {#1} }
+    \xltj_if_tate_text:TF
+      { \xltj_int_to_kansuji:n {#1} }
       {#1}
   }
 %    \end{macrocode}
@@ -2725,531 +2720,531 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\xeja_set_kanjiskip_lazy:n { 0pt plus .4pt minus .5pt }
+\xltj_set_kanjiskip_lazy:n { 0pt plus .4pt minus .5pt }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\xeja_set_xkanjiskip_lazy:n { .25\l_xeja_zw_dim plus1pt minus1pt }
+\xltj_set_xkanjiskip_lazy:n { .25\l_xltj_zw_dim plus1pt minus1pt }
 %    \end{macrocode}
 %
 % 文字クラス
 %    \begin{macrocode}
-\xeja_class_new_kanji:n { kanji/open }
-\xeja_class_new_kanji:n { kanji/close }
-\xeja_class_new_kanji:n { kanji/middle }
-\xeja_class_new_kanji:n { kanji/fullstop }
-\xeja_class_new_kanji:n { kanji/nodiv }
-\xeja_class_new_kanji:n { kanji/noprebreak }
-\xeja_class_new_kanji:n { kanji/nopostbreak }
-\xeja_class_new_kanji:n { kanji/smallkana }
+\xltj_class_new_kanji:n { kanji/open }
+\xltj_class_new_kanji:n { kanji/close }
+\xltj_class_new_kanji:n { kanji/middle }
+\xltj_class_new_kanji:n { kanji/fullstop }
+\xltj_class_new_kanji:n { kanji/nodiv }
+\xltj_class_new_kanji:n { kanji/noprebreak }
+\xltj_class_new_kanji:n { kanji/nopostbreak }
+\xltj_class_new_kanji:n { kanji/smallkana }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\xeja_class_new_alpha:n { alpha/left }
-\xeja_class_new_alpha:n { alpha/right }
-\xeja_class_new_alpha:n { alpha/middle }
+\xltj_class_new_alpha:n { alpha/left }
+\xltj_class_new_alpha:n { alpha/right }
+\xltj_class_new_alpha:n { alpha/middle }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\xeja_class_update:
+\xltj_class_update:
 %    \end{macrocode}
 %
 % 「Unicode Standard Annex \#11 (UAX 11) East Asian Width」において、
 % Fullwidth (F)、Halfwidth (H)、Wide (W)、Ambiguous (A)と
 % 設定されている文字を和文文字とする。
 %    \begin{macrocode}
-\xeja_char_set_class:nn { "00A1 } { kanji/default }
-\xeja_char_set_class:nn { "00A4 } { kanji/default }
-\xeja_char_set_class:nn { "00A7 } { kanji/default }
-\xeja_char_set_class:nn { "00A8 } { kanji/default }
-\xeja_char_set_class:nn { "00AA } { kanji/default }
-\xeja_char_set_class:nn { "00AD } { kanji/default }
-\xeja_char_set_class:nn { "00AE } { kanji/default }
-\xeja_char_set_class:nn { "00B0 } { kanji/default }
-\xeja_char_set_class:nn { "00B1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "00B2 } { "00B3 } { kanji/default }
-\xeja_char_set_class:nn { "00B4 } { kanji/default }
-\xeja_char_set_class_range:nnn { "00B6 } { "00B7 } { kanji/default }
-\xeja_char_set_class:nn { "00B8 } { kanji/default }
-\xeja_char_set_class:nn { "00B9 } { kanji/default }
-\xeja_char_set_class:nn { "00BA } { kanji/default }
-\xeja_char_set_class_range:nnn { "00BC } { "00BE } { kanji/default }
-\xeja_char_set_class:nn { "00BF } { kanji/default }
-\xeja_char_set_class:nn { "00C6 } { kanji/default }
-\xeja_char_set_class:nn { "00D0 } { kanji/default }
-\xeja_char_set_class:nn { "00D7 } { kanji/default }
-\xeja_char_set_class:nn { "00D8 } { kanji/default }
-\xeja_char_set_class_range:nnn { "00DE } { "00E1 } { kanji/default }
-\xeja_char_set_class:nn { "00E6 } { kanji/default }
-\xeja_char_set_class_range:nnn { "00E8 } { "00EA } { kanji/default }
-\xeja_char_set_class_range:nnn { "00EC } { "00ED } { kanji/default }
-\xeja_char_set_class:nn { "00F0 } { kanji/default }
-\xeja_char_set_class_range:nnn { "00F2 } { "00F3 } { kanji/default }
-\xeja_char_set_class:nn { "00F7 } { kanji/default }
-\xeja_char_set_class_range:nnn { "00F8 } { "00FA } { kanji/default }
-\xeja_char_set_class:nn { "00FC } { kanji/default }
-\xeja_char_set_class:nn { "00FE } { kanji/default }
-\xeja_char_set_class:nn { "0101 } { kanji/default }
-\xeja_char_set_class:nn { "0111 } { kanji/default }
-\xeja_char_set_class:nn { "0113 } { kanji/default }
-\xeja_char_set_class:nn { "011B } { kanji/default }
-\xeja_char_set_class_range:nnn { "0126 } { "0127 } { kanji/default }
-\xeja_char_set_class:nn { "012B } { kanji/default }
-\xeja_char_set_class_range:nnn { "0131 } { "0133 } { kanji/default }
-\xeja_char_set_class:nn { "0138 } { kanji/default }
-\xeja_char_set_class_range:nnn { "013F } { "0142 } { kanji/default }
-\xeja_char_set_class:nn { "0144 } { kanji/default }
-\xeja_char_set_class_range:nnn { "0148 } { "014B } { kanji/default }
-\xeja_char_set_class:nn { "014D } { kanji/default }
-\xeja_char_set_class_range:nnn { "0152 } { "0153 } { kanji/default }
-\xeja_char_set_class_range:nnn { "0166 } { "0167 } { kanji/default }
-\xeja_char_set_class:nn { "016B } { kanji/default }
-\xeja_char_set_class:nn { "01CE } { kanji/default }
-\xeja_char_set_class:nn { "01D0 } { kanji/default }
-\xeja_char_set_class:nn { "01D2 } { kanji/default }
-\xeja_char_set_class:nn { "01D4 } { kanji/default }
-\xeja_char_set_class:nn { "01D6 } { kanji/default }
-\xeja_char_set_class:nn { "01D8 } { kanji/default }
-\xeja_char_set_class:nn { "01DA } { kanji/default }
-\xeja_char_set_class:nn { "01DC } { kanji/default }
-\xeja_char_set_class:nn { "0251 } { kanji/default }
-\xeja_char_set_class:nn { "0261 } { kanji/default }
-\xeja_char_set_class:nn { "02C4 } { kanji/default }
-\xeja_char_set_class:nn { "02C7 } { kanji/default }
-\xeja_char_set_class_range:nnn { "02C9 } { "02CB } { kanji/default }
-\xeja_char_set_class:nn { "02CD } { kanji/default }
-\xeja_char_set_class:nn { "02D0 } { kanji/default }
-\xeja_char_set_class_range:nnn { "02D8 } { "02DB } { kanji/default }
-\xeja_char_set_class:nn { "02DD } { kanji/default }
-\xeja_char_set_class:nn { "02DF } { kanji/default }
-\xeja_char_set_class_range:nnn { "0300 } { "036F } { kanji/default }
-\xeja_char_set_class_range:nnn { "0391 } { "03A1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "03A3 } { "03A9 } { kanji/default }
-\xeja_char_set_class_range:nnn { "03B1 } { "03C1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "03C3 } { "03C9 } { kanji/default }
-\xeja_char_set_class:nn { "0401 } { kanji/default }
-\xeja_char_set_class_range:nnn { "0410 } { "044F } { kanji/default }
-\xeja_char_set_class:nn { "0451 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1100 } { "115F } { kanji/default }
-\xeja_char_set_class:nn { "2010 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2013 } { "2015 } { kanji/default }
-\xeja_char_set_class:nn { "2016 } { kanji/default }
-\xeja_char_set_class:nn { "2018 } { kanji/default }
-\xeja_char_set_class:nn { "2019 } { kanji/default }
-\xeja_char_set_class:nn { "201C } { kanji/default }
-\xeja_char_set_class:nn { "201D } { kanji/default }
-\xeja_char_set_class_range:nnn { "2020 } { "2022 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2024 } { "2027 } { kanji/default }
-\xeja_char_set_class:nn { "2030 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2032 } { "2033 } { kanji/default }
-\xeja_char_set_class:nn { "2035 } { kanji/default }
-\xeja_char_set_class:nn { "203B } { kanji/default }
-\xeja_char_set_class:nn { "203E } { kanji/default }
-\xeja_char_set_class:nn { "2074 } { kanji/default }
-\xeja_char_set_class:nn { "207F } { kanji/default }
-\xeja_char_set_class_range:nnn { "2081 } { "2084 } { kanji/default }
-\xeja_char_set_class:nn { "20A9 } { kanji/default }
-\xeja_char_set_class:nn { "20AC } { kanji/default }
-\xeja_char_set_class:nn { "2103 } { kanji/default }
-\xeja_char_set_class:nn { "2105 } { kanji/default }
-\xeja_char_set_class:nn { "2109 } { kanji/default }
-\xeja_char_set_class:nn { "2113 } { kanji/default }
-\xeja_char_set_class:nn { "2116 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2121 } { "2122 } { kanji/default }
-\xeja_char_set_class:nn { "2126 } { kanji/default }
-\xeja_char_set_class:nn { "212B } { kanji/default }
-\xeja_char_set_class_range:nnn { "2153 } { "2154 } { kanji/default }
-\xeja_char_set_class_range:nnn { "215B } { "215E } { kanji/default }
-\xeja_char_set_class_range:nnn { "2160 } { "216B } { kanji/default }
-\xeja_char_set_class_range:nnn { "2170 } { "2179 } { kanji/default }
-\xeja_char_set_class:nn { "2189 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2190 } { "2194 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2195 } { "2199 } { kanji/default }
-\xeja_char_set_class_range:nnn { "21B8 } { "21B9 } { kanji/default }
-\xeja_char_set_class:nn { "21D2 } { kanji/default }
-\xeja_char_set_class:nn { "21D4 } { kanji/default }
-\xeja_char_set_class:nn { "21E7 } { kanji/default }
-\xeja_char_set_class:nn { "2200 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2202 } { "2203 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2207 } { "2208 } { kanji/default }
-\xeja_char_set_class:nn { "220B } { kanji/default }
-\xeja_char_set_class:nn { "220F } { kanji/default }
-\xeja_char_set_class:nn { "2211 } { kanji/default }
-\xeja_char_set_class:nn { "2215 } { kanji/default }
-\xeja_char_set_class:nn { "221A } { kanji/default }
-\xeja_char_set_class_range:nnn { "221D } { "2220 } { kanji/default }
-\xeja_char_set_class:nn { "2223 } { kanji/default }
-\xeja_char_set_class:nn { "2225 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2227 } { "222C } { kanji/default }
-\xeja_char_set_class:nn { "222E } { kanji/default }
-\xeja_char_set_class_range:nnn { "2234 } { "2237 } { kanji/default }
-\xeja_char_set_class_range:nnn { "223C } { "223D } { kanji/default }
-\xeja_char_set_class:nn { "2248 } { kanji/default }
-\xeja_char_set_class:nn { "224C } { kanji/default }
-\xeja_char_set_class:nn { "2252 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2260 } { "2261 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2264 } { "2267 } { kanji/default }
-\xeja_char_set_class_range:nnn { "226A } { "226B } { kanji/default }
-\xeja_char_set_class_range:nnn { "226E } { "226F } { kanji/default }
-\xeja_char_set_class_range:nnn { "2282 } { "2283 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2286 } { "2287 } { kanji/default }
-\xeja_char_set_class:nn { "2295 } { kanji/default }
-\xeja_char_set_class:nn { "2299 } { kanji/default }
-\xeja_char_set_class:nn { "22A5 } { kanji/default }
-\xeja_char_set_class:nn { "22BF } { kanji/default }
-\xeja_char_set_class:nn { "2312 } { kanji/default }
-\xeja_char_set_class_range:nnn { "231A } { "231B } { kanji/default }
-\xeja_char_set_class:nn { "2329 } { kanji/default }
-\xeja_char_set_class:nn { "232A } { kanji/default }
-\xeja_char_set_class_range:nnn { "23E9 } { "23EC } { kanji/default }
-\xeja_char_set_class:nn { "23F0 } { kanji/default }
-\xeja_char_set_class:nn { "23F3 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2460 } { "249B } { kanji/default }
-\xeja_char_set_class_range:nnn { "249C } { "24E9 } { kanji/default }
-\xeja_char_set_class_range:nnn { "24EB } { "24FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "2500 } { "254B } { kanji/default }
-\xeja_char_set_class_range:nnn { "2550 } { "2573 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2580 } { "258F } { kanji/default }
-\xeja_char_set_class_range:nnn { "2592 } { "2595 } { kanji/default }
-\xeja_char_set_class_range:nnn { "25A0 } { "25A1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "25A3 } { "25A9 } { kanji/default }
-\xeja_char_set_class_range:nnn { "25B2 } { "25B3 } { kanji/default }
-\xeja_char_set_class:nn { "25B6 } { kanji/default }
-\xeja_char_set_class:nn { "25B7 } { kanji/default }
-\xeja_char_set_class_range:nnn { "25BC } { "25BD } { kanji/default }
-\xeja_char_set_class:nn { "25C0 } { kanji/default }
-\xeja_char_set_class:nn { "25C1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "25C6 } { "25C8 } { kanji/default }
-\xeja_char_set_class:nn { "25CB } { kanji/default }
-\xeja_char_set_class_range:nnn { "25CE } { "25D1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "25E2 } { "25E5 } { kanji/default }
-\xeja_char_set_class:nn { "25EF } { kanji/default }
-\xeja_char_set_class_range:nnn { "25FD } { "25FE } { kanji/default }
-\xeja_char_set_class_range:nnn { "2605 } { "2606 } { kanji/default }
-\xeja_char_set_class:nn { "2609 } { kanji/default }
-\xeja_char_set_class_range:nnn { "260E } { "260F } { kanji/default }
-\xeja_char_set_class_range:nnn { "2614 } { "2615 } { kanji/default }
-\xeja_char_set_class:nn { "261C } { kanji/default }
-\xeja_char_set_class:nn { "261E } { kanji/default }
-\xeja_char_set_class:nn { "2640 } { kanji/default }
-\xeja_char_set_class:nn { "2642 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2648 } { "2653 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2660 } { "2661 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2663 } { "2665 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2667 } { "266A } { kanji/default }
-\xeja_char_set_class_range:nnn { "266C } { "266D } { kanji/default }
-\xeja_char_set_class:nn { "266F } { kanji/default }
-\xeja_char_set_class:nn { "267F } { kanji/default }
-\xeja_char_set_class:nn { "2693 } { kanji/default }
-\xeja_char_set_class_range:nnn { "269E } { "269F } { kanji/default }
-\xeja_char_set_class:nn { "26A1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "26AA } { "26AB } { kanji/default }
-\xeja_char_set_class_range:nnn { "26BD } { "26BE } { kanji/default }
-\xeja_char_set_class:nn { "26BF } { kanji/default }
-\xeja_char_set_class_range:nnn { "26C4 } { "26C5 } { kanji/default }
-\xeja_char_set_class_range:nnn { "26C6 } { "26CD } { kanji/default }
-\xeja_char_set_class:nn { "26CE } { kanji/default }
-\xeja_char_set_class_range:nnn { "26CF } { "26D3 } { kanji/default }
-\xeja_char_set_class:nn { "26D4 } { kanji/default }
-\xeja_char_set_class_range:nnn { "26D5 } { "26E1 } { kanji/default }
-\xeja_char_set_class:nn { "26E3 } { kanji/default }
-\xeja_char_set_class_range:nnn { "26E8 } { "26E9 } { kanji/default }
-\xeja_char_set_class:nn { "26EA } { kanji/default }
-\xeja_char_set_class_range:nnn { "26EB } { "26F1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "26F2 } { "26F3 } { kanji/default }
-\xeja_char_set_class:nn { "26F4 } { kanji/default }
-\xeja_char_set_class:nn { "26F5 } { kanji/default }
-\xeja_char_set_class_range:nnn { "26F6 } { "26F9 } { kanji/default }
-\xeja_char_set_class:nn { "26FA } { kanji/default }
-\xeja_char_set_class_range:nnn { "26FB } { "26FC } { kanji/default }
-\xeja_char_set_class:nn { "26FD } { kanji/default }
-\xeja_char_set_class_range:nnn { "26FE } { "26FF } { kanji/default }
-\xeja_char_set_class:nn { "2705 } { kanji/default }
-\xeja_char_set_class_range:nnn { "270A } { "270B } { kanji/default }
-\xeja_char_set_class:nn { "2728 } { kanji/default }
-\xeja_char_set_class:nn { "273D } { kanji/default }
-\xeja_char_set_class:nn { "274C } { kanji/default }
-\xeja_char_set_class:nn { "274E } { kanji/default }
-\xeja_char_set_class_range:nnn { "2753 } { "2755 } { kanji/default }
-\xeja_char_set_class:nn { "2757 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2776 } { "277F } { kanji/default }
-\xeja_char_set_class_range:nnn { "2795 } { "2797 } { kanji/default }
-\xeja_char_set_class:nn { "27B0 } { kanji/default }
-\xeja_char_set_class:nn { "27BF } { kanji/default }
-\xeja_char_set_class_range:nnn { "2B1B } { "2B1C } { kanji/default }
-\xeja_char_set_class:nn { "2B50 } { kanji/default }
-\xeja_char_set_class:nn { "2B55 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2B56 } { "2B59 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2E80 } { "2E99 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2E9B } { "2EF3 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2F00 } { "2FD5 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2FF0 } { "2FFB } { kanji/default }
-\xeja_char_set_class:nn { "3000 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3001 } { "3003 } { kanji/default }
-\xeja_char_set_class:nn { "3004 } { kanji/default }
-\xeja_char_set_class:nn { "3005 } { kanji/default }
-\xeja_char_set_class:nn { "3006 } { kanji/default }
-\xeja_char_set_class:nn { "3007 } { kanji/default }
-\xeja_char_set_class:nn { "3008 } { kanji/default }
-\xeja_char_set_class:nn { "3009 } { kanji/default }
-\xeja_char_set_class:nn { "300A } { kanji/default }
-\xeja_char_set_class:nn { "300B } { kanji/default }
-\xeja_char_set_class:nn { "300C } { kanji/default }
-\xeja_char_set_class:nn { "300D } { kanji/default }
-\xeja_char_set_class:nn { "300E } { kanji/default }
-\xeja_char_set_class:nn { "300F } { kanji/default }
-\xeja_char_set_class:nn { "3010 } { kanji/default }
-\xeja_char_set_class:nn { "3011 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3012 } { "3013 } { kanji/default }
-\xeja_char_set_class:nn { "3014 } { kanji/default }
-\xeja_char_set_class:nn { "3015 } { kanji/default }
-\xeja_char_set_class:nn { "3016 } { kanji/default }
-\xeja_char_set_class:nn { "3017 } { kanji/default }
-\xeja_char_set_class:nn { "3018 } { kanji/default }
-\xeja_char_set_class:nn { "3019 } { kanji/default }
-\xeja_char_set_class:nn { "301A } { kanji/default }
-\xeja_char_set_class:nn { "301B } { kanji/default }
-\xeja_char_set_class:nn { "301C } { kanji/default }
-\xeja_char_set_class:nn { "301D } { kanji/default }
-\xeja_char_set_class_range:nnn { "301E } { "301F } { kanji/default }
-\xeja_char_set_class:nn { "3020 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3021 } { "3029 } { kanji/default }
-\xeja_char_set_class_range:nnn { "302A } { "302D } { kanji/default }
-\xeja_char_set_class_range:nnn { "302E } { "302F } { kanji/default }
-\xeja_char_set_class:nn { "3030 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3031 } { "3035 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3036 } { "3037 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3038 } { "303A } { kanji/default }
-\xeja_char_set_class:nn { "303B } { kanji/default }
-\xeja_char_set_class:nn { "303C } { kanji/default }
-\xeja_char_set_class:nn { "303D } { kanji/default }
-\xeja_char_set_class:nn { "303E } { kanji/default }
-\xeja_char_set_class_range:nnn { "3041 } { "3096 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3099 } { "309A } { kanji/default }
-\xeja_char_set_class_range:nnn { "309B } { "309C } { kanji/default }
-\xeja_char_set_class_range:nnn { "309D } { "309E } { kanji/default }
-\xeja_char_set_class:nn { "309F } { kanji/default }
-\xeja_char_set_class:nn { "30A0 } { kanji/default }
-\xeja_char_set_class_range:nnn { "30A1 } { "30FA } { kanji/default }
-\xeja_char_set_class:nn { "30FB } { kanji/default }
-\xeja_char_set_class_range:nnn { "30FC } { "30FE } { kanji/default }
-\xeja_char_set_class:nn { "30FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "3105 } { "312F } { kanji/default }
-\xeja_char_set_class_range:nnn { "3131 } { "318E } { kanji/default }
-\xeja_char_set_class_range:nnn { "3190 } { "3191 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3192 } { "3195 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3196 } { "319F } { kanji/default }
-\xeja_char_set_class_range:nnn { "31A0 } { "31BF } { kanji/default }
-\xeja_char_set_class_range:nnn { "31C0 } { "31E3 } { kanji/default }
-\xeja_char_set_class_range:nnn { "31F0 } { "31FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "3200 } { "321E } { kanji/default }
-\xeja_char_set_class_range:nnn { "3220 } { "3229 } { kanji/default }
-\xeja_char_set_class_range:nnn { "322A } { "3247 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3248 } { "324F } { kanji/default }
-\xeja_char_set_class:nn { "3250 } { kanji/default }
-\xeja_char_set_class_range:nnn { "3251 } { "325F } { kanji/default }
-\xeja_char_set_class_range:nnn { "3260 } { "327F } { kanji/default }
-\xeja_char_set_class_range:nnn { "3280 } { "3289 } { kanji/default }
-\xeja_char_set_class_range:nnn { "328A } { "32B0 } { kanji/default }
-\xeja_char_set_class_range:nnn { "32B1 } { "32BF } { kanji/default }
-\xeja_char_set_class_range:nnn { "32C0 } { "32FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "3300 } { "33FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "3400 } { "4DBF } { kanji/default }
-\xeja_char_set_class_range:nnn { "4E00 } { "9FFC } { kanji/default }
-\xeja_char_set_class_range:nnn { "9FFD } { "9FFF } { kanji/default }
-\xeja_char_set_class_range:nnn { "A000 } { "A014 } { kanji/default }
-\xeja_char_set_class:nn { "A015 } { kanji/default }
-\xeja_char_set_class_range:nnn { "A016 } { "A48C } { kanji/default }
-\xeja_char_set_class_range:nnn { "A490 } { "A4C6 } { kanji/default }
-\xeja_char_set_class_range:nnn { "A960 } { "A97C } { kanji/default }
-\xeja_char_set_class_range:nnn { "AC00 } { "D7A3 } { kanji/default }
-\xeja_char_set_class_range:nnn { "E000 } { "F8FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "F900 } { "FA6D } { kanji/default }
-\xeja_char_set_class_range:nnn { "FA6E } { "FA6F } { kanji/default }
-\xeja_char_set_class_range:nnn { "FA70 } { "FAD9 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FADA } { "FAFF } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE00 } { "FE0F } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE10 } { "FE16 } { kanji/default }
-\xeja_char_set_class:nn { "FE17 } { kanji/default }
-\xeja_char_set_class:nn { "FE18 } { kanji/default }
-\xeja_char_set_class:nn { "FE19 } { kanji/default }
-\xeja_char_set_class:nn { "FE30 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE31 } { "FE32 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE33 } { "FE34 } { kanji/default }
-\xeja_char_set_class:nn { "FE35 } { kanji/default }
-\xeja_char_set_class:nn { "FE36 } { kanji/default }
-\xeja_char_set_class:nn { "FE37 } { kanji/default }
-\xeja_char_set_class:nn { "FE38 } { kanji/default }
-\xeja_char_set_class:nn { "FE39 } { kanji/default }
-\xeja_char_set_class:nn { "FE3A } { kanji/default }
-\xeja_char_set_class:nn { "FE3B } { kanji/default }
-\xeja_char_set_class:nn { "FE3C } { kanji/default }
-\xeja_char_set_class:nn { "FE3D } { kanji/default }
-\xeja_char_set_class:nn { "FE3E } { kanji/default }
-\xeja_char_set_class:nn { "FE3F } { kanji/default }
-\xeja_char_set_class:nn { "FE40 } { kanji/default }
-\xeja_char_set_class:nn { "FE41 } { kanji/default }
-\xeja_char_set_class:nn { "FE42 } { kanji/default }
-\xeja_char_set_class:nn { "FE43 } { kanji/default }
-\xeja_char_set_class:nn { "FE44 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE45 } { "FE46 } { kanji/default }
-\xeja_char_set_class:nn { "FE47 } { kanji/default }
-\xeja_char_set_class:nn { "FE48 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE49 } { "FE4C } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE4D } { "FE4F } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE50 } { "FE52 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE54 } { "FE57 } { kanji/default }
-\xeja_char_set_class:nn { "FE58 } { kanji/default }
-\xeja_char_set_class:nn { "FE59 } { kanji/default }
-\xeja_char_set_class:nn { "FE5A } { kanji/default }
-\xeja_char_set_class:nn { "FE5B } { kanji/default }
-\xeja_char_set_class:nn { "FE5C } { kanji/default }
-\xeja_char_set_class:nn { "FE5D } { kanji/default }
-\xeja_char_set_class:nn { "FE5E } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE5F } { "FE61 } { kanji/default }
-\xeja_char_set_class:nn { "FE62 } { kanji/default }
-\xeja_char_set_class:nn { "FE63 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE64 } { "FE66 } { kanji/default }
-\xeja_char_set_class:nn { "FE68 } { kanji/default }
-\xeja_char_set_class:nn { "FE69 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FE6A } { "FE6B } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF01 } { "FF03 } { kanji/default }
-\xeja_char_set_class:nn { "FF04 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF05 } { "FF07 } { kanji/default }
-\xeja_char_set_class:nn { "FF08 } { kanji/default }
-\xeja_char_set_class:nn { "FF09 } { kanji/default }
-\xeja_char_set_class:nn { "FF0A } { kanji/default }
-\xeja_char_set_class:nn { "FF0B } { kanji/default }
-\xeja_char_set_class:nn { "FF0C } { kanji/default }
-\xeja_char_set_class:nn { "FF0D } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF0E } { "FF0F } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF10 } { "FF19 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF1A } { "FF1B } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF1C } { "FF1E } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF1F } { "FF20 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF21 } { "FF3A } { kanji/default }
-\xeja_char_set_class:nn { "FF3B } { kanji/default }
-\xeja_char_set_class:nn { "FF3C } { kanji/default }
-\xeja_char_set_class:nn { "FF3D } { kanji/default }
-\xeja_char_set_class:nn { "FF3E } { kanji/default }
-\xeja_char_set_class:nn { "FF3F } { kanji/default }
-\xeja_char_set_class:nn { "FF40 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF41 } { "FF5A } { kanji/default }
-\xeja_char_set_class:nn { "FF5B } { kanji/default }
-\xeja_char_set_class:nn { "FF5C } { kanji/default }
-\xeja_char_set_class:nn { "FF5D } { kanji/default }
-\xeja_char_set_class:nn { "FF5E } { kanji/default }
-\xeja_char_set_class:nn { "FF5F } { kanji/default }
-\xeja_char_set_class:nn { "FF60 } { kanji/default }
-\xeja_char_set_class:nn { "FF61 } { kanji/default }
-\xeja_char_set_class:nn { "FF62 } { kanji/default }
-\xeja_char_set_class:nn { "FF63 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF64 } { "FF65 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF66 } { "FF6F } { kanji/default }
-\xeja_char_set_class:nn { "FF70 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF71 } { "FF9D } { kanji/default }
-\xeja_char_set_class_range:nnn { "FF9E } { "FF9F } { kanji/default }
-\xeja_char_set_class_range:nnn { "FFA0 } { "FFBE } { kanji/default }
-\xeja_char_set_class_range:nnn { "FFC2 } { "FFC7 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FFCA } { "FFCF } { kanji/default }
-\xeja_char_set_class_range:nnn { "FFD2 } { "FFD7 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FFDA } { "FFDC } { kanji/default }
-\xeja_char_set_class_range:nnn { "FFE0 } { "FFE1 } { kanji/default }
-\xeja_char_set_class:nn { "FFE2 } { kanji/default }
-\xeja_char_set_class:nn { "FFE3 } { kanji/default }
-\xeja_char_set_class:nn { "FFE4 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FFE5 } { "FFE6 } { kanji/default }
-\xeja_char_set_class:nn { "FFE8 } { kanji/default }
-\xeja_char_set_class_range:nnn { "FFE9 } { "FFEC } { kanji/default }
-\xeja_char_set_class_range:nnn { "FFED } { "FFEE } { kanji/default }
-\xeja_char_set_class:nn { "FFFD } { kanji/default }
-\xeja_char_set_class_range:nnn { "16FE0 } { "16FE1 } { kanji/default }
-\xeja_char_set_class:nn { "16FE2 } { kanji/default }
-\xeja_char_set_class:nn { "16FE3 } { kanji/default }
-\xeja_char_set_class:nn { "16FE4 } { kanji/default }
-\xeja_char_set_class_range:nnn { "16FF0 } { "16FF1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "17000 } { "187F7 } { kanji/default }
-\xeja_char_set_class_range:nnn { "18800 } { "18AFF } { kanji/default }
-\xeja_char_set_class_range:nnn { "18B00 } { "18CD5 } { kanji/default }
-\xeja_char_set_class_range:nnn { "18D00 } { "18D08 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1B000 } { "1B0FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "1B100 } { "1B11E } { kanji/default }
-\xeja_char_set_class_range:nnn { "1B150 } { "1B152 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1B164 } { "1B167 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1B170 } { "1B2FB } { kanji/default }
-\xeja_char_set_class:nn { "1F004 } { kanji/default }
-\xeja_char_set_class:nn { "1F0CF } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F100 } { "1F10A } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F110 } { "1F12D } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F130 } { "1F169 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F170 } { "1F18D } { kanji/default }
-\xeja_char_set_class:nn { "1F18E } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F18F } { "1F190 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F191 } { "1F19A } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F19B } { "1F1AC } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F200 } { "1F202 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F210 } { "1F23B } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F240 } { "1F248 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F250 } { "1F251 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F260 } { "1F265 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F300 } { "1F320 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F32D } { "1F335 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F337 } { "1F37C } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F37E } { "1F393 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F3A0 } { "1F3CA } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F3CF } { "1F3D3 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F3E0 } { "1F3F0 } { kanji/default }
-\xeja_char_set_class:nn { "1F3F4 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F3F8 } { "1F3FA } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F3FB } { "1F3FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F400 } { "1F43E } { kanji/default }
-\xeja_char_set_class:nn { "1F440 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F442 } { "1F4FC } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F4FF } { "1F53D } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F54B } { "1F54E } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F550 } { "1F567 } { kanji/default }
-\xeja_char_set_class:nn { "1F57A } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F595 } { "1F596 } { kanji/default }
-\xeja_char_set_class:nn { "1F5A4 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F5FB } { "1F5FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F600 } { "1F64F } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F680 } { "1F6C5 } { kanji/default }
-\xeja_char_set_class:nn { "1F6CC } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F6D0 } { "1F6D2 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F6D5 } { "1F6D7 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F6EB } { "1F6EC } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F6F4 } { "1F6FC } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F7E0 } { "1F7EB } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F90C } { "1F93A } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F93C } { "1F945 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F947 } { "1F978 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F97A } { "1F9CB } { kanji/default }
-\xeja_char_set_class_range:nnn { "1F9CD } { "1F9FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "1FA70 } { "1FA74 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1FA78 } { "1FA7A } { kanji/default }
-\xeja_char_set_class_range:nnn { "1FA80 } { "1FA86 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1FA90 } { "1FAA8 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1FAB0 } { "1FAB6 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1FAC0 } { "1FAC2 } { kanji/default }
-\xeja_char_set_class_range:nnn { "1FAD0 } { "1FAD6 } { kanji/default }
-\xeja_char_set_class_range:nnn { "20000 } { "2A6DD } { kanji/default }
-\xeja_char_set_class_range:nnn { "2A6DE } { "2A6FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "2A700 } { "2B734 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2B735 } { "2B73F } { kanji/default }
-\xeja_char_set_class_range:nnn { "2B740 } { "2B81D } { kanji/default }
-\xeja_char_set_class_range:nnn { "2B81E } { "2B81F } { kanji/default }
-\xeja_char_set_class_range:nnn { "2B820 } { "2CEA1 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2CEA2 } { "2CEAF } { kanji/default }
-\xeja_char_set_class_range:nnn { "2CEB0 } { "2EBE0 } { kanji/default }
-\xeja_char_set_class_range:nnn { "2EBE1 } { "2F7FF } { kanji/default }
-\xeja_char_set_class_range:nnn { "2F800 } { "2FA1D } { kanji/default }
-\xeja_char_set_class_range:nnn { "2FA1E } { "2FA1F } { kanji/default }
-\xeja_char_set_class_range:nnn { "2FA20 } { "2FFFD } { kanji/default }
-\xeja_char_set_class_range:nnn { "30000 } { "3134A } { kanji/default }
-\xeja_char_set_class_range:nnn { "3134B } { "3FFFD } { kanji/default }
-\xeja_char_set_class_range:nnn { "E0100 } { "E01EF } { kanji/default }
-\xeja_char_set_class_range:nnn { "F0000 } { "FFFFD } { kanji/default }
-\xeja_char_set_class_range:nnn { "100000 } { "10FFFD } { kanji/default }
+\xltj_char_set_class:nn { "00A1 } { kanji/default }
+\xltj_char_set_class:nn { "00A4 } { kanji/default }
+\xltj_char_set_class:nn { "00A7 } { kanji/default }
+\xltj_char_set_class:nn { "00A8 } { kanji/default }
+\xltj_char_set_class:nn { "00AA } { kanji/default }
+\xltj_char_set_class:nn { "00AD } { kanji/default }
+\xltj_char_set_class:nn { "00AE } { kanji/default }
+\xltj_char_set_class:nn { "00B0 } { kanji/default }
+\xltj_char_set_class:nn { "00B1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "00B2 } { "00B3 } { kanji/default }
+\xltj_char_set_class:nn { "00B4 } { kanji/default }
+\xltj_char_set_class_range:nnn { "00B6 } { "00B7 } { kanji/default }
+\xltj_char_set_class:nn { "00B8 } { kanji/default }
+\xltj_char_set_class:nn { "00B9 } { kanji/default }
+\xltj_char_set_class:nn { "00BA } { kanji/default }
+\xltj_char_set_class_range:nnn { "00BC } { "00BE } { kanji/default }
+\xltj_char_set_class:nn { "00BF } { kanji/default }
+\xltj_char_set_class:nn { "00C6 } { kanji/default }
+\xltj_char_set_class:nn { "00D0 } { kanji/default }
+\xltj_char_set_class:nn { "00D7 } { kanji/default }
+\xltj_char_set_class:nn { "00D8 } { kanji/default }
+\xltj_char_set_class_range:nnn { "00DE } { "00E1 } { kanji/default }
+\xltj_char_set_class:nn { "00E6 } { kanji/default }
+\xltj_char_set_class_range:nnn { "00E8 } { "00EA } { kanji/default }
+\xltj_char_set_class_range:nnn { "00EC } { "00ED } { kanji/default }
+\xltj_char_set_class:nn { "00F0 } { kanji/default }
+\xltj_char_set_class_range:nnn { "00F2 } { "00F3 } { kanji/default }
+\xltj_char_set_class:nn { "00F7 } { kanji/default }
+\xltj_char_set_class_range:nnn { "00F8 } { "00FA } { kanji/default }
+\xltj_char_set_class:nn { "00FC } { kanji/default }
+\xltj_char_set_class:nn { "00FE } { kanji/default }
+\xltj_char_set_class:nn { "0101 } { kanji/default }
+\xltj_char_set_class:nn { "0111 } { kanji/default }
+\xltj_char_set_class:nn { "0113 } { kanji/default }
+\xltj_char_set_class:nn { "011B } { kanji/default }
+\xltj_char_set_class_range:nnn { "0126 } { "0127 } { kanji/default }
+\xltj_char_set_class:nn { "012B } { kanji/default }
+\xltj_char_set_class_range:nnn { "0131 } { "0133 } { kanji/default }
+\xltj_char_set_class:nn { "0138 } { kanji/default }
+\xltj_char_set_class_range:nnn { "013F } { "0142 } { kanji/default }
+\xltj_char_set_class:nn { "0144 } { kanji/default }
+\xltj_char_set_class_range:nnn { "0148 } { "014B } { kanji/default }
+\xltj_char_set_class:nn { "014D } { kanji/default }
+\xltj_char_set_class_range:nnn { "0152 } { "0153 } { kanji/default }
+\xltj_char_set_class_range:nnn { "0166 } { "0167 } { kanji/default }
+\xltj_char_set_class:nn { "016B } { kanji/default }
+\xltj_char_set_class:nn { "01CE } { kanji/default }
+\xltj_char_set_class:nn { "01D0 } { kanji/default }
+\xltj_char_set_class:nn { "01D2 } { kanji/default }
+\xltj_char_set_class:nn { "01D4 } { kanji/default }
+\xltj_char_set_class:nn { "01D6 } { kanji/default }
+\xltj_char_set_class:nn { "01D8 } { kanji/default }
+\xltj_char_set_class:nn { "01DA } { kanji/default }
+\xltj_char_set_class:nn { "01DC } { kanji/default }
+\xltj_char_set_class:nn { "0251 } { kanji/default }
+\xltj_char_set_class:nn { "0261 } { kanji/default }
+\xltj_char_set_class:nn { "02C4 } { kanji/default }
+\xltj_char_set_class:nn { "02C7 } { kanji/default }
+\xltj_char_set_class_range:nnn { "02C9 } { "02CB } { kanji/default }
+\xltj_char_set_class:nn { "02CD } { kanji/default }
+\xltj_char_set_class:nn { "02D0 } { kanji/default }
+\xltj_char_set_class_range:nnn { "02D8 } { "02DB } { kanji/default }
+\xltj_char_set_class:nn { "02DD } { kanji/default }
+\xltj_char_set_class:nn { "02DF } { kanji/default }
+\xltj_char_set_class_range:nnn { "0300 } { "036F } { kanji/default }
+\xltj_char_set_class_range:nnn { "0391 } { "03A1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "03A3 } { "03A9 } { kanji/default }
+\xltj_char_set_class_range:nnn { "03B1 } { "03C1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "03C3 } { "03C9 } { kanji/default }
+\xltj_char_set_class:nn { "0401 } { kanji/default }
+\xltj_char_set_class_range:nnn { "0410 } { "044F } { kanji/default }
+\xltj_char_set_class:nn { "0451 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1100 } { "115F } { kanji/default }
+\xltj_char_set_class:nn { "2010 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2013 } { "2015 } { kanji/default }
+\xltj_char_set_class:nn { "2016 } { kanji/default }
+\xltj_char_set_class:nn { "2018 } { kanji/default }
+\xltj_char_set_class:nn { "2019 } { kanji/default }
+\xltj_char_set_class:nn { "201C } { kanji/default }
+\xltj_char_set_class:nn { "201D } { kanji/default }
+\xltj_char_set_class_range:nnn { "2020 } { "2022 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2024 } { "2027 } { kanji/default }
+\xltj_char_set_class:nn { "2030 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2032 } { "2033 } { kanji/default }
+\xltj_char_set_class:nn { "2035 } { kanji/default }
+\xltj_char_set_class:nn { "203B } { kanji/default }
+\xltj_char_set_class:nn { "203E } { kanji/default }
+\xltj_char_set_class:nn { "2074 } { kanji/default }
+\xltj_char_set_class:nn { "207F } { kanji/default }
+\xltj_char_set_class_range:nnn { "2081 } { "2084 } { kanji/default }
+\xltj_char_set_class:nn { "20A9 } { kanji/default }
+\xltj_char_set_class:nn { "20AC } { kanji/default }
+\xltj_char_set_class:nn { "2103 } { kanji/default }
+\xltj_char_set_class:nn { "2105 } { kanji/default }
+\xltj_char_set_class:nn { "2109 } { kanji/default }
+\xltj_char_set_class:nn { "2113 } { kanji/default }
+\xltj_char_set_class:nn { "2116 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2121 } { "2122 } { kanji/default }
+\xltj_char_set_class:nn { "2126 } { kanji/default }
+\xltj_char_set_class:nn { "212B } { kanji/default }
+\xltj_char_set_class_range:nnn { "2153 } { "2154 } { kanji/default }
+\xltj_char_set_class_range:nnn { "215B } { "215E } { kanji/default }
+\xltj_char_set_class_range:nnn { "2160 } { "216B } { kanji/default }
+\xltj_char_set_class_range:nnn { "2170 } { "2179 } { kanji/default }
+\xltj_char_set_class:nn { "2189 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2190 } { "2194 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2195 } { "2199 } { kanji/default }
+\xltj_char_set_class_range:nnn { "21B8 } { "21B9 } { kanji/default }
+\xltj_char_set_class:nn { "21D2 } { kanji/default }
+\xltj_char_set_class:nn { "21D4 } { kanji/default }
+\xltj_char_set_class:nn { "21E7 } { kanji/default }
+\xltj_char_set_class:nn { "2200 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2202 } { "2203 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2207 } { "2208 } { kanji/default }
+\xltj_char_set_class:nn { "220B } { kanji/default }
+\xltj_char_set_class:nn { "220F } { kanji/default }
+\xltj_char_set_class:nn { "2211 } { kanji/default }
+\xltj_char_set_class:nn { "2215 } { kanji/default }
+\xltj_char_set_class:nn { "221A } { kanji/default }
+\xltj_char_set_class_range:nnn { "221D } { "2220 } { kanji/default }
+\xltj_char_set_class:nn { "2223 } { kanji/default }
+\xltj_char_set_class:nn { "2225 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2227 } { "222C } { kanji/default }
+\xltj_char_set_class:nn { "222E } { kanji/default }
+\xltj_char_set_class_range:nnn { "2234 } { "2237 } { kanji/default }
+\xltj_char_set_class_range:nnn { "223C } { "223D } { kanji/default }
+\xltj_char_set_class:nn { "2248 } { kanji/default }
+\xltj_char_set_class:nn { "224C } { kanji/default }
+\xltj_char_set_class:nn { "2252 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2260 } { "2261 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2264 } { "2267 } { kanji/default }
+\xltj_char_set_class_range:nnn { "226A } { "226B } { kanji/default }
+\xltj_char_set_class_range:nnn { "226E } { "226F } { kanji/default }
+\xltj_char_set_class_range:nnn { "2282 } { "2283 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2286 } { "2287 } { kanji/default }
+\xltj_char_set_class:nn { "2295 } { kanji/default }
+\xltj_char_set_class:nn { "2299 } { kanji/default }
+\xltj_char_set_class:nn { "22A5 } { kanji/default }
+\xltj_char_set_class:nn { "22BF } { kanji/default }
+\xltj_char_set_class:nn { "2312 } { kanji/default }
+\xltj_char_set_class_range:nnn { "231A } { "231B } { kanji/default }
+\xltj_char_set_class:nn { "2329 } { kanji/default }
+\xltj_char_set_class:nn { "232A } { kanji/default }
+\xltj_char_set_class_range:nnn { "23E9 } { "23EC } { kanji/default }
+\xltj_char_set_class:nn { "23F0 } { kanji/default }
+\xltj_char_set_class:nn { "23F3 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2460 } { "249B } { kanji/default }
+\xltj_char_set_class_range:nnn { "249C } { "24E9 } { kanji/default }
+\xltj_char_set_class_range:nnn { "24EB } { "24FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "2500 } { "254B } { kanji/default }
+\xltj_char_set_class_range:nnn { "2550 } { "2573 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2580 } { "258F } { kanji/default }
+\xltj_char_set_class_range:nnn { "2592 } { "2595 } { kanji/default }
+\xltj_char_set_class_range:nnn { "25A0 } { "25A1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "25A3 } { "25A9 } { kanji/default }
+\xltj_char_set_class_range:nnn { "25B2 } { "25B3 } { kanji/default }
+\xltj_char_set_class:nn { "25B6 } { kanji/default }
+\xltj_char_set_class:nn { "25B7 } { kanji/default }
+\xltj_char_set_class_range:nnn { "25BC } { "25BD } { kanji/default }
+\xltj_char_set_class:nn { "25C0 } { kanji/default }
+\xltj_char_set_class:nn { "25C1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "25C6 } { "25C8 } { kanji/default }
+\xltj_char_set_class:nn { "25CB } { kanji/default }
+\xltj_char_set_class_range:nnn { "25CE } { "25D1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "25E2 } { "25E5 } { kanji/default }
+\xltj_char_set_class:nn { "25EF } { kanji/default }
+\xltj_char_set_class_range:nnn { "25FD } { "25FE } { kanji/default }
+\xltj_char_set_class_range:nnn { "2605 } { "2606 } { kanji/default }
+\xltj_char_set_class:nn { "2609 } { kanji/default }
+\xltj_char_set_class_range:nnn { "260E } { "260F } { kanji/default }
+\xltj_char_set_class_range:nnn { "2614 } { "2615 } { kanji/default }
+\xltj_char_set_class:nn { "261C } { kanji/default }
+\xltj_char_set_class:nn { "261E } { kanji/default }
+\xltj_char_set_class:nn { "2640 } { kanji/default }
+\xltj_char_set_class:nn { "2642 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2648 } { "2653 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2660 } { "2661 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2663 } { "2665 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2667 } { "266A } { kanji/default }
+\xltj_char_set_class_range:nnn { "266C } { "266D } { kanji/default }
+\xltj_char_set_class:nn { "266F } { kanji/default }
+\xltj_char_set_class:nn { "267F } { kanji/default }
+\xltj_char_set_class:nn { "2693 } { kanji/default }
+\xltj_char_set_class_range:nnn { "269E } { "269F } { kanji/default }
+\xltj_char_set_class:nn { "26A1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "26AA } { "26AB } { kanji/default }
+\xltj_char_set_class_range:nnn { "26BD } { "26BE } { kanji/default }
+\xltj_char_set_class:nn { "26BF } { kanji/default }
+\xltj_char_set_class_range:nnn { "26C4 } { "26C5 } { kanji/default }
+\xltj_char_set_class_range:nnn { "26C6 } { "26CD } { kanji/default }
+\xltj_char_set_class:nn { "26CE } { kanji/default }
+\xltj_char_set_class_range:nnn { "26CF } { "26D3 } { kanji/default }
+\xltj_char_set_class:nn { "26D4 } { kanji/default }
+\xltj_char_set_class_range:nnn { "26D5 } { "26E1 } { kanji/default }
+\xltj_char_set_class:nn { "26E3 } { kanji/default }
+\xltj_char_set_class_range:nnn { "26E8 } { "26E9 } { kanji/default }
+\xltj_char_set_class:nn { "26EA } { kanji/default }
+\xltj_char_set_class_range:nnn { "26EB } { "26F1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "26F2 } { "26F3 } { kanji/default }
+\xltj_char_set_class:nn { "26F4 } { kanji/default }
+\xltj_char_set_class:nn { "26F5 } { kanji/default }
+\xltj_char_set_class_range:nnn { "26F6 } { "26F9 } { kanji/default }
+\xltj_char_set_class:nn { "26FA } { kanji/default }
+\xltj_char_set_class_range:nnn { "26FB } { "26FC } { kanji/default }
+\xltj_char_set_class:nn { "26FD } { kanji/default }
+\xltj_char_set_class_range:nnn { "26FE } { "26FF } { kanji/default }
+\xltj_char_set_class:nn { "2705 } { kanji/default }
+\xltj_char_set_class_range:nnn { "270A } { "270B } { kanji/default }
+\xltj_char_set_class:nn { "2728 } { kanji/default }
+\xltj_char_set_class:nn { "273D } { kanji/default }
+\xltj_char_set_class:nn { "274C } { kanji/default }
+\xltj_char_set_class:nn { "274E } { kanji/default }
+\xltj_char_set_class_range:nnn { "2753 } { "2755 } { kanji/default }
+\xltj_char_set_class:nn { "2757 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2776 } { "277F } { kanji/default }
+\xltj_char_set_class_range:nnn { "2795 } { "2797 } { kanji/default }
+\xltj_char_set_class:nn { "27B0 } { kanji/default }
+\xltj_char_set_class:nn { "27BF } { kanji/default }
+\xltj_char_set_class_range:nnn { "2B1B } { "2B1C } { kanji/default }
+\xltj_char_set_class:nn { "2B50 } { kanji/default }
+\xltj_char_set_class:nn { "2B55 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2B56 } { "2B59 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2E80 } { "2E99 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2E9B } { "2EF3 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2F00 } { "2FD5 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2FF0 } { "2FFB } { kanji/default }
+\xltj_char_set_class:nn { "3000 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3001 } { "3003 } { kanji/default }
+\xltj_char_set_class:nn { "3004 } { kanji/default }
+\xltj_char_set_class:nn { "3005 } { kanji/default }
+\xltj_char_set_class:nn { "3006 } { kanji/default }
+\xltj_char_set_class:nn { "3007 } { kanji/default }
+\xltj_char_set_class:nn { "3008 } { kanji/default }
+\xltj_char_set_class:nn { "3009 } { kanji/default }
+\xltj_char_set_class:nn { "300A } { kanji/default }
+\xltj_char_set_class:nn { "300B } { kanji/default }
+\xltj_char_set_class:nn { "300C } { kanji/default }
+\xltj_char_set_class:nn { "300D } { kanji/default }
+\xltj_char_set_class:nn { "300E } { kanji/default }
+\xltj_char_set_class:nn { "300F } { kanji/default }
+\xltj_char_set_class:nn { "3010 } { kanji/default }
+\xltj_char_set_class:nn { "3011 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3012 } { "3013 } { kanji/default }
+\xltj_char_set_class:nn { "3014 } { kanji/default }
+\xltj_char_set_class:nn { "3015 } { kanji/default }
+\xltj_char_set_class:nn { "3016 } { kanji/default }
+\xltj_char_set_class:nn { "3017 } { kanji/default }
+\xltj_char_set_class:nn { "3018 } { kanji/default }
+\xltj_char_set_class:nn { "3019 } { kanji/default }
+\xltj_char_set_class:nn { "301A } { kanji/default }
+\xltj_char_set_class:nn { "301B } { kanji/default }
+\xltj_char_set_class:nn { "301C } { kanji/default }
+\xltj_char_set_class:nn { "301D } { kanji/default }
+\xltj_char_set_class_range:nnn { "301E } { "301F } { kanji/default }
+\xltj_char_set_class:nn { "3020 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3021 } { "3029 } { kanji/default }
+\xltj_char_set_class_range:nnn { "302A } { "302D } { kanji/default }
+\xltj_char_set_class_range:nnn { "302E } { "302F } { kanji/default }
+\xltj_char_set_class:nn { "3030 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3031 } { "3035 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3036 } { "3037 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3038 } { "303A } { kanji/default }
+\xltj_char_set_class:nn { "303B } { kanji/default }
+\xltj_char_set_class:nn { "303C } { kanji/default }
+\xltj_char_set_class:nn { "303D } { kanji/default }
+\xltj_char_set_class:nn { "303E } { kanji/default }
+\xltj_char_set_class_range:nnn { "3041 } { "3096 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3099 } { "309A } { kanji/default }
+\xltj_char_set_class_range:nnn { "309B } { "309C } { kanji/default }
+\xltj_char_set_class_range:nnn { "309D } { "309E } { kanji/default }
+\xltj_char_set_class:nn { "309F } { kanji/default }
+\xltj_char_set_class:nn { "30A0 } { kanji/default }
+\xltj_char_set_class_range:nnn { "30A1 } { "30FA } { kanji/default }
+\xltj_char_set_class:nn { "30FB } { kanji/default }
+\xltj_char_set_class_range:nnn { "30FC } { "30FE } { kanji/default }
+\xltj_char_set_class:nn { "30FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "3105 } { "312F } { kanji/default }
+\xltj_char_set_class_range:nnn { "3131 } { "318E } { kanji/default }
+\xltj_char_set_class_range:nnn { "3190 } { "3191 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3192 } { "3195 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3196 } { "319F } { kanji/default }
+\xltj_char_set_class_range:nnn { "31A0 } { "31BF } { kanji/default }
+\xltj_char_set_class_range:nnn { "31C0 } { "31E3 } { kanji/default }
+\xltj_char_set_class_range:nnn { "31F0 } { "31FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "3200 } { "321E } { kanji/default }
+\xltj_char_set_class_range:nnn { "3220 } { "3229 } { kanji/default }
+\xltj_char_set_class_range:nnn { "322A } { "3247 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3248 } { "324F } { kanji/default }
+\xltj_char_set_class:nn { "3250 } { kanji/default }
+\xltj_char_set_class_range:nnn { "3251 } { "325F } { kanji/default }
+\xltj_char_set_class_range:nnn { "3260 } { "327F } { kanji/default }
+\xltj_char_set_class_range:nnn { "3280 } { "3289 } { kanji/default }
+\xltj_char_set_class_range:nnn { "328A } { "32B0 } { kanji/default }
+\xltj_char_set_class_range:nnn { "32B1 } { "32BF } { kanji/default }
+\xltj_char_set_class_range:nnn { "32C0 } { "32FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "3300 } { "33FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "3400 } { "4DBF } { kanji/default }
+\xltj_char_set_class_range:nnn { "4E00 } { "9FFC } { kanji/default }
+\xltj_char_set_class_range:nnn { "9FFD } { "9FFF } { kanji/default }
+\xltj_char_set_class_range:nnn { "A000 } { "A014 } { kanji/default }
+\xltj_char_set_class:nn { "A015 } { kanji/default }
+\xltj_char_set_class_range:nnn { "A016 } { "A48C } { kanji/default }
+\xltj_char_set_class_range:nnn { "A490 } { "A4C6 } { kanji/default }
+\xltj_char_set_class_range:nnn { "A960 } { "A97C } { kanji/default }
+\xltj_char_set_class_range:nnn { "AC00 } { "D7A3 } { kanji/default }
+\xltj_char_set_class_range:nnn { "E000 } { "F8FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "F900 } { "FA6D } { kanji/default }
+\xltj_char_set_class_range:nnn { "FA6E } { "FA6F } { kanji/default }
+\xltj_char_set_class_range:nnn { "FA70 } { "FAD9 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FADA } { "FAFF } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE00 } { "FE0F } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE10 } { "FE16 } { kanji/default }
+\xltj_char_set_class:nn { "FE17 } { kanji/default }
+\xltj_char_set_class:nn { "FE18 } { kanji/default }
+\xltj_char_set_class:nn { "FE19 } { kanji/default }
+\xltj_char_set_class:nn { "FE30 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE31 } { "FE32 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE33 } { "FE34 } { kanji/default }
+\xltj_char_set_class:nn { "FE35 } { kanji/default }
+\xltj_char_set_class:nn { "FE36 } { kanji/default }
+\xltj_char_set_class:nn { "FE37 } { kanji/default }
+\xltj_char_set_class:nn { "FE38 } { kanji/default }
+\xltj_char_set_class:nn { "FE39 } { kanji/default }
+\xltj_char_set_class:nn { "FE3A } { kanji/default }
+\xltj_char_set_class:nn { "FE3B } { kanji/default }
+\xltj_char_set_class:nn { "FE3C } { kanji/default }
+\xltj_char_set_class:nn { "FE3D } { kanji/default }
+\xltj_char_set_class:nn { "FE3E } { kanji/default }
+\xltj_char_set_class:nn { "FE3F } { kanji/default }
+\xltj_char_set_class:nn { "FE40 } { kanji/default }
+\xltj_char_set_class:nn { "FE41 } { kanji/default }
+\xltj_char_set_class:nn { "FE42 } { kanji/default }
+\xltj_char_set_class:nn { "FE43 } { kanji/default }
+\xltj_char_set_class:nn { "FE44 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE45 } { "FE46 } { kanji/default }
+\xltj_char_set_class:nn { "FE47 } { kanji/default }
+\xltj_char_set_class:nn { "FE48 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE49 } { "FE4C } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE4D } { "FE4F } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE50 } { "FE52 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE54 } { "FE57 } { kanji/default }
+\xltj_char_set_class:nn { "FE58 } { kanji/default }
+\xltj_char_set_class:nn { "FE59 } { kanji/default }
+\xltj_char_set_class:nn { "FE5A } { kanji/default }
+\xltj_char_set_class:nn { "FE5B } { kanji/default }
+\xltj_char_set_class:nn { "FE5C } { kanji/default }
+\xltj_char_set_class:nn { "FE5D } { kanji/default }
+\xltj_char_set_class:nn { "FE5E } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE5F } { "FE61 } { kanji/default }
+\xltj_char_set_class:nn { "FE62 } { kanji/default }
+\xltj_char_set_class:nn { "FE63 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE64 } { "FE66 } { kanji/default }
+\xltj_char_set_class:nn { "FE68 } { kanji/default }
+\xltj_char_set_class:nn { "FE69 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FE6A } { "FE6B } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF01 } { "FF03 } { kanji/default }
+\xltj_char_set_class:nn { "FF04 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF05 } { "FF07 } { kanji/default }
+\xltj_char_set_class:nn { "FF08 } { kanji/default }
+\xltj_char_set_class:nn { "FF09 } { kanji/default }
+\xltj_char_set_class:nn { "FF0A } { kanji/default }
+\xltj_char_set_class:nn { "FF0B } { kanji/default }
+\xltj_char_set_class:nn { "FF0C } { kanji/default }
+\xltj_char_set_class:nn { "FF0D } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF0E } { "FF0F } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF10 } { "FF19 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF1A } { "FF1B } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF1C } { "FF1E } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF1F } { "FF20 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF21 } { "FF3A } { kanji/default }
+\xltj_char_set_class:nn { "FF3B } { kanji/default }
+\xltj_char_set_class:nn { "FF3C } { kanji/default }
+\xltj_char_set_class:nn { "FF3D } { kanji/default }
+\xltj_char_set_class:nn { "FF3E } { kanji/default }
+\xltj_char_set_class:nn { "FF3F } { kanji/default }
+\xltj_char_set_class:nn { "FF40 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF41 } { "FF5A } { kanji/default }
+\xltj_char_set_class:nn { "FF5B } { kanji/default }
+\xltj_char_set_class:nn { "FF5C } { kanji/default }
+\xltj_char_set_class:nn { "FF5D } { kanji/default }
+\xltj_char_set_class:nn { "FF5E } { kanji/default }
+\xltj_char_set_class:nn { "FF5F } { kanji/default }
+\xltj_char_set_class:nn { "FF60 } { kanji/default }
+\xltj_char_set_class:nn { "FF61 } { kanji/default }
+\xltj_char_set_class:nn { "FF62 } { kanji/default }
+\xltj_char_set_class:nn { "FF63 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF64 } { "FF65 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF66 } { "FF6F } { kanji/default }
+\xltj_char_set_class:nn { "FF70 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF71 } { "FF9D } { kanji/default }
+\xltj_char_set_class_range:nnn { "FF9E } { "FF9F } { kanji/default }
+\xltj_char_set_class_range:nnn { "FFA0 } { "FFBE } { kanji/default }
+\xltj_char_set_class_range:nnn { "FFC2 } { "FFC7 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FFCA } { "FFCF } { kanji/default }
+\xltj_char_set_class_range:nnn { "FFD2 } { "FFD7 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FFDA } { "FFDC } { kanji/default }
+\xltj_char_set_class_range:nnn { "FFE0 } { "FFE1 } { kanji/default }
+\xltj_char_set_class:nn { "FFE2 } { kanji/default }
+\xltj_char_set_class:nn { "FFE3 } { kanji/default }
+\xltj_char_set_class:nn { "FFE4 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FFE5 } { "FFE6 } { kanji/default }
+\xltj_char_set_class:nn { "FFE8 } { kanji/default }
+\xltj_char_set_class_range:nnn { "FFE9 } { "FFEC } { kanji/default }
+\xltj_char_set_class_range:nnn { "FFED } { "FFEE } { kanji/default }
+\xltj_char_set_class:nn { "FFFD } { kanji/default }
+\xltj_char_set_class_range:nnn { "16FE0 } { "16FE1 } { kanji/default }
+\xltj_char_set_class:nn { "16FE2 } { kanji/default }
+\xltj_char_set_class:nn { "16FE3 } { kanji/default }
+\xltj_char_set_class:nn { "16FE4 } { kanji/default }
+\xltj_char_set_class_range:nnn { "16FF0 } { "16FF1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "17000 } { "187F7 } { kanji/default }
+\xltj_char_set_class_range:nnn { "18800 } { "18AFF } { kanji/default }
+\xltj_char_set_class_range:nnn { "18B00 } { "18CD5 } { kanji/default }
+\xltj_char_set_class_range:nnn { "18D00 } { "18D08 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1B000 } { "1B0FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "1B100 } { "1B11E } { kanji/default }
+\xltj_char_set_class_range:nnn { "1B150 } { "1B152 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1B164 } { "1B167 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1B170 } { "1B2FB } { kanji/default }
+\xltj_char_set_class:nn { "1F004 } { kanji/default }
+\xltj_char_set_class:nn { "1F0CF } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F100 } { "1F10A } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F110 } { "1F12D } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F130 } { "1F169 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F170 } { "1F18D } { kanji/default }
+\xltj_char_set_class:nn { "1F18E } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F18F } { "1F190 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F191 } { "1F19A } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F19B } { "1F1AC } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F200 } { "1F202 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F210 } { "1F23B } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F240 } { "1F248 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F250 } { "1F251 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F260 } { "1F265 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F300 } { "1F320 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F32D } { "1F335 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F337 } { "1F37C } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F37E } { "1F393 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F3A0 } { "1F3CA } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F3CF } { "1F3D3 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F3E0 } { "1F3F0 } { kanji/default }
+\xltj_char_set_class:nn { "1F3F4 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F3F8 } { "1F3FA } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F3FB } { "1F3FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F400 } { "1F43E } { kanji/default }
+\xltj_char_set_class:nn { "1F440 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F442 } { "1F4FC } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F4FF } { "1F53D } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F54B } { "1F54E } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F550 } { "1F567 } { kanji/default }
+\xltj_char_set_class:nn { "1F57A } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F595 } { "1F596 } { kanji/default }
+\xltj_char_set_class:nn { "1F5A4 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F5FB } { "1F5FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F600 } { "1F64F } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F680 } { "1F6C5 } { kanji/default }
+\xltj_char_set_class:nn { "1F6CC } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F6D0 } { "1F6D2 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F6D5 } { "1F6D7 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F6EB } { "1F6EC } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F6F4 } { "1F6FC } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F7E0 } { "1F7EB } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F90C } { "1F93A } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F93C } { "1F945 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F947 } { "1F978 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F97A } { "1F9CB } { kanji/default }
+\xltj_char_set_class_range:nnn { "1F9CD } { "1F9FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "1FA70 } { "1FA74 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1FA78 } { "1FA7A } { kanji/default }
+\xltj_char_set_class_range:nnn { "1FA80 } { "1FA86 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1FA90 } { "1FAA8 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1FAB0 } { "1FAB6 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1FAC0 } { "1FAC2 } { kanji/default }
+\xltj_char_set_class_range:nnn { "1FAD0 } { "1FAD6 } { kanji/default }
+\xltj_char_set_class_range:nnn { "20000 } { "2A6DD } { kanji/default }
+\xltj_char_set_class_range:nnn { "2A6DE } { "2A6FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "2A700 } { "2B734 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2B735 } { "2B73F } { kanji/default }
+\xltj_char_set_class_range:nnn { "2B740 } { "2B81D } { kanji/default }
+\xltj_char_set_class_range:nnn { "2B81E } { "2B81F } { kanji/default }
+\xltj_char_set_class_range:nnn { "2B820 } { "2CEA1 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2CEA2 } { "2CEAF } { kanji/default }
+\xltj_char_set_class_range:nnn { "2CEB0 } { "2EBE0 } { kanji/default }
+\xltj_char_set_class_range:nnn { "2EBE1 } { "2F7FF } { kanji/default }
+\xltj_char_set_class_range:nnn { "2F800 } { "2FA1D } { kanji/default }
+\xltj_char_set_class_range:nnn { "2FA1E } { "2FA1F } { kanji/default }
+\xltj_char_set_class_range:nnn { "2FA20 } { "2FFFD } { kanji/default }
+\xltj_char_set_class_range:nnn { "30000 } { "3134A } { kanji/default }
+\xltj_char_set_class_range:nnn { "3134B } { "3FFFD } { kanji/default }
+\xltj_char_set_class_range:nnn { "E0100 } { "E01EF } { kanji/default }
+\xltj_char_set_class_range:nnn { "F0000 } { "FFFFD } { kanji/default }
+\xltj_char_set_class_range:nnn { "100000 } { "10FFFD } { kanji/default }
 %    \end{macrocode}
 %
 % 開き括弧類
@@ -3261,7 +3256,7 @@
     "FF5F
   }
   {
-    \xeja_char_set_class:nn {#1} { kanji/open }
+    \xltj_char_set_class:nn {#1} { kanji/open }
   }
 %    \end{macrocode}
 %
@@ -3274,7 +3269,7 @@
     "FF0C , "FF3D , "FF5D , "FF60
   }
   {
-    \xeja_char_set_class:nn {#1} { kanji/close }
+    \xltj_char_set_class:nn {#1} { kanji/close }
   }
 %    \end{macrocode}
 %
@@ -3285,7 +3280,7 @@
     "00B7 , "30FB , "FF1A , "FF1B
   }
   {
-    \xeja_char_set_class:nn {#1} { kanji/middle }
+    \xltj_char_set_class:nn {#1} { kanji/middle }
   }
 %    \end{macrocode}
 %
@@ -3296,7 +3291,7 @@
     "3002 , "FF0E
   }
   {
-    \xeja_char_set_class:nn {#1} { kanji/fullstop }
+    \xltj_char_set_class:nn {#1} { kanji/fullstop }
   }
 %    \end{macrocode}
 %
@@ -3307,7 +3302,7 @@
     "2014 , "2015 , "2025 , "2026
   }
   {
-    \xeja_char_set_class:nn {#1} { kanji/nodiv }
+    \xltj_char_set_class:nn {#1} { kanji/nodiv }
   }
 %    \end{macrocode}
 %
@@ -3321,7 +3316,7 @@
     "FF64 , "FF9E , "FF9F
   }
   {
-    \xeja_char_set_class:nn {#1} { kanji/noprebreak }
+    \xltj_char_set_class:nn {#1} { kanji/noprebreak }
   }
 %    \end{macrocode}
 %
@@ -3332,7 +3327,7 @@
     "00A1 , "00BF , "20AC , "FF40 , "FF62
   }
   {
-    \xeja_char_set_class:nn {#1} { kanji/nopostbreak }
+    \xltj_char_set_class:nn {#1} { kanji/nopostbreak }
   }
 %    \end{macrocode}
 %
@@ -3347,7 +3342,7 @@
     "31F8 , "31F9 , "31FA , "31FB , "31FC , "31FD , "31FE , "31FF
   }
   {
-    \xeja_char_set_class:nn {#1} { kanji/smallkana }
+    \xltj_char_set_class:nn {#1} { kanji/smallkana }
   }
 %    \end{macrocode}
 %
@@ -3357,7 +3352,7 @@
     "0028 , "005B , "0060
   }
   {
-    \xeja_char_set_class:nn {#1} { alpha/left }
+    \xltj_char_set_class:nn {#1} { alpha/left }
   }
 %    \end{macrocode}
 %
@@ -3367,7 +3362,7 @@
     "0027 , "0029 , "002C , "002E , "003A , "003B , "005D
   }
   {
-    \xeja_char_set_class:nn {#1} { alpha/right }
+    \xltj_char_set_class:nn {#1} { alpha/right }
   }
 %    \end{macrocode}
 %
@@ -3379,120 +3374,120 @@
     "005E , "005F , "007B , "007C , "007D , "007E ,
   }
   {
-    \xeja_char_set_class:nn {#1} { alpha/middle }
+    \xltj_char_set_class:nn {#1} { alpha/middle }
   }
 %    \end{macrocode}
 %
 % 和文文字クラス間のグルー・カーン設定
 %    \begin{macrocode}
-\xeja_jfm_set_glue:nnn { kanji/default } { kanji/open }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/default } { kanji/middle }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/open } { kanji/middle }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/close } { kanji/default }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/close } { kanji/open }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/close } { kanji/middle }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/close } { kanji/nodiv }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/close } { kanji/noprebreak }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/close } { kanji/nopostbreak }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/close } { kanji/smallkana }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/default }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/open }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/close }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/middle }
-  { 0.5\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/fullstop }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nodiv }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/noprebreak }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/nopostbreak }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/middle } { kanji/smallkana }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/default }
-  { 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/open }
-  { 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/middle }
-  { 0.75\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nodiv }
-  { 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/noprebreak }
-  { 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/nopostbreak }
-  { 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/fullstop } { kanji/smallkana }
-  { 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/open }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/nodiv } { kanji/middle }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_kern:nnn { kanji/nodiv } { kanji/nodiv }
+\xltj_jfm_set_glue:nnn { kanji/default } { kanji/open }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/default } { kanji/middle }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/open } { kanji/middle }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/close } { kanji/default }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/close } { kanji/open }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/close } { kanji/middle }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/close } { kanji/nodiv }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/close } { kanji/noprebreak }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/close } { kanji/nopostbreak }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/close } { kanji/smallkana }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/default }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/open }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/close }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/middle }
+  { 0.5\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/fullstop }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/nodiv }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/noprebreak }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/nopostbreak }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/smallkana }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/default }
+  { 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/open }
+  { 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/middle }
+  { 0.75\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/nodiv }
+  { 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/noprebreak }
+  { 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/nopostbreak }
+  { 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/smallkana }
+  { 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/nodiv } { kanji/open }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/nodiv } { kanji/middle }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_kern:nnn { kanji/nodiv } { kanji/nodiv }
   { \c_zero_dim }
-\xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/open }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/noprebreak } { kanji/middle }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/open }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/middle }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/smallkana } { kanji/open }
-  { 0.5\l_xeja_zw_dim minus 0.5\l_xeja_zw_dim }
-\xeja_jfm_set_glue:nnn { kanji/smallkana } { kanji/middle }
-  { 0.25\l_xeja_zw_dim minus 0.25\l_xeja_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/noprebreak } { kanji/open }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/noprebreak } { kanji/middle }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/open }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/nopostbreak } { kanji/middle }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/smallkana } { kanji/open }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/smallkana } { kanji/middle }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
 %    \end{macrocode}
 %
 % 和文文字の文字幅調整設定
 %    \begin{macrocode}
-\xeja_jfm_set_precharwd:nn { kanji/open } { -0.5\l_xeja_zw_dim }
-\xeja_jfm_set_postcharwd:nn { kanji/close } { -0.5\l_xeja_zw_dim }
-\xeja_jfm_set_precharwd:nn { kanji/middle } { -0.25\l_xeja_zw_dim }
-\xeja_jfm_set_postcharwd:nn { kanji/middle } { -0.25\l_xeja_zw_dim }
-\xeja_jfm_set_postcharwd:nn { kanji/fullstop } { -0.5\l_xeja_zw_dim }
+\xltj_jfm_set_precharwd:nn { kanji/open } { -0.5\l_xltj_zw_dim }
+\xltj_jfm_set_postcharwd:nn { kanji/close } { -0.5\l_xltj_zw_dim }
+\xltj_jfm_set_precharwd:nn { kanji/middle } { -0.25\l_xltj_zw_dim }
+\xltj_jfm_set_postcharwd:nn { kanji/middle } { -0.25\l_xltj_zw_dim }
+\xltj_jfm_set_postcharwd:nn { kanji/fullstop } { -0.5\l_xltj_zw_dim }
 %    \end{macrocode}
 %
 % 和文文字の禁則設定
 %    \begin{macrocode}
-\xeja_jfm_set_postbreakpenalty:nn { kanji/open } { 10000 }
-\xeja_jfm_set_prebreakpenalty:nn { kanji/close } { 10000 }
-\xeja_jfm_set_prebreakpenalty:nn { kanji/fullstop } { 10000 }
-\xeja_jfm_set_prebreakpenalty:nn { kanji/middle } { 10000 }
-\xeja_jfm_set_prebreakpenalty:nn { kanji/nodiv } { 250 }
-\xeja_jfm_set_postbreakpenalty:nn { kanji/nopostbreak } { 10000 }
-\xeja_jfm_set_prebreakpenalty:nn { kanji/noprebreak } { 10000 }
-\xeja_jfm_set_prebreakpenalty:nn { kanji/smallkana } { 150 }
+\xltj_jfm_set_postbreakpenalty:nn { kanji/open } { 10000 }
+\xltj_jfm_set_prebreakpenalty:nn { kanji/close } { 10000 }
+\xltj_jfm_set_prebreakpenalty:nn { kanji/fullstop } { 10000 }
+\xltj_jfm_set_prebreakpenalty:nn { kanji/middle } { 10000 }
+\xltj_jfm_set_prebreakpenalty:nn { kanji/nodiv } { 250 }
+\xltj_jfm_set_postbreakpenalty:nn { kanji/nopostbreak } { 10000 }
+\xltj_jfm_set_prebreakpenalty:nn { kanji/noprebreak } { 10000 }
+\xltj_jfm_set_prebreakpenalty:nn { kanji/smallkana } { 150 }
 %    \end{macrocode}
 %
 % 和欧文間空白の挿入設定
 %    \begin{macrocode}
-\xeja_jfm_set_xspmode:nn { kanji/open } { preonly }
-\xeja_jfm_set_xspmode:nn { kanji/close } { postonly }
-\xeja_jfm_set_xspmode:nn { kanji/fullstop } { postonly }
-\xeja_jfm_set_xspmode:nn { kanji/middle } { inhibit }
-\xeja_jfm_set_xspmode:nn { kanji/nodiv } { inhibit }
-\xeja_jfm_set_xspmode:nn { kanji/nopostbreak } { preonly }
-\xeja_jfm_set_xspmode:nn { kanji/noprebreak } { postonly }
+\xltj_jfm_set_xspmode:nn { kanji/open } { preonly }
+\xltj_jfm_set_xspmode:nn { kanji/close } { postonly }
+\xltj_jfm_set_xspmode:nn { kanji/fullstop } { postonly }
+\xltj_jfm_set_xspmode:nn { kanji/middle } { inhibit }
+\xltj_jfm_set_xspmode:nn { kanji/nodiv } { inhibit }
+\xltj_jfm_set_xspmode:nn { kanji/nopostbreak } { preonly }
+\xltj_jfm_set_xspmode:nn { kanji/noprebreak } { postonly }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\xeja_jfm_set_xspmode:nn { alpha/left } { preonly }
-\xeja_jfm_set_xspmode:nn { alpha/right } { postonly }
-\xeja_jfm_set_xspmode:nn { alpha/middle } { inhibit }
+\xltj_jfm_set_xspmode:nn { alpha/left } { preonly }
+\xltj_jfm_set_xspmode:nn { alpha/right } { postonly }
+\xltj_jfm_set_xspmode:nn { alpha/middle } { inhibit }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -3533,9 +3528,9 @@
 \cs_new_eq:NN \jH \jQ
 \dim_const:Nn \trueQ  { 0.25truemm }
 \cs_new_eq:NN \trueH \trueQ
-\dim_const:Nn \ascQ { \fp_to_dim:n { 1\trueQ / \xeja_get_jascale: } }
+\dim_const:Nn \ascQ { \fp_to_dim:n { 1\trueQ / \xltj_get_jascale: } }
 \dim_const:Nn \ascpt
-  { \fp_to_dim:n  { \dim_eval:n { 1truept } / \xeja_get_jascale: } }
+  { \fp_to_dim:n  { \dim_eval:n { 1truept } / \xltj_get_jascale: } }
 %    \end{macrocode}
 %
 % 和文フォント命令を定義する。

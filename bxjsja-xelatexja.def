@@ -23,9 +23,9 @@
 \cs_new_eq:NN \jH \jQ
 \dim_const:Nn \trueQ  { 0.25truemm }
 \cs_new_eq:NN \trueH \trueQ
-\dim_const:Nn \ascQ { \fp_to_dim:n { 1\trueQ / \xeja_get_jascale: } }
+\dim_const:Nn \ascQ { \fp_to_dim:n { 1\trueQ / \xltj_get_jascale: } }
 \dim_const:Nn \ascpt
-  { \fp_to_dim:n  { \dim_eval:n { 1truept } / \xeja_get_jascale: } }
+  { \fp_to_dim:n  { \dim_eval:n { 1truept } / \xltj_get_jascale: } }
 \DeclareJaTextFontCommand{\textmc}{\mcfamily}
 \DeclareJaTextFontCommand{\textgt}{\gtfamily}
 \hook_gput_code:nnn { rmfamily } { . }
