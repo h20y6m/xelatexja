@@ -2569,6 +2569,11 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+\hook_gput_code:nnn { normalfont } { . }
+  { \xltj_set_kanji_family:x { \kanjifamilydefault } }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_new:Npn \mcdefault { mc }
 \cs_new:Npn \gtdefault { gt }
 \cs_new:Npn \kanjifamilydefault { \mcdefault }
@@ -2576,9 +2581,9 @@
 %
 %    \begin{macrocode}
 \NewDocumentCommand \mcfamily {}
-  { \xltj_set_kanji_family:x { \mcdefault } }
+  { \xltj_set_kanji_family:x { \mcdefault } \selectfont }
 \NewDocumentCommand \gtfamily {}
-  { \xltj_set_kanji_family:x { \gtdefault } }
+  { \xltj_set_kanji_family:x { \gtdefault } \selectfont }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
