@@ -582,6 +582,13 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\l_@@_noautospacing_bool,\l_@@_noautoxspacing_bool}
+%    \begin{macrocode}
+\bool_new:N \l_@@_noautospacing_bool
+\bool_new:N \l_@@_noautoxspacing_bool
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\g_@@_jfm_name_tl}
 %    \begin{macrocode}
 \tl_new:N \g_@@_jfm_name_tl
@@ -1097,7 +1104,10 @@
     \@@_jfm_use_postbreakpenalty:n {#1}
     \@@_jfm_use_prebreakpenalty:n {#2}
     \@@_jfm_use_glue_kern_or:nnn {#1} {#2}
-      { \@@_glue:n { \l_@@_kanjiskip_tl } }
+      {
+        \bool_if:NF \l_@@_noautospacing_bool
+          { \@@_glue:n { \l_@@_kanjiskip_tl } }
+      }
     \@@_jabaselineshift_begin:
     \@@_jfm_use_precharwd:n {#2}
     % \iow_term:n { K2K:~#1->#2 }
@@ -1116,8 +1126,11 @@
     \@@_jfm_use_postbreakpenalty:n {#1}
     \@@_jfm_use_glue_kern_or:nnn {#1} { kanji/default }
       {
-        \@@_jfm_if_xspmode_inhibit:nnF {#1} {#2}
-          { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+        \bool_if:NF \l_@@_noautoxspacing_bool
+          {
+            \@@_jfm_if_xspmode_inhibit:nnF {#1} {#2}
+              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+          }
       }
     \@@_swich_alpha_font:
     % \iow_term:n { K2A:~#1->#2 }
@@ -1135,8 +1148,11 @@
     \@@_jfm_use_prebreakpenalty:n {#2}
     \@@_jfm_use_glue_kern_or:nnn { kanji/default } {#2}
       {
-        \@@_jfm_if_xspmode_inhibit:nnF {#1} {#2}
-          { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+        \bool_if:NF \l_@@_noautoxspacing_bool
+          {
+            \@@_jfm_if_xspmode_inhibit:nnF {#1} {#2}
+              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+          }
       }
     \@@_jabaselineshift_begin:
     \@@_jfm_use_precharwd:n {#2}
@@ -1161,8 +1177,11 @@
       {
         \@@_jfm_use_glue_kern_or:nnn {#1} { kanji/default }
           {
-            \@@_jfm_if_xspmode_inhibit:nnF {#1} { kanji/default }
-              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+            \bool_if:NF \l_@@_noautoxspacing_bool
+              {
+                \@@_jfm_if_xspmode_inhibit:nnF {#1} { kanji/default }
+                  { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+              }
           }
       }
       {
@@ -1184,22 +1203,31 @@
       {
         \@@_jfm_use_glue_kern_or:nnn { kanji/default } {#1}
           {
-            \@@_jfm_if_xspmode_inhibit:nnF { kanji/default } {#1}
-              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+            \bool_if:NF \l_@@_noautoxspacing_bool
+              {
+                \@@_jfm_if_xspmode_inhibit:nnF { kanji/default } {#1}
+                  { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+              }
           }
       }
       {
         \@@_jfm_use_glue_kern_or:nnn
           { \g_@@_lastnode_class_tl } {#1}
-          { \@@_glue:n { \l_@@_kanjiskip_tl } }
+          {
+            \bool_if:NF \l_@@_noautospacing_bool
+              { \@@_glue:n { \l_@@_kanjiskip_tl } }
+          }
       }
       {
         \@@_jfm_use_glue_kern_or:nnn
           { kanji/default } {#1}
           {
-            \@@_jfm_if_xspmode_inhibit:nnF
-              { \g_@@_lastnode_class_tl } {#1}
-              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+            \bool_if:NF \l_@@_noautoxspacing_bool
+              {
+                \@@_jfm_if_xspmode_inhibit:nnF
+                  { \g_@@_lastnode_class_tl } {#1}
+                  { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+              }
           }
       }
     \@@_jabaselineshift_begin:
@@ -1235,9 +1263,12 @@
         \@@_jfm_use_glue_kern_or:nnn
           { \g_@@_lastnode_class_tl } { kanji/default }
           {
-            \@@_jfm_if_xspmode_inhibit:nnF
-              { \g_@@_lastnode_class_tl } {#1}
-              { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+            \bool_if:NF \l_@@_noautoxspacing_bool
+              {
+                \@@_jfm_if_xspmode_inhibit:nnF
+                  { \g_@@_lastnode_class_tl } {#1}
+                  { \@@_glue:n { \l_@@_xkanjiskip_tl } }
+              }
           }
       }
       {}
@@ -1357,14 +1388,15 @@
     \bool_if:NT \l_@@_lastpenalty_bool
       { \tex_penalty:D \l_@@_lastpenalty_int \scan_stop: }
   }
-\cs_new:Npn \@@_lastnode_switch:nnn #1#2#3
+\cs_new:Npn \@@_lastnode_switch:nnn
   {
-    \bool_case_true:n
+    \bool_case_true:nF
       {
-        { \l_@@_lastnode_math_bool } {#1}
-        { \g_@@_lastnode_kanji_bool } {#2}
-        { \g_@@_lastnode_alpha_bool } {#3}
+        { \l_@@_lastnode_math_bool } { \use_i:nnn }
+        { \g_@@_lastnode_kanji_bool } { \use_ii:nnn }
+        { \g_@@_lastnode_alpha_bool } { \use_iii:nnn }
       }
+      { \use_none:nnn }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -2566,6 +2598,22 @@
 \cs_new_eq:NN \getkanjiskip \xltj_get_kanjiskip:
 \cs_new_eq:NN \setxkanjiskip \xltj_set_xkanjiskip:n
 \cs_new_eq:NN \getxkanjiskip \xltj_get_xkanjiskip:
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Npn \autospacing
+  { \bool_set_false:N \l_@@_noautospacing_bool }
+\cs_new_protected:Npn \autoxspacing
+  { \bool_set_false:N \l_@@_noautoxspacing_bool }
+\cs_new_protected:Npn \noautospacing
+  { \bool_set_true:N \l_@@_noautospacing_bool }
+\cs_new_protected:Npn \noautoxspacing
+  { \bool_set_true:N \l_@@_noautoxspacing_bool }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Npn \inhibitglue
+  { \bool_set_true:N \l_@@_inhibitglue_bool }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
