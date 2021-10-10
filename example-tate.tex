@@ -1,7 +1,7 @@
 %#!xelatex
 \documentclass[a4paper,twocolumn,tombow]{xltjtarticle}
 
-\usepackage{amsmath}
+\usepackage{array,amsmath}
 \usepackage{pxrubrica}
 \usepackage{bxjalipsum}
 \usepackage{bxtexlogo}
@@ -25,6 +25,43 @@
 \ruby{吾輩}{わが|はい}は\ruby{猫}{ねこ}である。\ruby{名前}{な|まえ}はまだ\ruby{無}{ない}い。
 
 どこで\ruby{生}{うま}れたかとんと\ruby{見当}{けん|とう}がつかぬ。
+
+\section{縦横}
+
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|}
+\texttt{\texttt{\textbackslash pbox}} &
+                  &
+\texttt{[3zw][l]} &
+\texttt{[3zw][c]} &
+\texttt{[3zw][r]} \\
+\hline
+             &
+①\pbox{②③}④ &
+①\pbox[3\zw][l]{②③}④ &
+①\pbox[3\zw][c]{②③}④ &
+①\pbox[3\zw][r]{②③}④ \\
+\hline
+\texttt{<y>} &
+①\pbox<y>{②③}④ &
+①\pbox<y>[3\zw][l]{②③}④ &
+①\pbox<y>[3\zw][c]{②③}④ &
+①\pbox<y>[3\zw][r]{②③}④ \\
+\hline
+\texttt{<t>} &
+①\pbox<t>{②③}④ &
+①\pbox<t>[3\zw][l]{②③}④ &
+①\pbox<t>[3\zw][c]{②③}④ &
+①\pbox<t>[3\zw][r]{②③}④ \\
+\hline
+\texttt{<z>} &
+①\pbox<z>{②③}④ &
+①\pbox<z>[3\zw][l]{②③}④ &
+①\pbox<z>[3\zw][c]{②③}④ &
+①\pbox<z>[3\zw][r]{②③}④ \\
+\hline
+\end{tabular}
+\end{center}
 
 \section{いろは歌}
 \jalipsum{iroha}

@@ -2663,17 +2663,73 @@
 %    \end{macrocode}
 %
 %
+% \begin{macro}{\pbox}
+%    \begin{macrocode}
+\bool_new:N \l_@@_make_pbox_tate_bool
+\bool_new:N \l_@@_make_pbox_rotate_bool
+\NewDocumentCommand \pbox { d<> o O{c} m }
+  {
+    \scan_stop:
+    \mode_if_vertical:T { \mode_leave_vertical: }
+    \bool_set_eq:NN \l_@@_make_pbox_tate_bool \l_@@_tate_text_bool
+    \bool_set_false:N \l_@@_make_pbox_rotate_bool
+    \IfValueT {#1}
+      {
+        \str_case:nn {#1}
+          {
+            { y }
+              {
+                \bool_set_false:N \l_@@_make_pbox_tate_bool
+                \xltj_if_tate_text:T
+                  { \bool_set_true:N \l_@@_make_pbox_rotate_bool }
+              }
+            { t }
+              {
+                \bool_set_true:N \l_@@_make_pbox_tate_bool
+                \xltj_if_tate_text:F
+                  { \bool_set_true:N \l_@@_make_pbox_rotate_bool }
+              }
+            { z }
+              {
+                \bool_set_false:N \l_@@_make_pbox_tate_bool
+              }
+          }
+      }
+    \hbox_set:Nn \l_@@_rotate_box
+      {
+        \bool_set_eq:NN \l_@@_tate_text_bool \l_@@_make_pbox_tate_bool
+        \IfValueTF {#2} { \makebox[#2][#3]{#4} } { \makebox{#4} }
+      }
+    \bool_if:NTF \l_@@_make_pbox_rotate_bool
+      {
+        \xltj_if_tate_text:TF
+          {
+            \@@_rotate_box_yoko_in_tate:N \l_@@_rotate_box
+            \xltj_box_tjabaselineshift:n { \box_use_drop:N \l_@@_rotate_box }
+          }
+          {
+            \@@_rotate_box_tate_in_yoko:N \l_@@_rotate_box
+            \xltj_box_yjabaselineshift:n { \box_use_drop:N \l_@@_rotate_box }
+          }
+      }
+      {
+        \box_use_drop:N \l_@@_rotate_box
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%
 % \begin{macro}{\rensuji}
 %    \begin{macrocode}
 \newskip\rensujiskip
 \rensujiskip=0.25\l_xltj_zw_dim plus.25\l_xltj_zw_dim minus.25\l_xltj_zw_dim
 %    \end{macrocode}
-% \end{macro}
 %
-% \begin{macro}{\rensuji}
 %    \begin{macrocode}
 \NewDocumentCommand \rensuji { s O{c} m }
   {
+    \scan_stop:
     \mode_if_vertical:T { \mode_leave_vertical: }
     \xltj_if_tate_text:TF
       {
