@@ -12,13 +12,65 @@
 %% This package is distributed under the MIT License.
 %% 
 %% File: xelatexja.dtx
-\RequirePackage{expl3}[2021-08-27]
+\RequirePackage{expl3}[2021-10-18]
 \ProvidesExplPackage{xltjext}
-  {2021/09/19}{0.3.0}{Japanese typesetting with XeLaTeX}
+  {2021/10/23}{0.4.0}{Japanese typesetting with XeLaTeX}
+\bool_new:N \l__xltj_make_pbox_tate_bool
+\bool_new:N \l__xltj_make_pbox_rotate_bool
+\NewDocumentCommand \pbox { d<> o O{c} m }
+  {
+    \scan_stop:
+    \mode_if_vertical:T { \mode_leave_vertical: }
+    \bool_set_eq:NN \l__xltj_make_pbox_tate_bool \l__xltj_tate_text_bool
+    \bool_set_false:N \l__xltj_make_pbox_rotate_bool
+    \IfValueT {#1}
+      {
+        \str_case:nn {#1}
+          {
+            { y }
+              {
+                \bool_set_false:N \l__xltj_make_pbox_tate_bool
+                \xltj_if_tate_text:T
+                  { \bool_set_true:N \l__xltj_make_pbox_rotate_bool }
+              }
+            { t }
+              {
+                \bool_set_true:N \l__xltj_make_pbox_tate_bool
+                \xltj_if_tate_text:F
+                  { \bool_set_true:N \l__xltj_make_pbox_rotate_bool }
+              }
+            { z }
+              {
+                \bool_set_false:N \l__xltj_make_pbox_tate_bool
+              }
+          }
+      }
+    \hbox_set:Nn \l__xltj_rotate_box
+      {
+        \bool_set_eq:NN \l__xltj_tate_text_bool \l__xltj_make_pbox_tate_bool
+        \IfValueTF {#2} { \makebox[#2][#3]{#4} } { \makebox{#4} }
+      }
+    \bool_if:NTF \l__xltj_make_pbox_rotate_bool
+      {
+        \xltj_if_tate_text:TF
+          {
+            \__xltj_rotate_box_yoko_in_tate:N \l__xltj_rotate_box
+            \xltj_box_tjabaselineshift:n { \box_use_drop:N \l__xltj_rotate_box }
+          }
+          {
+            \__xltj_rotate_box_tate_in_yoko:N \l__xltj_rotate_box
+            \xltj_box_yjabaselineshift:n { \box_use_drop:N \l__xltj_rotate_box }
+          }
+      }
+      {
+        \box_use_drop:N \l__xltj_rotate_box
+      }
+  }
 \newskip\rensujiskip
 \rensujiskip=0.25\l_xltj_zw_dim plus.25\l_xltj_zw_dim minus.25\l_xltj_zw_dim
 \NewDocumentCommand \rensuji { s O{c} m }
   {
+    \scan_stop:
     \mode_if_vertical:T { \mode_leave_vertical: }
     \xltj_if_tate_text:TF
       {

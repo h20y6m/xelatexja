@@ -22,7 +22,7 @@
 %% in the same archive or directory.)
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{xltjsreport}
-  [2021/09/19 xltjsclasses ]
+  [2021/10/23 xltjsclasses ]
 \def\jsc@clsname{xltjsreport}
 \newif\if@restonecol
 \newif\if@titlepage

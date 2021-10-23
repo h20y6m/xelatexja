@@ -13,9 +13,9 @@
 %% 
 %% File: xelatexja.dtx
 \NeedsTeXFormat{LaTeX2e}[2021-06-01]
-\RequirePackage{expl3}[2021-08-27]
+\RequirePackage{expl3}[2021-10-18]
 \ProvidesExplPackage{xelatexja}
-  {2021/09/19}{0.3.0}{Japanese typesetting with XeLaTeX}
+  {2021/10/23}{0.4.0}{Japanese typesetting with XeLaTeX}
 \msg_new:nnn { xelatexja } { needs-xetex }
   { XeLaTeX-ja~needs~XeTeX. }
 \sys_if_engine_xetex:F
@@ -33,15 +33,18 @@
 \tl_set:Nn \l__xltj_kanjiskip_tl { 0.0pt plus 0.4pt minus 0.5pt }
 \tl_new:N \l__xltj_xkanjiskip_tl
 \tl_set:Nn \l__xltj_xkanjiskip_tl { 0.25\l_xltj_zw_dim plus 1.0pt minus 1.0pt }
+\bool_new:N \l__xltj_noautospacing_bool
+\bool_new:N \l__xltj_noautoxspacing_bool
 \tl_new:N \g__xltj_jfm_name_tl
 \tl_new:N \l__xltj_yjabaselineshift_tl
 \tl_new:N \l__xltj_tjabaselineshift_tl
 \tl_set:Nn \l__xltj_yjabaselineshift_tl { 0\l_xltj_zw_dim }
 \tl_set:Nn \l__xltj_tjabaselineshift_tl { -0.38\l_xltj_zw_dim }
+\dim_new:N \l__xltj_tmpa_dim
+\int_new:N \l__xltj_tmpa_int
+\seq_new:N \l__xltj_tmpa_seq
 \tl_new:N \l__xltj_tmpa_tl
 \tl_new:N \l__xltj_tmpb_tl
-\dim_new:N \l__xltj_tmpa_dim
-\seq_new:N \l__xltj_tmpa_seq
 \cs_new:Npn \__xltj_swap_dim:NN #1#2
   {
     \dim_set_eq:NN \l__xltj_tmpa_dim #1
@@ -229,6 +232,18 @@
     There~already~exists~a~class~declaration~with~this~name.\\
     Please~use~a~different~name~for~your~class.
   }
+\msg_new:nnnn { xelatexja } { class-not }
+  {
+    Class~'#2'~is~not~#1~class.
+  }
+  {
+    The class~'#2'~is~not~#1~class.\\
+    Please~use~#1~class~insted.
+  }
+\msg_new:nnn { xelatexja } { class-unknown }
+  {
+    Unknown~class~'#1'~used.
+  }
 \cs_new:Npn \__xltj_class_new:n #1
   {
     \seq_if_in:NnTF \g__xltj_class_seq {#1}
@@ -285,16 +300,80 @@
 \xltj_class_new_kanji:n { kanji/default }
 \xltj_class_new_alpha:nn { alpha/default } { 0 }
 \__xltj_class_new:nn { boundary } { 4095 }
-\__xltj_class_new:nn { ignored } { 4096 }
 \cs_new:Npn \xltj_char_set_class:nn #1#2
   {
-    \tex_XeTeXcharclass:D \int_eval:n {#1} = \__xltj_class_use:n {#2} ~
+    \seq_if_in:NnTF \g__xltj_class_seq {#2}
+      {
+        \tex_XeTeXcharclass:D \int_eval:n {#1} =
+          \__xltj_class_use:n {#2} \scan_stop:
+      }
+      {
+        \msg_error:nnn { xelatexja } { class-unknown } {#2}
+      }
   }
 \cs_new:Npn \xltj_char_set_class_range:nnn #1#2#3
   {
-    \int_step_inline:nnn {#1} {#2}
+    \seq_if_in:NnTF \g__xltj_class_seq {#3}
       {
-        \xltj_char_set_class:nn {##1} {#3}
+        \int_set:Nn \l__xltj_tmpa_int { \__xltj_class_use:n {#3} }
+        \int_step_inline:nnn {#1} {#2}
+          {
+            \tex_XeTeXcharclass:D ##1 = \l__xltj_tmpa_int \scan_stop:
+          }
+      }
+      {
+        \msg_error:nnn { xelatexja } { class-unknown } {#3}
+      }
+  }
+\cs_new:Npn \xltj_char_set_class_clist:nn #1#2
+  {
+    \seq_if_in:NnTF \g__xltj_class_seq {#2}
+      {
+        \int_set:Nn \l__xltj_tmpa_int { \__xltj_class_use:n {#2} }
+        \clist_map_inline:nn {#1}
+          {
+            \tex_XeTeXcharclass:D \int_eval:n {##1} =
+              \l__xltj_tmpa_int \scan_stop:
+          }
+      }
+      {
+        \msg_error:nnn { xelatexja } { class-unknown } {#2}
+      }
+  }
+\seq_new:N \g__xltj_nointerchar_seq
+\cs_new:Npn \xltj_gset_no_kanji_interchar:nn #1#2
+  {
+    \seq_if_in:NnTF \g__xltj_class_kanji_seq {#1}
+      {
+        \seq_if_in:NnTF \g__xltj_class_kanji_seq {#2}
+          {
+            \seq_if_in:NnF \g__xltj_nointerchar_seq { #1->#2 }
+              {
+                \seq_gput_right:Nn \g__xltj_nointerchar_seq { #1->#2 }
+              }
+          }
+          {
+            \msg_error:nnnn { xelatexja } { class-not } { kanji } {#2}
+          }
+      }
+      {
+        \msg_error:nnnn { xelatexja } { class-not } { kanji } {#1}
+      }
+  }
+\cs_new:Npn \xltj_gclear_no_kanji_interchar:nn #1#2
+  {
+    \seq_if_in:NnTF \g__xltj_class_kanji_seq {#1}
+      {
+        \seq_if_in:NnTF \g__xltj_class_kanji_seq {#2}
+          {
+            \seq_gremove_all:Nn \g__xltj_nointerchar_seq { #1->#2 }
+          }
+          {
+            \msg_error:nnnn { xelatexja } { class-not } { kanji } {#2}
+          }
+      }
+      {
+        \msg_error:nnnn { xelatexja } { class-not } { kanji } {#1}
       }
   }
 \cs_new:Npn \xltj_class_update:
@@ -303,8 +382,14 @@
       {
         \seq_map_inline:Nn \g__xltj_class_kanji_seq
           {
-            \__xltj_interchar_gset:nnn {##1} {####1}
-              { \__xltj_interchar_kanji_to_kanji:nn {##1} {####1} }
+            \seq_if_in:NnTF \g__xltj_nointerchar_seq { ##1->####1 }
+              {
+                \__xltj_interchar_gset:nnn {##1} {####1} {}
+              }
+              {
+                \__xltj_interchar_gset:nnn {##1} {####1}
+                  { \__xltj_interchar_kanji_to_kanji:nn {##1} {####1} }
+              }
           }
         \seq_map_inline:Nn \g__xltj_class_alpha_seq
           {
@@ -338,7 +423,10 @@
     \__xltj_jfm_use_postbreakpenalty:n {#1}
     \__xltj_jfm_use_prebreakpenalty:n {#2}
     \__xltj_jfm_use_glue_kern_or:nnn {#1} {#2}
-      { \__xltj_glue:n { \l__xltj_kanjiskip_tl } }
+      {
+        \bool_if:NF \l__xltj_noautospacing_bool
+          { \__xltj_glue:n { \l__xltj_kanjiskip_tl } }
+      }
     \__xltj_jabaselineshift_begin:
     \__xltj_jfm_use_precharwd:n {#2}
     % \iow_term:n { K2K:~#1->#2 }
@@ -351,8 +439,11 @@
     \__xltj_jfm_use_postbreakpenalty:n {#1}
     \__xltj_jfm_use_glue_kern_or:nnn {#1} { kanji/default }
       {
-        \__xltj_jfm_if_xspmode_inhibit:nnF {#1} {#2}
-          { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+        \bool_if:NF \l__xltj_noautoxspacing_bool
+          {
+            \__xltj_jfm_if_xspmode_inhibit:nnF {#1} {#2}
+              { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+          }
       }
     \__xltj_swich_alpha_font:
     % \iow_term:n { K2A:~#1->#2 }
@@ -364,8 +455,11 @@
     \__xltj_jfm_use_prebreakpenalty:n {#2}
     \__xltj_jfm_use_glue_kern_or:nnn { kanji/default } {#2}
       {
-        \__xltj_jfm_if_xspmode_inhibit:nnF {#1} {#2}
-          { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+        \bool_if:NF \l__xltj_noautoxspacing_bool
+          {
+            \__xltj_jfm_if_xspmode_inhibit:nnF {#1} {#2}
+              { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+          }
       }
     \__xltj_jabaselineshift_begin:
     \__xltj_jfm_use_precharwd:n {#2}
@@ -384,8 +478,11 @@
       {
         \__xltj_jfm_use_glue_kern_or:nnn {#1} { kanji/default }
           {
-            \__xltj_jfm_if_xspmode_inhibit:nnF {#1} { kanji/default }
-              { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+            \bool_if:NF \l__xltj_noautoxspacing_bool
+              {
+                \__xltj_jfm_if_xspmode_inhibit:nnF {#1} { kanji/default }
+                  { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+              }
           }
       }
       {
@@ -401,22 +498,31 @@
       {
         \__xltj_jfm_use_glue_kern_or:nnn { kanji/default } {#1}
           {
-            \__xltj_jfm_if_xspmode_inhibit:nnF { kanji/default } {#1}
-              { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+            \bool_if:NF \l__xltj_noautoxspacing_bool
+              {
+                \__xltj_jfm_if_xspmode_inhibit:nnF { kanji/default } {#1}
+                  { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+              }
           }
       }
       {
         \__xltj_jfm_use_glue_kern_or:nnn
           { \g__xltj_lastnode_class_tl } {#1}
-          { \__xltj_glue:n { \l__xltj_kanjiskip_tl } }
+          {
+            \bool_if:NF \l__xltj_noautospacing_bool
+              { \__xltj_glue:n { \l__xltj_kanjiskip_tl } }
+          }
       }
       {
         \__xltj_jfm_use_glue_kern_or:nnn
           { kanji/default } {#1}
           {
-            \__xltj_jfm_if_xspmode_inhibit:nnF
-              { \g__xltj_lastnode_class_tl } {#1}
-              { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+            \bool_if:NF \l__xltj_noautoxspacing_bool
+              {
+                \__xltj_jfm_if_xspmode_inhibit:nnF
+                  { \g__xltj_lastnode_class_tl } {#1}
+                  { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+              }
           }
       }
     \__xltj_jabaselineshift_begin:
@@ -440,9 +546,12 @@
         \__xltj_jfm_use_glue_kern_or:nnn
           { \g__xltj_lastnode_class_tl } { kanji/default }
           {
-            \__xltj_jfm_if_xspmode_inhibit:nnF
-              { \g__xltj_lastnode_class_tl } {#1}
-              { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+            \bool_if:NF \l__xltj_noautoxspacing_bool
+              {
+                \__xltj_jfm_if_xspmode_inhibit:nnF
+                  { \g__xltj_lastnode_class_tl } {#1}
+                  { \__xltj_glue:n { \l__xltj_xkanjiskip_tl } }
+              }
           }
       }
       {}
@@ -528,14 +637,15 @@
     \bool_if:NT \l__xltj_lastpenalty_bool
       { \tex_penalty:D \l__xltj_lastpenalty_int \scan_stop: }
   }
-\cs_new:Npn \__xltj_lastnode_switch:nnn #1#2#3
+\cs_new:Npn \__xltj_lastnode_switch:nnn
   {
-    \bool_case_true:n
+    \bool_case_true:nF
       {
-        { \l__xltj_lastnode_math_bool } {#1}
-        { \g__xltj_lastnode_kanji_bool } {#2}
-        { \g__xltj_lastnode_alpha_bool } {#3}
+        { \l__xltj_lastnode_math_bool } { \use_i:nnn }
+        { \g__xltj_lastnode_kanji_bool } { \use_ii:nnn }
+        { \g__xltj_lastnode_alpha_bool } { \use_iii:nnn }
       }
+      { \use_none:nnn }
   }
 \bool_new:N \l__xltj_jabaselineshift_bool
 \box_new:N \l__xltj_jabaselineshift_box
@@ -1109,6 +1219,7 @@
   { \keys_set:nn { xelatexja / tombow } {#1} }
 \cs_new:Npn \__xltj_output_tombow:
   {
+    \group_begin:
     \g__xltj_tombow_color_tl
     \linethickness{\g__xltj_tombow_thickness_dim}
     \put(0,\g__xltj_tombow_bleed_dim)
@@ -1169,6 +1280,7 @@
       {\line(0,-1){\g__xltj_tombow_length_dim+\g__xltj_tombow_bleed_dim}}
     \put(5mm,\g__xltj_tombow_bleed_dim+4pt)
       { \g__xltj_tombow_banner_font_tl \g__xltj_tombow_banner_tl }
+    \group_end:
   }
 \hook_gput_code:nnn { shipout/background } { ./tombow }
   {
@@ -1231,13 +1343,25 @@
 \cs_new_eq:NN \getkanjiskip \xltj_get_kanjiskip:
 \cs_new_eq:NN \setxkanjiskip \xltj_set_xkanjiskip:n
 \cs_new_eq:NN \getxkanjiskip \xltj_get_xkanjiskip:
+\cs_new_protected:Npn \autospacing
+  { \bool_set_false:N \l__xltj_noautospacing_bool }
+\cs_new_protected:Npn \autoxspacing
+  { \bool_set_false:N \l__xltj_noautoxspacing_bool }
+\cs_new_protected:Npn \noautospacing
+  { \bool_set_true:N \l__xltj_noautospacing_bool }
+\cs_new_protected:Npn \noautoxspacing
+  { \bool_set_true:N \l__xltj_noautoxspacing_bool }
+\cs_new_protected:Npn \inhibitglue
+  { \bool_set_true:N \l__xltj_inhibitglue_bool }
+\hook_gput_code:nnn { normalfont } { . }
+  { \xltj_set_kanji_family:x { \kanjifamilydefault } }
 \cs_new:Npn \mcdefault { mc }
 \cs_new:Npn \gtdefault { gt }
 \cs_new:Npn \kanjifamilydefault { \mcdefault }
 \NewDocumentCommand \mcfamily {}
-  { \xltj_set_kanji_family:x { \mcdefault } }
+  { \xltj_set_kanji_family:x { \mcdefault } \selectfont }
 \NewDocumentCommand \gtfamily {}
-  { \xltj_set_kanji_family:x { \gtdefault } }
+  { \xltj_set_kanji_family:x { \gtdefault } \selectfont }
 \DeclareTextFontCommand{\textmc}{\mcfamily}
 \DeclareTextFontCommand{\textgt}{\gtfamily}
 \cs_new_eq:NN \tokansuji \xltj_int_to_kansuji:n

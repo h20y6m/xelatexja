@@ -13,12 +13,12 @@
 \iffalse
 %</driver>
 %<package>\NeedsTeXFormat{LaTeX2e}[2021-06-01]
-\RequirePackage{expl3}[2021-08-27]
+\RequirePackage{expl3}[2021-10-18]
 %<package>\ProvidesExplPackage{xelatexja}
 %<xltjext>\ProvidesExplPackage{xltjext}
 %<standard>\ProvidesExplFile{xltjfm-standard.def}
 %<bxjsja>\ProvidesExplFile{bxjsja-xelatexja.def}
-  {2021/09/19}{0.3.0}{Japanese typesetting with XeLaTeX}
+  {2021/10/23}{0.4.0}{Japanese typesetting with XeLaTeX}
 %<*driver>
 \fi
 %</driver>
@@ -29,6 +29,7 @@
 %
 %<*driver>
 \documentclass{xltjl3doc}
+\GetFileInfo{xelatexja.sty}
 \usepackage[japanese]{babel}
 \usepackage[verb]{bxghost}
 \usepackage{bxtexlogo}\bxtexlogoimport{*}
@@ -44,7 +45,7 @@
 %
 % \title{\textsf{\XeLaTeX-ja}パッケージ}
 % \author{森見幸正 (h20y6m)}
-% \date{2021年9月19日}
+% \date{\filedate}
 %
 % \maketitle
 %
