@@ -1042,7 +1042,7 @@
 \xltj_class_new_kanji:n { kanji/default }
 \xltj_class_new_alpha:nn { alpha/default } { 0 }
 \@@_class_new:nn { boundary } { 4095 }
-\@@_class_new:nn { ignored } { 4096 }
+% \@@_class_new:nn { ignored } { 4096 }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1095,6 +1095,53 @@
 % \end{macro}
 % \end{macro}
 %
+% \begin{macro}{\xltj_gset_no_kanji_interchar:nn}
+% \begin{macro}{\xltj_gclear_no_kanji_interchar:nn}
+%    \begin{macrocode}
+\seq_new:N \g_@@_nointerchar_seq
+%    \end{macrocode}
+%    \begin{macrocode}
+\cs_new:Npn \xltj_gset_no_kanji_interchar:nn #1#2
+  {
+    \seq_if_in:NnTF \g_@@_class_kanji_seq {#1}
+      {
+        \seq_if_in:NnTF \g_@@_class_kanji_seq {#2}
+          {
+            \seq_if_in:NnF \g_@@_nointerchar_seq { #1->#2 }
+              {
+                \seq_gput_right:Nn \g_@@_nointerchar_seq { #1->#2 }
+              }
+          }
+          {
+            \msg_error:nnnn { xelatexja } { class-not } { kanji } {#2}
+          }
+      }
+      {
+        \msg_error:nnnn { xelatexja } { class-not } { kanji } {#1}
+      }
+  }
+%    \end{macrocode}
+%    \begin{macrocode}
+\cs_new:Npn \xltj_gclear_no_kanji_interchar:nn #1#2
+  {
+    \seq_if_in:NnTF \g_@@_class_kanji_seq {#1}
+      {
+        \seq_if_in:NnTF \g_@@_class_kanji_seq {#2}
+          {
+            \seq_gremove_all:Nn \g_@@_nointerchar_seq { #1->#2 }
+          }
+          {
+            \msg_error:nnnn { xelatexja } { class-not } { kanji } {#2}
+          }
+      }
+      {
+        \msg_error:nnnn { xelatexja } { class-not } { kanji } {#1}
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
 % \begin{macro}{\xltj_class_update:}
 %   文字クラス設定を更新する。
 %    \begin{macrocode}
@@ -1104,8 +1151,14 @@
       {
         \seq_map_inline:Nn \g_@@_class_kanji_seq
           {
-            \@@_interchar_gset:nnn {##1} {####1}
-              { \@@_interchar_kanji_to_kanji:nn {##1} {####1} }
+            \seq_if_in:NnTF \g_@@_nointerchar_seq { ##1->####1 }
+              {
+                \@@_interchar_gset:nnn {##1} {####1} {}
+              }
+              {
+                \@@_interchar_gset:nnn {##1} {####1}
+                  { \@@_interchar_kanji_to_kanji:nn {##1} {####1} }
+              }
           }
         \seq_map_inline:Nn \g_@@_class_alpha_seq
           {
@@ -2907,9 +2960,18 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+\xltj_class_new_kanji:n { kanji/combining }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \xltj_class_new_alpha:n { alpha/left }
 \xltj_class_new_alpha:n { alpha/right }
 \xltj_class_new_alpha:n { alpha/middle }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\xltj_gset_no_kanji_interchar:nn { kanji/default } { kanji/combining }
+\xltj_gset_no_kanji_interchar:nn { kanji/smallkana } { kanji/combining }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -2982,13 +3044,13 @@
 %    \end{macrocode}
 % \subparagraph{異体字セレクタ}
 %    \begin{macrocode}
-% \xltj_char_set_class_range:nnn { "FE00 } { "FE0F } { ignored }
-% \xltj_char_set_class_range:nnn { "E0100 } { "E01EF } { ignored }
+\xltj_char_set_class_range:nnn { "FE00 } { "FE0F } { kanji/combining }
+\xltj_char_set_class_range:nnn { "E0100 } { "E01EF } { kanji/combining }
 %    \end{macrocode}
 % \subparagraph{結合可能濁点・半濁点}
 %    \begin{macrocode}
-% \xltj_char_set_class:nn { "3099 } { ignored }
-% \xltj_char_set_class:nn { "309A } { ignored }
+\xltj_char_set_class:nn { "3099 } { kanji/combining }
+\xltj_char_set_class:nn { "309A } { kanji/combining }
 %    \end{macrocode}
 %
 % 開き括弧類
@@ -3126,6 +3188,8 @@
   { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
 \xltj_jfm_set_glue:nnn { kanji/close } { kanji/smallkana }
   { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/close } { kanji/combining }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
 %    \end{macrocode}
 %    \begin{macrocode}
 \xltj_jfm_set_glue:nnn { kanji/middle } { kanji/default }
@@ -3146,6 +3210,8 @@
   { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
 \xltj_jfm_set_glue:nnn { kanji/middle } { kanji/smallkana }
   { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/middle } { kanji/combining }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
 %    \end{macrocode}
 %    \begin{macrocode}
 \xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/default }
@@ -3161,6 +3227,8 @@
 \xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/nopostbreak }
   { 0.5\l_xltj_zw_dim }
 \xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/smallkana }
+  { 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/fullstop } { kanji/combining }
   { 0.5\l_xltj_zw_dim }
 %    \end{macrocode}
 %    \begin{macrocode}
@@ -3187,6 +3255,12 @@
 \xltj_jfm_set_glue:nnn { kanji/smallkana } { kanji/open }
   { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
 \xltj_jfm_set_glue:nnn { kanji/smallkana } { kanji/middle }
+  { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
+%    \end{macrocode}
+%    \begin{macrocode}
+\xltj_jfm_set_glue:nnn { kanji/combining } { kanji/open }
+  { 0.5\l_xltj_zw_dim minus 0.5\l_xltj_zw_dim }
+\xltj_jfm_set_glue:nnn { kanji/combining } { kanji/middle }
   { 0.25\l_xltj_zw_dim minus 0.25\l_xltj_zw_dim }
 %    \end{macrocode}
 %
