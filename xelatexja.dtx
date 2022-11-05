@@ -1427,6 +1427,13 @@
 %    \end{macrocode}
 % \end{macro}
 %
+%    \begin{macrocode}
+\hook_gput_code:nnn { para/begin } { . }
+  { \@@_lastnode_clear: }
+\hook_gput_code:nnn { para/end } { . }
+  { \@@_lastnode_clear: }
+%    \end{macrocode}
+%
 % \begin{macro}
 %   {
 %     \@@_lastnode_check: ,
@@ -1452,36 +1459,25 @@
 % 
 %    \begin{macrocode}
     \bool_set_false:N \l_@@_lastnode_math_bool
-    \int_case:nn { \tex_lastnodetype:D }
+    \int_case:nnF { \tex_lastnodetype:D }
       {
-        { -1 }
-        {
-          \@@_lastnode_clear:
-        }
-        {  1 }
-        {
-          \@@_lastnode_clear:
-        }
-        {  2 }
-        {
-          \@@_lastnode_clear:
-        }
-        { 10 }
+        {  0 } {}% char node
+        {  9 } {}% whatsit node
+        { 10 }% math node
         {
           \@@_lastnode_clear:
           \bool_set_true:N \l_@@_lastnode_math_bool
         }
-        { 11 }
-        {
-          \@@_lastnode_clear:
-        }
-        { 12 }
+        { 12 }% kern
         {
           \dim_compare:nNnF { \tex_lastkern:D } = { \c_zero_dim }
             {
               \@@_lastnode_clear:
             }
         }
+      }
+      {
+        \@@_lastnode_clear:
       }
 %    \end{macrocode}
 % 取り除いたpenalry nodeを戻す。
@@ -1772,7 +1768,7 @@
 \cs_new:Npn \@@_jfm_precharwd:n #1
   { \@@_vrule_zero: \@@_kern:n {#1} }
 \cs_new:Npn \@@_jfm_postcharwd:n #1
-  { \@@_kern:n {#1} \@@_vrule_zero: }
+  { \@@_kern:n {#1} \@@_vrule_zero: \@@_kern:n { \c_zero_dim } }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
