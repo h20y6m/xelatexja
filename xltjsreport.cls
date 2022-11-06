@@ -20,9 +20,10 @@
 %% original source files, as listed above, are part of the
 %% same distribution. (The sources need not necessarily be
 %% in the same archive or directory.)
+%% File: xltjsclasses.dtx
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{xltjsreport}
-  [2021/10/23 xltjsclasses ]
+  [2022/11/06 xltjsclasses ]
 \def\jsc@clsname{xltjsreport}
 \newif\if@restonecol
 \newif\if@titlepage
@@ -210,7 +211,8 @@
     thickness=\@tombowwidth}
 \fi
 \iftombow
-  \newdimen\stockwidth \newdimen\stockheight
+  \ifx\stockwidth\@undefined\newdimen\stockwidth\fi
+  \ifx\stockheight\@undefined\newdimen\stockheight\fi
   \setlength{\stockwidth}{\paperwidth}
   \setlength{\stockheight}{\paperheight}
   \advance \stockwidth 2in

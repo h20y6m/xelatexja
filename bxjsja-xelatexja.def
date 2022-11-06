@@ -6,7 +6,7 @@
 %%
 %% xelatexja.dtx  (with options: `bxjsja')
 %% 
-%% Copyright (c) 2021 Yukimasa Morimi (h20y6m)
+%% Copyright (c) 2021-2022 Yukimasa Morimi (h20y6m)
 %%   GitHub:   https://github.com/h20y6m
 %% 
 %% This package is distributed under the MIT License.
@@ -14,7 +14,7 @@
 %% File: xelatexja.dtx
 \RequirePackage{expl3}[2021-10-18]
 \ProvidesExplFile{bxjsja-xelatexja.def}
-  {2021/10/23}{0.4.0}{Japanese typesetting with XeLaTeX}
+  {2022/11/06}{0.5.0}{Japanese typesetting with XeLaTeX}
 \input{bxjsja-minimal.def}
 \cs_if_exist:NT \zw
   { \cs_undefine:N \zw }
@@ -34,6 +34,33 @@
   { \gtfamily }
 \hook_gput_code:nnn { ttfamily } { . }
   { \gtfamily }
+\def\bxjs@kanjiskip{0pt}
+\renewcommand*\setkanjiskip[1]{%
+  \edef\bxjs@kanjiskip{#1}%
+  \bxjs@reset@kanjiskip}
+\renewcommand*\getkanjiskip{%
+  \bxjs@kanjiskip}
+\bxjs@robust@def\bxjs@reset@kanjiskip{%
+  \setlength{\@tempskipa}{\bxjs@kanjiskip}%
+  \bxjs@apply@kanjiskip}
+\def\bxjs@xkanjiskip{0pt}
+\renewcommand*\setxkanjiskip[1]{%
+  \edef\bxjs@xkanjiskip{#1}%
+  \bxjs@reset@xkanjiskip}
+\renewcommand*\getxkanjiskip{%
+  \bxjs@xkanjiskip}
+\bxjs@robust@def\bxjs@reset@xkanjiskip{%
+  \setlength{\@tempskipa}{\bxjs@xkanjiskip}%
+  \bxjs@apply@xkanjiskip}
+\g@addto@macro\jsResetDimen{%
+  \bxjs@reset@kanjiskip
+  \bxjs@reset@xkanjiskip}
+\let\bxjs@apply@kanjiskip\relax
+\let\bxjs@apply@xkanjiskip\relax
+\def\bxjs@apply@kanjiskip{%
+  \xltjsetkanjiskip{\@tempskipa}}
+\def\bxjs@apply@xkanjiskip{%
+  \xltjsetxkanjiskip{\@tempskipa}}
 \setkanjiskip{0pt plus.1\zw minus.01\zw}
 \ifx\jsDocClass\jsSlide
   \setxkanjiskip{0.1em}

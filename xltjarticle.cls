@@ -23,7 +23,7 @@
 %% File: xltjclasses.dtx
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{xltjarticle}
-  [2021/10/23 v1.8f+xltj
+  [2022/11/06 v1.8f+xltj-2
  Standard XeLaTeX-ja class]
 \newcounter{@paper}
 \newif\if@landscape \@landscapefalse
@@ -174,8 +174,8 @@
 \fi
 \setlength\columnseprule{0\p@}
 \iftombow
-  \newlength{\stockwidth}
-  \newlength{\stockheight}
+  \ifdefined\stockwidth\else\newlength{\stockwidth}\fi
+  \ifdefined\stockheight\else\newlength{\stockheight}\fi
   \setlength{\stockwidth}{\paperwidth}
   \setlength{\stockheight}{\paperheight}
   \advance \stockwidth 2in

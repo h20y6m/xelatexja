@@ -6,7 +6,7 @@
 %%
 %% xelatexja.dtx  (with options: `package')
 %% 
-%% Copyright (c) 2021 Yukimasa Morimi (h20y6m)
+%% Copyright (c) 2021-2022 Yukimasa Morimi (h20y6m)
 %%   GitHub:   https://github.com/h20y6m
 %% 
 %% This package is distributed under the MIT License.
@@ -15,7 +15,7 @@
 \NeedsTeXFormat{LaTeX2e}[2021-06-01]
 \RequirePackage{expl3}[2021-10-18]
 \ProvidesExplPackage{xelatexja}
-  {2021/10/23}{0.4.0}{Japanese typesetting with XeLaTeX}
+  {2022/11/06}{0.5.0}{Japanese typesetting with XeLaTeX}
 \msg_new:nnn { xelatexja } { needs-xetex }
   { XeLaTeX-ja~needs~XeTeX. }
 \sys_if_engine_xetex:F
@@ -590,6 +590,10 @@
     \bool_gset_false:N \g__xltj_lastnode_kanji_bool
     \bool_gset_false:N \g__xltj_lastnode_alpha_bool
   }
+\hook_gput_code:nnn { para/begin } { . }
+  { \__xltj_lastnode_clear: }
+\hook_gput_code:nnn { para/end } { . }
+  { \__xltj_lastnode_clear: }
 \bool_new:N \l__xltj_lastpenalty_bool
 \int_new:N \l__xltj_lastpenalty_int
 \cs_new:Npn \__xltj_lastnode_check:
@@ -603,36 +607,25 @@
         \tex_unpenalty:D
       }
     \bool_set_false:N \l__xltj_lastnode_math_bool
-    \int_case:nn { \tex_lastnodetype:D }
+    \int_case:nnF { \tex_lastnodetype:D }
       {
-        { -1 }
-        {
-          \__xltj_lastnode_clear:
-        }
-        {  1 }
-        {
-          \__xltj_lastnode_clear:
-        }
-        {  2 }
-        {
-          \__xltj_lastnode_clear:
-        }
-        { 10 }
+        {  0 } {}% char node
+        {  9 } {}% whatsit node
+        { 10 }% math node
         {
           \__xltj_lastnode_clear:
           \bool_set_true:N \l__xltj_lastnode_math_bool
         }
-        { 11 }
-        {
-          \__xltj_lastnode_clear:
-        }
-        { 12 }
+        { 12 }% kern
         {
           \dim_compare:nNnF { \tex_lastkern:D } = { \c_zero_dim }
             {
               \__xltj_lastnode_clear:
             }
         }
+      }
+      {
+        \__xltj_lastnode_clear:
       }
     \bool_if:NT \l__xltj_lastpenalty_bool
       { \tex_penalty:D \l__xltj_lastpenalty_int \scan_stop: }
@@ -683,7 +676,7 @@
   }
 \cs_new:Npn \xltj_set_kanjiskip:n #1
   {
-    \tl_set:Nx \l__xltj_kanjiskip_tl { \dim_eval:n {#1} }
+    \tl_set:Nx \l__xltj_kanjiskip_tl { \skip_eval:n {#1} }
   }
 \cs_new:Npn \xltj_set_kanjiskip_lazy:n #1
   {
@@ -695,7 +688,7 @@
   }
 \cs_new:Npn \xltj_set_xkanjiskip:n #1
   {
-    \tl_set:Nx \l__xltj_xkanjiskip_tl { \dim_eval:n {#1} }
+    \tl_set:Nx \l__xltj_xkanjiskip_tl { \skip_eval:n {#1} }
   }
 \cs_new:Npn \xltj_set_xkanjiskip_lazy:n #1
   {
@@ -805,7 +798,7 @@
 \cs_new:Npn \__xltj_jfm_precharwd:n #1
   { \__xltj_vrule_zero: \__xltj_kern:n {#1} }
 \cs_new:Npn \__xltj_jfm_postcharwd:n #1
-  { \__xltj_kern:n {#1} \__xltj_vrule_zero: }
+  { \__xltj_kern:n {#1} \__xltj_vrule_zero: \__xltj_kern:n { \c_zero_dim } }
 \cs_new:Npn \xltj_jfm_set_precharwd:nn #1#2
   {
     \__xltj_jfm_set_param:nnn { precharwd } {#1}
@@ -1339,6 +1332,10 @@
 \cs_new_eq:NN \IfDirectionTateT  \platex_if_direction_tate:T
 \cs_new_eq:NN \IfDirectionTateF  \platex_if_direction_tate:F
 \cs_new_eq:NN \IfDirectionTateTF \platex_if_direction_tate:TF
+\cs_new_eq:NN \xltjsetkanjiskip \xltj_set_kanjiskip:n
+\cs_new_eq:NN \xltjgetkanjiskip \xltj_get_kanjiskip:
+\cs_new_eq:NN \xltjsetxkanjiskip \xltj_set_xkanjiskip:n
+\cs_new_eq:NN \xltjgetxkanjiskip \xltj_get_xkanjiskip:
 \cs_new_eq:NN \setkanjiskip \xltj_set_kanjiskip:n
 \cs_new_eq:NN \getkanjiskip \xltj_get_kanjiskip:
 \cs_new_eq:NN \setxkanjiskip \xltj_set_xkanjiskip:n

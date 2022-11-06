@@ -6,7 +6,7 @@
 %%
 %% xelatexja.dtx  (with options: `jfm,standard')
 %% 
-%% Copyright (c) 2021 Yukimasa Morimi (h20y6m)
+%% Copyright (c) 2021-2022 Yukimasa Morimi (h20y6m)
 %%   GitHub:   https://github.com/h20y6m
 %% 
 %% This package is distributed under the MIT License.
@@ -14,7 +14,7 @@
 %% File: xelatexja.dtx
 \RequirePackage{expl3}[2021-10-18]
 \ProvidesExplFile{xltjfm-standard.def}
-  {2021/10/23}{0.4.0}{Japanese typesetting with XeLaTeX}
+  {2022/11/06}{0.5.0}{Japanese typesetting with XeLaTeX}
 \xltj_set_kanjiskip_lazy:n { 0pt plus .25\l_xltj_zw_dim minus 0pt }
 \xltj_set_xkanjiskip_lazy:n { .25\l_xltj_zw_dim plus .25\l_xltj_zw_dim minus .125\l_xltj_zw_dim }
 \xltj_class_new_kanji:n { kanji/open }
