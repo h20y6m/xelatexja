@@ -729,9 +729,13 @@
 % [\XeLaTeX-ja] papersize specialではなく|\pdfpagewidth|，|\pdfpageheight|を使いますが、
 %   「|\mag|にあわせてスケール」よりもあとで設定します。
 %
+% [\XeLaTeX-ja 2022-11-06] \LaTeXe 2022-11-01 でカーネルに|\stockwidth|、|\stockheight|が追加されたので、
+% クラスファイル側では未定義のときのみこれらの長さ変数を定義します。
+%
 %    \begin{macrocode}
 \iftombow
-  \newdimen\stockwidth \newdimen\stockheight
+  \ifx\stockwidth\@undefined\newdimen\stockwidth\fi
+  \ifx\stockheight\@undefined\newdimen\stockheight\fi
   \setlength{\stockwidth}{\paperwidth}
   \setlength{\stockheight}{\paperheight}
   \advance \stockwidth 2in

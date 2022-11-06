@@ -890,10 +890,13 @@
 % 出力のPDFの用紙サイズをここで設定しておきます。
 % |tombow|が真のときは2インチ足しておきます。
 %
+% [\XeLaTeX-ja 2022-11-06] \LaTeXe 2022-11-01 でカーネルに|\stockwidth|、|\stockheight|が追加されたので、
+% クラスファイル側では未定義のときのみこれらの長さ変数を定義します。
+%
 %    \begin{macrocode}
 \iftombow
-  \newlength{\stockwidth}
-  \newlength{\stockheight}
+  \ifdefined\stockwidth\else\newlength{\stockwidth}\fi
+  \ifdefined\stockheight\else\newlength{\stockheight}\fi
   \setlength{\stockwidth}{\paperwidth}
   \setlength{\stockheight}{\paperheight}
   \advance \stockwidth 2in
