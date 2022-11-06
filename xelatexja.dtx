@@ -1545,7 +1545,7 @@
 %    \begin{macrocode}
 \cs_new:Npn \xltj_set_kanjiskip:n #1
   {
-    \tl_set:Nx \l_@@_kanjiskip_tl { \dim_eval:n {#1} }
+    \tl_set:Nx \l_@@_kanjiskip_tl { \skip_eval:n {#1} }
   }
 \cs_new:Npn \xltj_set_kanjiskip_lazy:n #1
   {
@@ -1567,7 +1567,7 @@
 %    \begin{macrocode}
 \cs_new:Npn \xltj_set_xkanjiskip:n #1
   {
-    \tl_set:Nx \l_@@_xkanjiskip_tl { \dim_eval:n {#1} }
+    \tl_set:Nx \l_@@_xkanjiskip_tl { \skip_eval:n {#1} }
   }
 \cs_new:Npn \xltj_set_xkanjiskip_lazy:n #1
   {
@@ -2699,6 +2699,13 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+\cs_new_eq:NN \xltjsetkanjiskip \xltj_set_kanjiskip:n
+\cs_new_eq:NN \xltjgetkanjiskip \xltj_get_kanjiskip:
+\cs_new_eq:NN \xltjsetxkanjiskip \xltj_set_xkanjiskip:n
+\cs_new_eq:NN \xltjgetxkanjiskip \xltj_get_xkanjiskip:
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_new_eq:NN \setkanjiskip \xltj_set_kanjiskip:n
 \cs_new_eq:NN \getkanjiskip \xltj_get_kanjiskip:
 \cs_new_eq:NN \setxkanjiskip \xltj_set_xkanjiskip:n
@@ -3356,6 +3363,48 @@
   { \gtfamily }
 \hook_gput_code:nnn { ttfamily } { . }
   { \gtfamily }
+%    \end{macrocode}
+%
+% 和文間空白
+%    \begin{macrocode}
+\def\bxjs@kanjiskip{0pt}
+\renewcommand*\setkanjiskip[1]{%
+  \edef\bxjs@kanjiskip{#1}%
+  \bxjs@reset@kanjiskip}
+\renewcommand*\getkanjiskip{%
+  \bxjs@kanjiskip}
+\bxjs@robust@def\bxjs@reset@kanjiskip{%
+  \setlength{\@tempskipa}{\bxjs@kanjiskip}%
+  \bxjs@apply@kanjiskip}
+%    \end{macrocode}
+%
+% 和文欧文間空白
+%    \begin{macrocode}
+\def\bxjs@xkanjiskip{0pt}
+\renewcommand*\setxkanjiskip[1]{%
+  \edef\bxjs@xkanjiskip{#1}%
+  \bxjs@reset@xkanjiskip}
+\renewcommand*\getxkanjiskip{%
+  \bxjs@xkanjiskip}
+\bxjs@robust@def\bxjs@reset@xkanjiskip{%
+  \setlength{\@tempskipa}{\bxjs@xkanjiskip}%
+  \bxjs@apply@xkanjiskip}
+%    \end{macrocode}
+%
+% フォントサイズ変更時に(x)kanjiskipを連動
+%    \begin{macrocode}
+\g@addto@macro\jsResetDimen{%
+  \bxjs@reset@kanjiskip
+  \bxjs@reset@xkanjiskip}
+\let\bxjs@apply@kanjiskip\relax
+\let\bxjs@apply@xkanjiskip\relax
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\bxjs@apply@kanjiskip{%
+  \xltjsetkanjiskip{\@tempskipa}}
+\def\bxjs@apply@xkanjiskip{%
+  \xltjsetxkanjiskip{\@tempskipa}}
 %    \end{macrocode}
 %
 % (x)kanjiskipの初期値を設定する。
